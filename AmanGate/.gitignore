@@ -1,0 +1,12 @@
+# Private data: faces, names, scan history — never upload
+data/
+*.db
+attendance.csv
+
+# AI model (1.2 GB, too big for GitHub) — see README for the download link
+models/*.gguf
+
+# Generated files
+__pycache__/
+*.pyc
+*.log

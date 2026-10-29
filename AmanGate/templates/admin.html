@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+    <title>AmanGate - Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='view-switch.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='enrollment-audio.js') }}" defer></script>
+</head>
+<body class="admin-page">
+
+    <!-- Icon sprite -->
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <!-- AmanGate logo mark: corner brackets + face (colours from --logo-ink / --logo-red, so dark mode can swap them) -->
+        <symbol id="i-logo" viewBox="14 14 72 72">
+            <path d="M20.3 39.7 39.7 20.3M60.3 79.7 79.7 60.3" style="fill:none;stroke:var(--logo-red,#DC3A3A);stroke-width:8"/>
+            <path d="M60.3 20.3 79.7 39.7M20.3 60.3 39.7 79.7" style="fill:none;stroke:var(--logo-ink,#13171F);stroke-width:8"/>
+            <circle cx="44.2" cy="45" r="3.6" style="fill:var(--logo-ink,#13171F);stroke:none"/>
+            <circle cx="55.8" cy="45" r="3.6" style="fill:var(--logo-ink,#13171F);stroke:none"/>
+            <path d="M50 46.6V54.6H46.9" style="fill:none;stroke:var(--logo-ink,#13171F);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round"/>
+            <path d="M43.6 61.2Q50 66.6 56.4 61.2" style="fill:none;stroke:var(--logo-red,#DC3A3A);stroke-width:2.8;stroke-linecap:round"/>
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="i-file-check" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></symbol>
+        <symbol id="i-gate" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9.5 3v18M14.5 3v18"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+        <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+        <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+        <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+        <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><circle cx="12" cy="9" r="2"/><path d="M9 17v-2a3 3 0 0 1 6 0v2"/></symbol>
+        <symbol id="i-male" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M9.5 21v-6H8V9.5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2V15h-1.5v6"/></symbol>
+        <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17h14v-5l-2-5H7l-2 5z"/><path d="M5 12h14"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/></symbol>
+        <symbol id="i-female" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M10.5 21v-5H7.5l2.4-7a1.6 1.6 0 0 1 1.5-1.1h1.2a1.6 1.6 0 0 1 1.5 1.1l2.4 7h-3v5"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+        <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+        <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></symbol>
+        <symbol id="i-id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14a6.5 6.5 0 0 1 3.5 6"/></symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+        <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+        <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></symbol>
+    </svg>
+
+    <!-- PASSWORD GATE — shown until correct password entered -->
+    <div id="password-gate">
+        <div class="password-card">
+            <div class="ag-logo ag-logo-lg" aria-hidden="true"><svg class="ag-mark"><use href="#i-logo"/></svg></div>
+            <h2>Admin Access</h2>
+            <p>Enter your username and password to continue</p>
+            <input type="text" id="usernameInput" class="ag-input" placeholder="Username" autocomplete="username" autocapitalize="none" spellcheck="false" aria-label="Username">
+            <input type="password" id="passwordInput" class="ag-input" placeholder="Password" autocomplete="current-password" aria-label="Password">
+            <p id="password-error"></p>
+            <button id="passwordBtn" class="ag-btn ag-btn-dark" type="button">Unlock Portal</button>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN CONTENT — hidden until authenticated -->
+    <div id="main-content" class="ag-app">
+
+        <header class="ag-card ag-header">
+            <div class="ag-brand">
+                <div class="ag-logo" aria-hidden="true"><svg class="ag-mark"><use href="#i-logo"/></svg></div>
+                <div>
+                    <strong>Aman<em>Gate</em></strong>
+                    <span>University Access Control</span>
+                </div>
+            </div>
+
+            <nav class="ag-nav" aria-label="Admin sections">
+                <button class="ag-nav-link is-active" type="button" data-tab="dashboard">Dashboard</button>
+                <button class="ag-nav-link" type="button" data-tab="add-user" data-main-only>Add User</button>
+                <button class="ag-nav-link" type="button" data-tab="database">Database</button>
+                <button class="ag-nav-link" type="button" data-tab="lock-gates">Lock Gates</button>
+                <button class="ag-nav-link" type="button" data-tab="map">Campus Map</button>
+            </nav>
+
+            <div class="ag-header-actions">
+                <!-- Operations ⇄ Analytics: the page slides sideways (see admin.css) -->
+                <nav class="ag-view-switch" aria-label="Switch page">
+                    <span class="ag-view-switch-thumb" aria-hidden="true"></span>
+                    <a href="/admin" aria-current="page">Operations</a>
+                    <a href="/system">Dashboard</a>
+                </nav>
+                <a href="/" class="ag-link-muted">Gate Terminal</a>
+                <button class="ag-icon-btn" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="ag-i theme-moon"><use href="#i-moon"/></svg>
+                    <svg class="ag-i theme-sun"><use href="#i-sun"/></svg>
+                </button>
+                <span class="ag-view-only-chip" id="viewOnlyChip" hidden>View only</span>
+                <!-- Main admin: opens the Accounts page (accounts + audit log) -->
+                <!-- Opens the account menu (#accountMenu, below) -->
+                <button class="ag-avatar" id="accountAvatar" type="button" aria-label="Account menu" title="Admin"
+                        aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">A</button>
+                <button id="logoutBtn" class="ag-icon-btn" type="button" aria-label="Log out" title="Log out">
+                    <svg class="ag-i"><use href="#i-logout"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ============ DASHBOARD ============ -->
+        <!-- Campus layout: campus picture, five cards, gate tiles, recent activity,
+             today's entries by hour and active alerts. Pictures are cut from static/art/campus-reference.png. -->
+        <section class="ag-view ag-campus" data-view="dashboard">
+            <div class="ag-campus-hero">
+                <div>
+                    <h1>A good day to keep campus safe.</h1>
+                    <p>Your campus, at a glance.</p>
+                </div>
+                <img class="ag-campus-hero-art" src="{{ url_for('static', filename='art/campus-hero.png') }}" alt="" aria-hidden="true">
+                <!-- Dark mode: same picture with a transparent sky -->
+                <img class="ag-campus-hero-art is-dark" src="{{ url_for('static', filename='art/campus-hero-dark.png') }}" alt="" aria-hidden="true" loading="lazy">
+            </div>
+
+            <div class="ag-campus-metrics">
+                <article class="ag-campus-metric">
+                    <svg class="ag-metric-art" viewBox="59 301 71 71" aria-hidden="true"><image width="1536" height="1024" href="{{ url_for('static', filename='art/campus-reference.png') }}"/></svg>
+                    <div><span>Entries today</span><strong id="statEntries">—</strong></div>
+                    <svg class="ag-metric-tail" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="17" width="4" height="9" rx="1"/><rect x="9" y="12" width="4" height="14" rx="1"/><rect x="16" y="7" width="4" height="19" rx="1"/><rect x="23" y="2" width="4" height="24" rx="1"/></svg>
+                    <p class="ag-metric-foot" id="statEntriesFoot">Loading…</p>
+                </article>
+                <button class="ag-campus-metric" type="button" id="statPendingCard" title="See the scans that need review">
+                    <svg class="ag-metric-art" viewBox="429 301 71 71" aria-hidden="true"><image width="1536" height="1024" href="{{ url_for('static', filename='art/campus-reference.png') }}"/></svg>
+                    <div><span>Needs review</span><strong id="statPending">—</strong></div>
+                    <svg class="ag-metric-tail is-line" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 2h11l6 6v18H6zM17 2v7h6M10 13h9m-9 5h9m-9 4h6"/></svg>
+                    <p class="ag-metric-foot" id="statPendingFoot"></p>
+                </button>
+                <article class="ag-campus-metric">
+                    <svg class="ag-metric-art" viewBox="802 301 71 71" aria-hidden="true"><image width="1536" height="1024" href="{{ url_for('static', filename='art/campus-reference.png') }}"/></svg>
+                    <div><span>Gates open</span><strong><span id="statActiveGates">4</span><span id="statGatesTotal"> / 4</span></strong></div>
+                    <i class="ag-metric-dot" id="statGatesDot" aria-hidden="true"></i>
+                    <p class="ag-metric-foot" id="statGatesFoot"></p>
+                </article>
+                <article class="ag-campus-metric">
+                    <svg class="ag-metric-art" viewBox="1174 301 71 71" aria-hidden="true"><image width="1536" height="1024" href="{{ url_for('static', filename='art/campus-reference.png') }}"/></svg>
+                    <div><span>Visitors today</span><strong id="statVisitors">—</strong></div>
+                    <svg class="ag-metric-tail" viewBox="0 0 28 28" aria-hidden="true"><circle cx="10" cy="8" r="4"/><circle cx="20" cy="8" r="4"/><path d="M2 24v-5c0-8 16-8 16 0v5Zm18 0v-5a10 10 0 0 0-3-7c6-2 11 2 11 7v5Z"/></svg>
+                    <p class="ag-metric-foot" id="statVisitorsFoot"></p>
+                </article>
+                <article class="ag-campus-metric">
+                    <svg class="ag-metric-art" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#FAE4A4"/><path d="m32 17 16 28H16Z" fill="none" stroke="#B88020" stroke-width="3" stroke-linejoin="round"/><path d="M32 26v9m0 5h.01" stroke="#B88020" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div><span>Alerts</span><strong id="statAlerts">—</strong></div>
+                    <p class="ag-metric-foot" id="statAlertsFoot">Loading…</p>
+                </article>
+            </div>
+
+            <div class="ag-campus-main">
+                <section class="ag-campus-card">
+                    <header>
+                        <h2>Campus gates</h2>
+                        <button type="button" data-tab-link="lock-gates">View all gates →</button>
+                    </header>
+                    <div class="ag-gate-tiles" id="gateTiles"></div>
+                </section>
+                <section class="ag-campus-card">
+                    <header>
+                        <h2>Recent activity</h2>
+                        <button type="button" data-tab-link="history">View all →</button>
+                    </header>
+                    <div class="ag-activity" id="recentActivity"></div>
+                </section>
+            </div>
+
+            <div class="ag-campus-bottom">
+                <section class="ag-campus-card ag-campus-chart">
+                    <header>
+                        <h2>Entry activity</h2>
+                        <span id="entriesChartDate"></span>
+                    </header>
+                    <div class="ag-hour-chart">
+                        <div class="ag-hour-chart-y" id="entriesChartY" aria-hidden="true"></div>
+                        <div class="ag-hour-chart-plot" id="entriesChart" role="img" aria-label="Granted entries in each hour today"></div>
+                    </div>
+                    <p class="ag-campus-live" id="dashLive" role="status">Loading live data…</p>
+                </section>
+
+                <section class="ag-campus-card ag-campus-alerts">
+                    <header><h2>Active alerts</h2></header>
+                    <ul id="alertsList" aria-live="polite"></ul>
+                </section>
+            </div>
+        </section>
+
+        <!-- ============ ADD USER (enrollment) ============ -->
+        <section class="ag-view" data-view="add-user" hidden>
+            <div class="ag-page-head">
+                <h1>Add New User</h1>
+                <p>Register a student, faculty or staff member, or a 24-hour visitor.</p>
+            </div>
+
+            <div class="ag-enroll">
+                <section class="ag-card ag-panel">
+                    <div class="ag-form">
+                        <label class="ag-field">
+                            <span id="userIdLabel">Student / Staff ID</span>
+                            <span class="ag-input-wrap">
+                                <svg class="ag-i"><use href="#i-id"/></svg>
+                                <input type="text" id="userId" class="ag-input" placeholder="e.g. 20231234" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                            </span>
+                        </label>
+                        <label class="ag-field">
+                            <span>Full Name</span>
+                            <span class="ag-input-wrap">
+                                <svg class="ag-i"><use href="#i-user"/></svg>
+                                <input type="text" id="userName" class="ag-input" placeholder="e.g. Alex Johnson">
+                            </span>
+                        </label>
+                        <label class="ag-field">
+                            <span>Role</span>
+                            <span class="ag-input-wrap">
+                                <svg class="ag-i"><use href="#i-users"/></svg>
+                                <select id="userRole" class="ag-input">
+                                    <option value="student">Student</option>
+                                    <option value="faculty">Faculty</option>
+                                    <option value="security">Security</option>
+                                    <option value="visitor">Visitor (24 hours)</option>
+                                </select>
+                            </span>
+                            <span id="visitorNote" class="ag-field-note" hidden>Visitor access expires automatically 24 hours after saving.</span>
+                        </label>
+
+                        <div class="ag-field" role="group" aria-labelledby="genderLabel">
+                            <span id="genderLabel">Gender</span>
+                            <div class="ag-segmented" id="genderGroup">
+                                <button type="button" data-value="male" aria-pressed="true">Male</button>
+                                <button type="button" data-value="female" aria-pressed="false">Female</button>
+                            </div>
+                        </div>
+
+                        <fieldset class="ag-field ag-fieldset">
+                            <legend>Gate Access</legend>
+                            <div class="ag-checks" id="gateAccessGroup">
+                                <label class="ag-check"><input type="checkbox" value="main" checked><i aria-hidden="true"><svg class="ag-i"><use href="#i-check"/></svg></i>Main Gate</label>
+                                <label class="ag-check"><input type="checkbox" value="male" checked><i aria-hidden="true"><svg class="ag-i"><use href="#i-check"/></svg></i>Male Gate</label>
+                                <label class="ag-check"><input type="checkbox" value="female" checked><i aria-hidden="true"><svg class="ag-i"><use href="#i-check"/></svg></i>Female Gate</label>
+                                <!-- Not ticked by default: only people who drive in get vehicle access -->
+                                <label class="ag-check"><input type="checkbox" value="vehicle"><i aria-hidden="true"><svg class="ag-i"><use href="#i-check"/></svg></i>Vehicle Gate</label>
+                            </div>
+                        </fieldset>
+
+                        <button id="enrollBtn" class="ag-btn ag-btn-yellow ag-btn-wide" type="button">
+                            <svg class="ag-i"><use href="#i-camera"/></svg><span>Capture Photos</span>
+                        </button>
+
+                        <!-- Optional spoken enrollment steps (static/enrollment-audio.js, browser voice) -->
+                        <div class="ag-enroll-audio">
+                            <button class="ag-btn ag-btn-outline" type="button" id="enrollmentAudioToggle" aria-pressed="false">
+                                <svg class="ag-i" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5Z"/><path d="M15 8q4 4 0 8m3-11q7 7 0 14"/></svg><span>Enable enrollment guidance</span>
+                            </button>
+                            <p id="enrollmentAudioCaption" aria-live="polite">Optional spoken instructions for capturing and saving photos.</p>
+                        </div>
+
+                        <p id="status-msg" class="ag-status-msg" role="status" aria-live="polite">Step 1: fill in the details, then press Capture Photos. Three photos are taken: straight, slightly left, slightly right.</p>
+                    </div>
+                </section>
+
+                <section class="ag-card ag-panel ag-camera-card">
+                    <div class="ag-panel-head">
+                        <h2>Camera Preview</h2>
+                        <span class="ag-live is-off"><i></i><span id="livePill">Standby</span></span>
+                    </div>
+                    <div class="camera-container ag-camera">
+                        <video id="video" autoplay playsinline muted></video>
+                        <img id="capturePreview" class="ag-camera-still" alt="Captured photo" hidden>
+                        <div class="face-frame" aria-hidden="true"></div>
+                        <div id="captureCountdown" class="ag-countdown" aria-hidden="true" hidden></div>
+                    </div>
+
+                    <!-- The 3 guided photos (straight, slightly left, slightly right) — shown after capture -->
+                    <div id="captureStrip" class="ag-capture-strip" hidden>
+                        <figure><img alt="Straight"><figcaption>Straight</figcaption></figure>
+                        <figure><img alt="Slightly left"><figcaption>Slightly left</figcaption></figure>
+                        <figure><img alt="Slightly right"><figcaption>Slightly right</figcaption></figure>
+                    </div>
+
+                    <div id="faceStatus" class="ag-face-status">
+                        <span class="ag-face-icon" aria-hidden="true"><svg class="ag-i"><use href="#i-check"/></svg></span>
+                        <div>
+                            <strong id="cameraMessage">Waiting for camera</strong>
+                            <span id="faceHint">Position your face in the frame</span>
+                        </div>
+                    </div>
+
+                    <!-- Preview actions — shown after capture -->
+                    <div id="previewPanel" class="ag-preview-actions" hidden>
+                        <button id="retakeBtn" class="ag-btn ag-btn-outline" type="button"><svg class="ag-i"><use href="#i-refresh"/></svg>Retake</button>
+                        <button id="confirmEnrollBtn" class="ag-btn ag-btn-dark" type="button"><svg class="ag-i"><use href="#i-check"/></svg>Save User</button>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- ============ DATABASE (users) ============ -->
+        <section class="ag-view" data-view="database" hidden>
+            <div class="ag-page-head">
+                <h1>User Database</h1>
+                <p>Manage registered users and their access permissions.</p>
+            </div>
+
+            <div class="ag-toolbar">
+                <div class="ag-segmented ag-db-tabs" id="dbGroupTabs" role="group" aria-label="User groups">
+                    <button type="button" data-group="students" aria-pressed="true">Students <span class="ag-tab-count" data-count="students">0</span></button>
+                    <button type="button" data-group="employees" aria-pressed="false">Employees <span class="ag-tab-count" data-count="employees">0</span></button>
+                    <button type="button" data-group="visitors" aria-pressed="false">Visitors <span class="ag-tab-count" data-count="visitors">0</span></button>
+                </div>
+                <label class="ag-input-wrap ag-search">
+                    <svg class="ag-i"><use href="#i-search"/></svg>
+                    <input type="search" id="userSearch" class="ag-input" placeholder="Search by name, ID or role..." aria-label="Search users">
+                </label>
+                <button class="ag-btn ag-btn-yellow" type="button" data-tab-link="add-user" data-main-only>
+                    <svg class="ag-i"><use href="#i-plus"/></svg>Add User
+                </button>
+            </div>
+
+            <section class="ag-card ag-panel ag-db-panel" aria-label="Enrolled users">
+                <div id="users-table-container" class="ag-table-wrap">
+                    <div class="ag-empty">Loading users...</div>
+                </div>
+                <div class="ag-db-foot">
+                    <p id="dbSummary" class="ag-table-foot"></p>
+                    <p id="dbMsg" class="ag-db-msg" role="status" aria-live="polite"></p>
+                    <nav id="dbPager" class="ag-pager" aria-label="User list pages"></nav>
+                </div>
+            </section>
+        </section>
+
+        <!-- ============ LOCK GATES ============ -->
+        <!-- ============ SCAN HISTORY (Dashboard -> Recent scans -> View all) ============ -->
+        <section class="ag-view" data-view="history" hidden>
+            <div class="ag-page-head ag-page-head-row">
+                <div>
+                    <h1>Every scan has a story.</h1>
+                    <p>Understand each access decision and review what needs your attention.</p>
+                </div>
+                <button class="ag-btn ag-btn-outline ag-history-back" type="button" data-tab-link="dashboard">
+                    <svg class="ag-i"><use href="#i-chev-l"/></svg>Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Press a card to show only those scans -->
+            <div class="sr-metrics">
+                <button class="ag-card sr-metric is-pending" type="button" data-sr-filter="pending">
+                    <span class="sr-metric-icon"><svg class="ag-i"><use href="#i-alert"/></svg></span>
+                    <span class="sr-metric-text"><span>Needs review</span><strong id="srPending">—</strong></span>
+                    <span class="sr-metric-arrow"><svg class="ag-i"><use href="#i-chev-r"/></svg></span>
+                </button>
+                <button class="ag-card sr-metric is-granted" type="button" data-sr-filter="granted">
+                    <span class="sr-metric-icon"><svg class="ag-i"><use href="#i-check"/></svg></span>
+                    <span class="sr-metric-text"><span>Access granted</span><strong id="srGranted">—</strong></span>
+                    <span class="sr-metric-arrow"><svg class="ag-i"><use href="#i-chev-r"/></svg></span>
+                </button>
+                <button class="ag-card sr-metric is-reviewed" type="button" data-sr-filter="reviewed">
+                    <span class="sr-metric-icon"><svg class="ag-i"><use href="#i-file-check"/></svg></span>
+                    <span class="sr-metric-text"><span>Reviewed</span><strong id="srReviewed">—</strong></span>
+                    <span class="sr-metric-arrow"><svg class="ag-i"><use href="#i-chev-r"/></svg></span>
+                </button>
+            </div>
+
+            <div class="sr-grid">
+                <section class="ag-card ag-panel sr-timeline-panel" aria-label="Activity timeline">
+                    <div class="sr-panel-head">
+                        <h2>Activity timeline</h2>
+                        <span class="ag-live" id="historyLive"><i></i>Live</span>
+                    </div>
+                    <div class="sr-toolbar">
+                        <div class="sr-pills" role="group" aria-label="Show">
+                            <button type="button" data-sr-filter="all" aria-pressed="true">All activity</button>
+                            <button type="button" data-sr-filter="pending" aria-pressed="false">Needs review</button>
+                            <button type="button" data-sr-filter="granted" aria-pressed="false">Granted</button>
+                            <button type="button" data-sr-filter="reviewed" aria-pressed="false">Reviewed</button>
+                        </div>
+                        <label class="sr-search">
+                            <svg class="ag-i"><use href="#i-search"/></svg>
+                            <input type="search" id="historySearch" placeholder="Search by name or ID…" aria-label="Search by name or ID">
+                        </label>
+                        <select id="historyGate" class="ag-input sr-select" aria-label="Gate">
+                            <option value="">All gates</option>
+                            <option value="main">Main Gate</option>
+                            <option value="male">Male Gate</option>
+                            <option value="female">Female Gate</option>
+                            <option value="vehicle">Vehicle Gate</option>
+                            <option value="none">Gate not recorded</option>
+                        </select>
+                        <select id="historyPeriod" class="ag-input sr-select" aria-label="Period">
+                            <option value="today">Today</option>
+                            <option value="7d" selected>Last 7 days</option>
+                            <option value="30d">Last 30 days</option>
+                            <option value="">All time</option>
+                        </select>
+                    </div>
+                    <div class="sr-timeline" id="historyTimeline"><p class="sr-empty">Loading…</p></div>
+                    <div class="ag-db-foot">
+                        <p id="historySummary" class="ag-table-foot"></p>
+                        <p class="ag-history-counts"></p>
+                        <nav id="historyPager" class="ag-pager" aria-label="History pages"></nav>
+                    </div>
+                </section>
+
+                <aside class="ag-card ag-panel sr-detail-panel" aria-label="Scan details">
+                    <h2 id="srDetailTitle">Why this result?</h2>
+                    <div id="srDetail"><p class="sr-empty">Select a scan to see its story.</p></div>
+                    <p class="sr-note">
+                        <span class="sr-note-icon"><svg class="ag-i"><use href="#i-shield"/></svg></span>
+                        <span><strong>Reviewing a scan does not change anyone's access.</strong>
+                        <small>It keeps your security records organised: denied scans stay in "Needs review" until an admin has looked at them.</small></span>
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ============ CAMPUS MAP (entries only — exits are not scanned) ============ -->
+        <section class="ag-view" data-view="map" hidden>
+            <div class="ag-page-head ag-page-head-row">
+                <div>
+                    <h1>Campus Map <span class="ag-live"><i></i>Live</span></h1>
+                    <p>Who is coming in, and where. Gates only scan entries, so this shows arrivals, not how many people are inside.</p>
+                </div>
+            </div>
+
+            <div class="ag-map-banner" id="mapLockdownBanner" hidden>
+                <svg class="ag-i"><use href="#i-lock"/></svg>
+                <strong>Emergency lockdown</strong> — all gates are closed
+            </div>
+
+            <div class="ag-map-layout">
+                <section class="ag-card ag-panel ag-map-card" id="mapCard" aria-label="Campus map">
+                    <div class="ag-map-wrap">
+                        <svg id="campusMap" class="ag-map" viewBox="0 0 1100 660" role="group" aria-label="Campus gates"></svg>
+                    </div>
+                    <ul class="ag-map-legend">
+                        <li><i class="is-open"></i>Open</li>
+                        <li><i class="is-closed"></i>Closed by admin</li>
+                        <li><i class="is-lockdown"></i>Lockdown</li>
+                        <li><i class="is-alert">!</i>Denied in the last hour</li>
+                        <li><i class="is-pulse"></i>New scan</li>
+                        <li class="ag-map-legend-note">Layout is illustrative — gate positions are approximate</li>
+                    </ul>
+                </section>
+
+                <aside class="ag-map-side">
+                    <section class="ag-card ag-panel">
+                        <div class="ag-panel-head"><h2>Campus today</h2></div>
+                        <div id="mapCampus" class="ag-map-campus"><p class="ag-muted">Loading…</p></div>
+                    </section>
+                    <section class="ag-card ag-panel">
+                        <div class="ag-map-tabs" id="mapGateTabs" role="tablist" aria-label="Gate"></div>
+                        <div id="mapGateDetail"></div>
+                    </section>
+                </aside>
+            </div>
+        </section>
+
+        <section class="ag-view" data-view="lock-gates" hidden>
+            <div class="ag-page-head ag-page-head-row">
+                <div>
+                    <h1>Gate Control</h1>
+                    <p>Manually control access gates and lockdown when needed.</p>
+                </div>
+                <p id="lockdownStatus" class="ag-lock-status">Checking status...</p>
+            </div>
+
+            <div class="ag-lock-grid">
+                <section class="ag-card ag-panel ag-panel-dark ag-lock-card">
+                    <span class="ag-lock-icon ag-lock-icon-red"><svg class="ag-i"><use href="#i-lock"/></svg></span>
+                    <h2>Lockdown all gates</h2>
+                    <p>Immediately lock all gates. No one will be able to enter.</p>
+                    <button id="lockAllBtn" class="ag-btn ag-btn-red" type="button"><svg class="ag-i"><use href="#i-lock"/></svg>Lockdown All</button>
+                </section>
+                <section class="ag-card ag-panel ag-lock-card">
+                    <span class="ag-lock-icon ag-lock-icon-green"><svg class="ag-i"><use href="#i-unlock"/></svg></span>
+                    <h2>Unlock all gates</h2>
+                    <p>Reopen all gates for normal operation.</p>
+                    <button id="unlockAllBtn" class="ag-btn ag-btn-yellow" type="button"><svg class="ag-i"><use href="#i-unlock"/></svg>Unlock All</button>
+                </section>
+            </div>
+
+            <p class="ag-view-only-note"><svg class="ag-i"><use href="#i-lock"/></svg>View-only account: you can see the gates and hours, but only the main admin can change them.</p>
+
+            <h2 class="ag-section-title">Individual Gate Control</h2>
+            <div class="ag-gate-grid" id="gateControlGrid"></div>
+
+            <!-- Time rules: when each role may enter -->
+            <h2 class="ag-section-title">Access Hours</h2>
+            <section class="ag-card ag-panel ag-hours-card" aria-label="Access hours per role">
+                <div class="ag-hours-grid" id="accessHoursGrid"></div>
+                <!-- Save on the left: the floating chat button sits at the bottom right -->
+                <div class="ag-hours-foot">
+                    <button id="saveHoursBtn" class="ag-btn ag-btn-dark" type="button" data-main-only>Save hours</button>
+                    <p class="ag-hours-intro">Outside these hours the gate refuses the scan and logs it as denied. Visitors also expire after 24 hours.</p>
+                    <p id="hoursMsg" class="ag-db-msg" role="status" aria-live="polite"></p>
+                </div>
+            </section>
+        </section>
+
+        <!-- ============ ACCOUNTS (main admin only) ============ -->
+        <section class="ag-view" data-view="accounts" hidden>
+            <div class="ag-page-head">
+                <h1>Accounts</h1>
+                <p>Who can use the admin portal, and everything each account changed.</p>
+            </div>
+
+            <div class="ag-accounts-layout">
+                <section class="ag-card ag-panel" aria-label="Admin accounts">
+                    <div class="ag-panel-head"><h2>Admin accounts</h2></div>
+                    <ul class="ag-account-list" id="accountList"></ul>
+                    <form class="ag-account-form" id="addAccountForm" autocomplete="off">
+                        <h3>Add a view-only admin</h3>
+                        <p class="ag-muted-text">They can see every page, but can't add or remove users, lock gates or change settings.</p>
+                        <input class="ag-input" id="newAccountUser" type="text" placeholder="Username" maxlength="32" autocapitalize="none" spellcheck="false" aria-label="New username">
+                        <input class="ag-input" id="newAccountPass" type="password" placeholder="Password (at least 8 characters)" autocomplete="new-password" aria-label="New password">
+                        <button class="ag-btn ag-btn-yellow" type="submit"><svg class="ag-i"><use href="#i-plus"/></svg>Add view-only admin</button>
+                    </form>
+                    <p id="accountMsg" class="ag-db-msg ag-account-msg" role="status" aria-live="polite"></p>
+                </section>
+
+                <section class="ag-card ag-panel ag-db-panel" aria-label="Audit log">
+                    <div class="ag-panel-head"><h2>Audit log</h2></div>
+                    <div class="ag-table-wrap">
+                        <table class="ag-users ag-audit-table">
+                            <thead><tr><th>Time</th><th>Account</th><th>Action</th><th>Details</th></tr></thead>
+                            <tbody id="auditBody"><tr><td colspan="4" class="ag-td-empty">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="ag-db-foot">
+                        <p id="auditSummary" class="ag-table-foot"></p>
+                        <p class="ag-history-counts"></p>
+                        <nav id="auditPager" class="ag-pager" aria-label="Audit log pages"></nav>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+
+    <!-- Change password (Accounts tab) -->
+    <!-- Account menu under the round "A" button. A popover, outside #main-content so the
+         page zoom never shrinks it; placed next to the button by placeAccountMenu(). -->
+    <div id="accountMenu" class="ag-account-menu" popover="manual" role="menu" aria-label="Account">
+        <div class="ag-account-menu-head">
+            <span class="ag-avatar" aria-hidden="true" id="accountMenuInitial">A</span>
+            <div><strong id="accountMenuName">admin</strong><span id="accountMenuRole">Main admin</span></div>
+        </div>
+        <button type="button" role="menuitem" data-menu="accounts" data-main-only><svg class="ag-i"><use href="#i-users"/></svg>Accounts &amp; audit log</button>
+        <button type="button" role="menuitem" data-menu="password"><svg class="ag-i"><use href="#i-lock"/></svg>Change my password</button>
+        <a role="menuitem" href="/"><svg class="ag-i"><use href="#i-camera"/></svg>Gate Terminal</a>
+        <button type="button" role="menuitem" data-menu="logout" class="is-danger"><svg class="ag-i"><use href="#i-logout"/></svg>Sign out</button>
+    </div>
+
+    <div id="passwordModal" class="ag-modal">
+        <form class="ag-modal-card ag-password-card" id="passwordForm" role="dialog" aria-modal="true" aria-labelledby="passwordModalTitle" autocomplete="off">
+            <button id="passwordModalClose" class="ag-modal-close" type="button" aria-label="Close"><svg class="ag-i"><use href="#i-x"/></svg></button>
+            <span class="ag-lock-icon ag-lock-icon-green"><svg class="ag-i"><use href="#i-lock"/></svg></span>
+            <h2 id="passwordModalTitle">Change password</h2>
+            <p id="passwordModalText"></p>
+            <input class="ag-input" id="pwCurrent" type="password" placeholder="Your current password" autocomplete="current-password" aria-label="Current password">
+            <input class="ag-input" id="pwNew" type="password" placeholder="New password (at least 8 characters)" autocomplete="new-password" aria-label="New password">
+            <p id="pwError" class="ag-pw-error" role="alert"></p>
+            <div class="ag-modal-actions">
+                <button id="passwordModalCancel" class="ag-btn ag-btn-outline" type="button">Cancel</button>
+                <button class="ag-btn ag-btn-dark" type="submit">Save password</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Remove User Confirmation Modal -->
+    <div id="removeModal" class="ag-modal">
+        <div class="ag-modal-card ag-remove-card" role="dialog" aria-modal="true" aria-labelledby="removeTitle">
+            <button id="removeCloseBtn" class="ag-modal-close" type="button" aria-label="Close"><svg class="ag-i"><use href="#i-x"/></svg></button>
+            <span class="ag-lock-icon ag-lock-icon-red"><svg class="ag-i"><use href="#i-alert"/></svg></span>
+            <h2 id="removeTitle">Remove User</h2>
+            <p id="removeText">Are you sure you want to remove this user?</p>
+            <div class="ag-modal-actions">
+                <button id="removeCancelBtn" class="ag-btn ag-btn-outline" type="button">Cancel</button>
+                <button id="removeConfirmBtn" class="ag-btn ag-btn-red" type="button"><svg class="ag-i"><use href="#i-trash"/></svg>Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lockdown Confirmation Modal -->
+    <div id="lockdownModal" class="ag-modal">
+        <div class="ag-modal-card" role="dialog" aria-modal="true" aria-labelledby="lockdownModalTitle">
+            <span class="ag-lock-icon ag-lock-icon-red"><svg class="ag-i"><use href="#i-lock"/></svg></span>
+            <h2 id="lockdownModalTitle">Enable Emergency Lockdown?</h2>
+            <p>This will <strong>immediately block all gate access</strong>. No one will be able to enter until lockdown is lifted by an admin.</p>
+            <div class="ag-modal-actions">
+                <button id="lockdownCancelBtn" class="ag-btn ag-btn-outline" type="button">Cancel</button>
+                <button id="lockdownConfirmBtn" class="ag-btn ag-btn-red" type="button">Lockdown All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin assistant (chatbot) — shown once logged in -->
+    <button id="chatLauncher" class="ag-chat-launcher" type="button" aria-label="Open assistant" aria-expanded="false" hidden>
+        <svg class="ag-i"><use href="#i-chat"/></svg>
+    </button>
+    <section id="chatPanel" class="ag-chat" aria-label="AmanGate assistant" hidden>
+        <header class="ag-chat-head">
+            <div>
+                <strong>Assistant</strong>
+                <span id="chatState">Runs on this machine</span>
+            </div>
+            <button id="chatClose" class="ag-modal-close" type="button" aria-label="Close assistant"><svg class="ag-i"><use href="#i-x"/></svg></button>
+        </header>
+        <div id="chatLog" class="ag-chat-log" role="log" aria-live="polite">
+            <p class="ag-msg is-bot">Ask me about past gate activity, such as denied attempts, after-hours entries or when someone last entered, or ask for a summary of a day. I can also explain how to use the portal.</p>
+            <div class="ag-chat-chips" id="chatChips">
+                <button type="button">Summarise today</button>
+                <button type="button">How many denied attempts this week?</button>
+                <button type="button">Any low-confidence matches this week?</button>
+            </div>
+        </div>
+        <form id="chatForm" class="ag-chat-form">
+            <input id="chatInput" class="ag-input" type="text" maxlength="300" placeholder="Ask a question..." autocomplete="off" aria-label="Your question">
+            <button id="chatSend" class="ag-btn ag-btn-dark" type="submit" aria-label="Send"><svg class="ag-i"><use href="#i-send"/></svg></button>
+        </form>
+    </section>
+
+    <script>
+        // ================================================
+        // PASSWORD GATE
+        // ================================================
+        const passwordGate  = document.getElementById("password-gate");
+        const mainContent   = document.getElementById("main-content");
+        const usernameInput = document.getElementById("usernameInput");
+        const passwordInput = document.getElementById("passwordInput");
+        const passwordBtn   = document.getElementById("passwordBtn");
+        const passwordError = document.getElementById("password-error");
+        // Set while logged in, so coming back from Analytics shows the dashboard
+        // straight away instead of flashing the password screen during the slide
+        const AUTH_FLAG     = "amangate.authed";
+
+        function setAuthFlag(on) {
+            try { on ? sessionStorage.setItem(AUTH_FLAG, "1") : sessionStorage.removeItem(AUTH_FLAG); } catch (e) { /* ignore */ }
+        }
+
+        function hasAuthFlag() {
+            try { return sessionStorage.getItem(AUTH_FLAG) === "1"; } catch (e) { return false; }
+        }
+
+        // ---- Who is logged in: the main admin (full control) or a view-only admin ----
+        const ACCOUNT_KEY = "amangate.account";
+        let account = null;     // { username, role: "main" | "viewer" }
+
+        function cachedAccount() {
+            try { return JSON.parse(sessionStorage.getItem(ACCOUNT_KEY)); } catch (e) { return null; }
+        }
+
+        const isMainAdmin = () => account?.role === "main";
+
+        // View-only: every page stays visible, but nothing that changes data is shown.
+        // (The server refuses those actions for view-only accounts anyway.)
+        function applyAccount(next) {
+            if (!next) return;
+            const firstTime = !account;
+            account = next;
+            try { sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify(next)); } catch (e) { /* ignore */ }
+            const viewer = !isMainAdmin();
+            document.body.classList.toggle("is-viewer", viewer);
+            const avatar = document.getElementById("accountAvatar");
+            avatar.textContent = (next.username[0] || "A").toUpperCase();
+            avatar.title = viewer ? `${next.username} · View-only admin` : `${next.username} · Main admin`;
+            avatar.setAttribute("aria-label", `Account menu for ${next.username}`);
+            document.getElementById("accountMenuInitial").textContent = avatar.textContent;
+            document.getElementById("accountMenuName").textContent    = next.username;
+            document.getElementById("accountMenuRole").textContent    = viewer ? "View-only admin" : "Main admin";
+            // Only the main admin can change passwords (the server allows it for the main admin only)
+            document.querySelector('#accountMenu [data-menu="password"]').hidden = viewer;
+            avatar.disabled = viewer;
+            document.getElementById("viewOnlyChip").hidden = !viewer;
+            document.querySelectorAll("[data-main-only]").forEach(el => { el.hidden = viewer; });
+            if (viewer && ["add-user", "accounts"].includes(activeTab)) switchTab("dashboard");
+            if (!viewer && firstTime) openCamera();     // the camera is only needed to add users
+            renderGates?.();
+            if (gatesLoaded) updateLockButtons();
+            renderAccessHours?.();
+        }
+
+        // ---- Account menu (the round "A" button) ----
+        const accountAvatar = document.getElementById("accountAvatar");
+        const accountMenu   = document.getElementById("accountMenu");
+
+        function placeAccountMenu() {
+            // Same size as the header, which may be zoomed out to fit the window (see fitDashboard)
+            const zoom  = (parseFloat(mainContent.style.zoom) || 1) * (parseFloat(appHeader.style.zoom) || 1);
+            const box   = accountAvatar.getBoundingClientRect();
+            const width = Math.min(250 * zoom, window.innerWidth - 24);
+            accountMenu.style.zoom  = zoom === 1 ? "" : zoom;
+            accountMenu.style.width = `${width / zoom}px`;
+            accountMenu.style.left  = `${Math.max(12, Math.min(window.innerWidth - width - 12, box.right - width)) / zoom}px`;
+            accountMenu.style.top   = `${(box.bottom + 10 * zoom) / zoom}px`;
+        }
+
+        function closeAccountMenu() {
+            if (accountMenu.matches(":popover-open")) accountMenu.hidePopover();
+            accountAvatar.setAttribute("aria-expanded", "false");
+        }
+
+        accountAvatar.addEventListener("click", () => {
+            if (accountMenu.matches(":popover-open")) { closeAccountMenu(); return; }
+            accountMenu.showPopover();
+            placeAccountMenu();
+            accountAvatar.setAttribute("aria-expanded", "true");
+            accountMenu.querySelector("[role=menuitem]:not([hidden])")?.focus();
+        });
+
+        accountMenu.addEventListener("click", async (e) => {
+            const item = e.target.closest("[role=menuitem]");
+            if (!item) return;
+            closeAccountMenu();
+            const action = item.dataset.menu;
+            if (action === "accounts") switchTab("accounts");
+            if (action === "logout") document.getElementById("logoutBtn").click();
+            if (action === "password") { await loadAccounts(); openPasswordModal(myAccountId); }
+        });
+
+        // Close on a click elsewhere, Escape, or when the window changes size
+        document.addEventListener("pointerdown", (e) => {
+            if (!accountAvatar.contains(e.target) && !accountMenu.contains(e.target)) closeAccountMenu();
+        }, true);
+        accountMenu.addEventListener("keydown", (e) => {
+            const items = [...accountMenu.querySelectorAll("[role=menuitem]:not([hidden])")];
+            const i = items.indexOf(document.activeElement);
+            if (e.key === "Escape") { closeAccountMenu(); accountAvatar.focus(); }
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                e.preventDefault();
+                items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
+            }
+        });
+        window.addEventListener("resize", closeAccountMenu);
+
+        function showAdminContent(next) {
+            applyAccount(next || cachedAccount());
+            if (mainContent.style.display === "block") return;
+            setAuthFlag(true);
+            passwordGate.style.display = "none";
+            mainContent.style.display  = "block";
+            document.getElementById("chatLauncher").hidden = false;
+            renderDashboard();
+            fitDashboard();
+            document.fonts?.ready.then(fitDashboard);
+            fetchLockdownStatus();
+            loadUsers();
+            loadAccessHours();
+        }
+
+        function handleUnauthorized() {
+            setAuthFlag(false);
+            try { sessionStorage.removeItem(ACCOUNT_KEY); } catch (e) { /* ignore */ }
+            mainContent.style.display  = "none";
+            passwordGate.style.display = "flex";
+            passwordError.textContent  = "Session expired. Please log in again.";
+            document.getElementById("chatLauncher").hidden = true;
+            document.getElementById("chatPanel").hidden    = true;
+        }
+
+        async function checkExistingSession() {
+            try {
+                const res  = await fetch("/admin/session");
+                const data = await res.json();
+                if (data.authenticated) showAdminContent({ username: data.username, role: data.role });
+                else if (mainContent.style.display === "block") handleUnauthorized();
+            } catch (e) { /* stay on gate */ }
+        }
+
+        async function attemptUnlock() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            if (!username) { passwordError.textContent = "Please enter your username."; usernameInput.focus(); return; }
+            passwordBtn.disabled      = true;
+            passwordError.textContent = "";
+            try {
+                const res  = await fetch("/admin/login", {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (data.status === "success") {
+                    showAdminContent({ username: data.username, role: data.role });
+                } else {
+                    passwordError.textContent = data.message || "Incorrect username or password. Please try again.";
+                    passwordInput.value       = "";
+                    passwordInput.focus();
+                }
+            } catch (e) {
+                passwordError.textContent = "Server connection failed.";
+            } finally {
+                passwordBtn.disabled = false;
+            }
+        }
+
+        passwordBtn.onclick = attemptUnlock;
+
+        passwordInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") attemptUnlock();
+        });
+        usernameInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") passwordInput.focus();
+        });
+
+        // ================================================
+        // HELPERS
+        // ================================================
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, c => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[c]);
+        }
+
+        function icon(name) {
+            return `<svg class="ag-i"><use href="#i-${name}"/></svg>`;
+        }
+
+        function initials(name) {
+            return String(name).trim().split(/\s+/).slice(0, 2).map(p => p[0] || "").join("").toUpperCase();
+        }
+
+        const AVATAR_COLORS = ["#C0714F", "#4A73B5", "#8A63B8", "#2E8C85", "#D09A2E", "#5B6778", "#C4607A"];
+
+        function avatarColor(key) {
+            let h = 0;
+            for (const ch of String(key)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+            return AVATAR_COLORS[h % AVATAR_COLORS.length];
+        }
+
+        // ================================================
+        // TABS
+        // ================================================
+
+        let activeTab = "dashboard";
+
+        function switchTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll(".ag-nav-link").forEach(btn => {
+                const on = btn.dataset.tab === tab;
+                btn.classList.toggle("is-active", on);
+                if (on) btn.setAttribute("aria-current", "page"); else btn.removeAttribute("aria-current");
+            });
+            document.querySelectorAll(".ag-view").forEach(view => {
+                view.hidden = view.dataset.view !== tab;
+            });
+            // The round account button at the top right is the Accounts "tab"
+            const avatarBtn = document.getElementById("accountAvatar");
+            avatarBtn.classList.toggle("is-active", tab === "accounts");
+            if (tab === "accounts") avatarBtn.setAttribute("aria-current", "page"); else avatarBtn.removeAttribute("aria-current");
+            window.scrollTo({ top: 0 });
+            fitDashboard();
+            if (tab === "dashboard" && mainContent.style.display === "block") loadDashboardStats();
+            if (tab === "lock-gates" && mainContent.style.display === "block") loadGateState();
+            if (tab === "history" && mainContent.style.display === "block") loadHistory(1);
+            if (tab === "map"     && mainContent.style.display === "block") loadCampusMap();
+            if (tab === "lock-gates" && mainContent.style.display === "block") loadAccessHours();
+            if (tab === "accounts" && mainContent.style.display === "block") { loadAccounts(); loadAudit(1); }
+            if (tab === "database"  && mainContent.style.display === "block") loadUsers();
+        }
+
+        // Scale these views down just enough to fit the window without scrolling
+        // (desktop layout only — stacked mobile layouts still scroll).
+        const FIT_TABS = ["dashboard", "lock-gates", "add-user", "database", "history", "map", "accounts"];
+        // Largest scale a view may use (smaller = more zoomed out)
+        const MAX_ZOOM = { database: 0.85, history: 0.85, accounts: 0.85 };
+        // Never shrink a view below this, in any browser — a taller page scrolls instead
+        const MIN_FIT_ZOOM = 0.8;
+        // The Dashboard has more on it (gates, activity, chart, alerts), so it may zoom out further
+        const MIN_ZOOM = { dashboard: 0.5 };
+        // Touch screens (iPad, phones): only the Dashboard is fitted to the screen.
+        // The other tabs show at full size and scroll — Safari handles the shrink-to-fit
+        // differently from Chrome and made Add User / Database / Lock Gates far too small.
+        const TOUCH_SCREEN = window.matchMedia("(pointer: coarse)").matches;
+        const appHeader = mainContent.querySelector(".ag-header");
+
+        // The zoom the Dashboard uses for this window size (saved by fitDashboard)
+        function dashboardZoom(fallback) {
+            try {
+                const saved = JSON.parse(localStorage.getItem("amangate.dashZoom"));
+                if (saved && saved.w === window.innerWidth && saved.h === window.innerHeight) return saved.zoom;
+                if (saved && saved.naturalHeight) return Math.max(MIN_ZOOM.dashboard, Math.min(1, Math.floor(window.innerHeight / saved.naturalHeight * 1000) / 1000));
+            } catch (e) { /* nothing saved */ }
+            return fallback;
+        }
+
+        function fitDashboard() {
+            // The table card of the open view (Database or Scan History), if it has one
+            const dbPanel = document.querySelector(`[data-view="${activeTab}"] .ag-db-panel`);
+            mainContent.style.zoom = "";
+            appHeader.style.zoom   = "";
+            appHeader.style.margin = "";
+            document.querySelectorAll(".ag-db-panel").forEach(p => { p.style.minHeight = ""; });
+            if (!FIT_TABS.includes(activeTab) || mainContent.style.display !== "block" || window.innerWidth <= 1100) return;
+            if (TOUCH_SCREEN && activeTab !== "dashboard") return;   // full size + scroll on iPad
+
+            let zoom = TOUCH_SCREEN ? 1 : (MAX_ZOOM[activeTab] || 1);
+            const minZoom = MIN_ZOOM[activeTab] || MIN_FIT_ZOOM;
+            let naturalHeight = 0;
+            for (let i = 0; i < 4; i++) {
+                mainContent.style.zoom = zoom;
+                const total = document.documentElement.scrollHeight;
+                if (i === 0) naturalHeight = total;
+                if (total <= window.innerHeight || zoom <= minZoom) break;
+                zoom = Math.max(minZoom, Math.floor(zoom * (window.innerHeight / total) * 1000) / 1000);
+            }
+
+            // Remember the dashboard's zoom so the System Analytics page can match it
+            if (activeTab === "dashboard") {
+                try {
+                    localStorage.setItem("amangate.dashZoom", JSON.stringify({
+                        zoom, naturalHeight, w: window.innerWidth, h: window.innerHeight
+                    }));
+                } catch (e) { /* not saved — analytics falls back to 100% */ }
+            } else {
+                // Keep the header at the Dashboard's size on every tab. If that makes the
+                // header taller than before and the page no longer fits, shrink the content a bit more.
+                const dashZoom = dashboardZoom(zoom);
+
+                // Where the header sits on the Dashboard (same width and top edge)
+                mainContent.style.zoom = dashZoom;
+                const target = appHeader.getBoundingClientRect();
+                mainContent.style.zoom = zoom;
+
+                for (let i = 0; i < 6; i++) {
+                    const ratio = dashZoom / zoom;
+                    appHeader.style.zoom   = ratio === 1 ? "" : ratio;
+                    appHeader.style.margin = "";
+                    const now = appHeader.getBoundingClientRect();
+                    const side = (target.width - now.width) / 2 / dashZoom;
+                    const top  = (target.top - now.top) / dashZoom;
+                    if (Math.abs(side) > 0.5 || Math.abs(top) > 0.5) {
+                        appHeader.style.margin = `${top}px ${-side}px 0`;
+                    }
+                    const total = document.documentElement.scrollHeight;
+                    if (total <= window.innerHeight || zoom <= MIN_FIT_ZOOM) break;
+                    zoom = Math.max(MIN_FIT_ZOOM, Math.floor(zoom * (window.innerHeight / total) * 1000) / 1000);
+                    mainContent.style.zoom = zoom;
+                }
+            }
+
+            // A short user list leaves empty space — stretch the table card to the
+            // bottom of the window so the page fills the screen like the others.
+            if (dbPanel) {
+                const spare = window.innerHeight - mainContent.getBoundingClientRect().bottom;
+                if (spare > 0) dbPanel.style.minHeight = `${dbPanel.offsetHeight + spare / zoom}px`;
+            }
+        }
+
+        let fitFrame = 0;
+        window.addEventListener("resize", () => {
+            cancelAnimationFrame(fitFrame);
+            fitFrame = requestAnimationFrame(fitDashboard);
+        });
+
+        document.addEventListener("click", (e) => {
+            const target = e.target.closest("[data-tab], [data-tab-link]");
+            if (!target) return;
+            switchTab(target.dataset.tab || target.dataset.tabLink);
+        });
+
+        // ================================================
+        // DASHBOARD
+        // Real data from /dashboard/stats (the gate terminal's scan log),
+        // refreshed every few seconds while the Dashboard is open.
+        // ================================================
+
+        // One terminal (iPad) per gate — each one reports its own scans
+        const GATES = [
+            { id: "main",   name: "Main Gate",   icon: "gate"   },
+            { id: "male",   name: "Male Gate",   icon: "male"   },
+            { id: "female",  name: "Female Gate",  icon: "female" },
+            { id: "vehicle", name: "Vehicle Gate", icon: "car"    }
+        ];
+
+        const DASHBOARD_REFRESH_MS = 10000;
+        const DASH_CACHE_KEY = "amangate.dashStats";  // last stats, shown instantly on the next visit
+        let dashData = null;
+
+        function parseLocal(iso) {
+            return iso ? new Date(iso) : null;  // server sends local time without a zone
+        }
+
+        function timeAgo(iso) {
+            const date = parseLocal(iso);
+            if (!date) return "";
+            const secs = Math.max(0, (Date.now() - date.getTime()) / 1000);
+            if (secs < 60)    return "just now";
+            if (secs < 3600)  return `${Math.floor(secs / 60)} min ago`;
+            if (secs < 86400) return `${Math.floor(secs / 3600)} hr ago`;
+            return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        }
+
+        function isToday(date) {
+            return date && date.toDateString() === new Date().toDateString();
+        }
+
+        function hourName(h) {
+            return `${h % 12 || 12} ${h < 12 ? "AM" : "PM"}`;
+        }
+
+        // Entry activity: granted entries in each hour of today, 12 AM to 11 PM
+        function renderChart(counts) {
+            const step = Math.max(1, Math.ceil(Math.max(...counts, 0) / 4));
+            const top  = step * 4;
+
+            document.getElementById("entriesChartY").innerHTML = [0, 1, 2, 3, 4]
+                .map(i => `<span style="bottom:${(i / 4) * 100}%">${i * step}</span>`).join("");
+
+            const now = new Date().getHours();
+            document.getElementById("entriesChart").innerHTML = counts.map((n, h) => `
+                <div class="ag-hour ${h === now ? "is-now" : ""}" title="${hourName(h)}: ${n} ${n === 1 ? "entry" : "entries"}">
+                    <i style="height:${(n / top) * 100}%"></i>
+                    <span>${hourName(h)}</span>
+                </div>`).join("");
+
+            document.getElementById("entriesChartDate").textContent =
+                "Today, " + new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        }
+
+        // Per-gate state (lock, walk-in / vehicle, last scan) lives on the server,
+        // so the gate terminals obey it and every admin sees the same thing.
+        const gates = GATES.map(g => ({ ...g, locked: false, type: "walk", last_scan: null }));
+        let gatesLoaded = false;
+
+        function applyGateState(list) {
+            (list || []).forEach(s => {
+                const g = gates.find(x => x.id === s.id);
+                if (g) Object.assign(g, { locked: s.locked, type: s.type, last_scan: s.last_scan });
+            });
+            gatesLoaded = true;
+        }
+
+        async function loadGateState() {
+            try {
+                const res  = await fetch("/gates");
+                const data = await res.json();
+                applyGateState(data.gates);
+                renderGates();
+                updateLockButtons();
+            } catch (e) { /* keep the last known state */ }
+        }
+
+        async function updateGate(gateId, change) {
+            try {
+                const res = await fetch(`/gates/${gateId}`, {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify(change)
+                });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.gate) applyGateState([data.gate]);
+            } catch (e) {
+                lockdownStatus.innerText = "Server connection failed";
+                lockdownStatus.className = "ag-lock-status is-red";
+            }
+            renderGates();
+            updateLockButtons();
+        }
+
+        function gateLastScan(gate) {
+            if (!gatesLoaded) return "Loading…";
+            return gate.last_scan ? `Last scan ${timeAgo(gate.last_scan)}` : "No scans yet";
+        }
+
+        function gateNote(gate, lockdown) {
+            if (lockdown) return "Emergency lockdown";
+            return gate.locked ? "Closed by admin" : "";
+        }
+
+        function gateTypeLabel(gate) {
+            return gate.type === "vehicle" ? "Drivers in cars" : "People on foot";
+        }
+
+        function renderGates() {
+            renderGateStatus(isLocked);
+            renderGateControls(isLocked);
+            renderAlertsPanel();
+        }
+
+        // Where each gate's picture sits on static/art/campus-reference.png (x y width height)
+        const GATE_ART = {
+            main:    "50 477 215 132",
+            male:    "278 477 210 132",
+            female:  "500 477 210 132",
+            vehicle: "724 477 211 132"
+        };
+        const CAMPUS_ART = "{{ url_for('static', filename='art/campus-reference.png') }}";
+
+        function renderGateStatus(lockdown) {
+            document.getElementById("gateTiles").innerHTML = gates.map(g => {
+                const closed = lockdown || g.locked;
+                return `
+                    <button class="ag-gate-tile" type="button" data-tab-link="lock-gates"
+                            title="${escapeHtml(gateLastScan(g))}${gateNote(g, lockdown) ? " · " + escapeHtml(gateNote(g, lockdown)) : ""}">
+                        <svg viewBox="${GATE_ART[g.id]}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                            <image width="1536" height="1024" href="${CAMPUS_ART}"/>
+                        </svg>
+                        <strong>${escapeHtml(g.name)}</strong>
+                        <span class="ag-gate-tile-row">
+                            <span class="ag-gate-pill ${closed ? "is-closed" : ""}"><i></i>${closed ? "Closed" : "Open"}</span>
+                            <svg class="ag-i" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+                        </span>
+                    </button>`;
+            }).join("");
+
+            // Open = unlocked gates; a lockdown closes all of them
+            const open   = lockdown ? 0 : gates.filter(g => !g.locked).length;
+            const closed = gates.length - open;
+            const share  = Math.round((open / gates.length) * 100);
+            document.getElementById("statActiveGates").textContent = open;
+            document.getElementById("statGatesTotal").textContent  = ` / ${gates.length}`;
+            document.getElementById("statGatesDot").classList.toggle("is-red", closed > 0);
+            document.getElementById("statGatesFoot").innerHTML = `${share}% open · ` + (lockdown
+                ? `<span class="ag-up-red">Lockdown active</span>`
+                : closed === 0
+                    ? `<span class="ag-up-green">✓</span> All gates open`
+                    : `<span class="ag-up-red">${closed} closed</span>`);
+        }
+
+        function renderGateControls(lockdown) {
+            // View-only accounts see the controls, switched off
+            const off = lockdown || !isMainAdmin() ? "disabled" : "";
+            document.getElementById("gateControlGrid").innerHTML = gates.map(g => {
+                const locked = lockdown || g.locked;
+                const note   = gateNote(g, lockdown);
+                return `
+                    <section class="ag-card ag-gate-card">
+                        <div class="ag-gate-top">
+                            <span class="ag-row-icon">${icon(g.icon)}</span>
+                            <div class="ag-row-body">
+                                <strong>${escapeHtml(g.name)}</strong>
+                                <span class="ag-dot-label ${locked ? "is-red" : "is-green"}"><i></i>${locked ? "Locked" : "Unlocked"}</span>
+                            </div>
+                        </div>
+                        <button class="ag-switch" type="button" role="switch" data-gate="${g.id}"
+                                aria-checked="${!locked}" aria-label="${escapeHtml(g.name)} unlocked" ${off}></button>
+                        <p class="ag-gate-meta">
+                            ${escapeHtml(gateTypeLabel(g))}<br>
+                            ${escapeHtml(gateLastScan(g))}
+                            ${note ? `<br>${escapeHtml(note)}` : ""}
+                        </p>
+                        <button class="ag-btn ${locked ? "ag-btn-soft" : "ag-btn-outline"} ag-gate-btn" type="button" data-gate="${g.id}" ${off}>
+                            ${icon(locked ? "unlock" : "lock")}${locked ? "Unlock Gate" : "Lock Gate"}
+                        </button>
+                    </section>`;
+            }).join("");
+        }
+
+        document.getElementById("gateControlGrid").addEventListener("click", (e) => {
+            const control = e.target.closest("[data-gate]");
+            if (!control || control.disabled || isLocked) return;
+            const gate = gates.find(g => g.id === control.dataset.gate);
+            if (gate) updateGate(gate.id, { locked: !gate.locked });
+        });
+
+        // Alerts = real scan problems from the server + live lockdown / closed-gate state
+        function collectAlerts() {
+            const alerts = [];
+            if (isLocked) {
+                alerts.push({ level: "red", title: "Emergency lockdown active", meta: "All gates locked by admin" });
+            } else {
+                gates.filter(g => g.locked).forEach(g =>
+                    alerts.push({ level: "yellow", title: `${g.name} closed`, meta: "Closed by admin" }));
+            }
+            (dashData?.alerts || []).forEach(a => alerts.push({
+                level: a.level,
+                title: a.title,
+                meta:  `${a.detail} · ${timeAgo(a.at)}`,
+                at:    a.at
+            }));
+            return alerts;
+        }
+
+        function renderAlertsPanel() {
+            const alerts = collectAlerts();
+            const list   = document.getElementById("alertsList");
+            list.innerHTML = alerts.length
+                ? alerts.slice(0, 6).map(a => `
+                    <li>
+                        <i class="is-${a.level}" aria-hidden="true"></i>
+                        <div>
+                            <strong>${escapeHtml(a.title)}</strong>
+                            <small>${escapeHtml(a.meta)}</small>
+                        </div>
+                    </li>`).join("")
+                : `<li class="is-empty">${icon("check")}No active alerts.</li>`;
+
+            const lastHour = alerts.filter(a => !a.at || Date.now() - parseLocal(a.at).getTime() < 3600000).length;
+            document.getElementById("statAlerts").textContent = alerts.length;
+            document.getElementById("statAlertsFoot").innerHTML = alerts.length === 0
+                ? `<span class="ag-up-green">✓</span> All clear`
+                : lastHour
+                    ? `<span class="ag-up-red">↑ ${lastHour} new</span> in the last hour`
+                    : `No new alerts in the last hour`;
+        }
+
+        // Gate name for a scan ("" for scans logged before the gate was recorded)
+        function gateName(id) {
+            return GATES.find(g => g.id === id)?.name || "";
+        }
+
+        // Result label: Granted, Denied (unknown face), Wrong gate, Fake face
+        function scanResultLabel(s) {
+            if (s.granted) return "Granted";
+            if (s.status === "DENIED_GATE")  return "Wrong gate";
+            if (s.status === "DENIED_SPOOF") return "Fake face";
+            if (s.status === "DENIED_TIME")  return "Outside hours";
+            return "Denied";
+        }
+
+        // Recent activity: the last three scans with their face photo; press one to see its story
+        function renderScans(scans) {
+            const list = document.getElementById("recentActivity");
+            if (!scans.length) {
+                list.innerHTML = `<p class="ag-muted">No scans recorded yet.</p>`;
+                return;
+            }
+            list.innerHTML = scans.slice(0, 3).map(s => {
+                const at     = parseLocal(s.at);
+                const time   = isToday(at)
+                    ? at.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
+                    : at.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                const who    = s.user_id ? s.name : (s.status === "DENIED_SPOOF" ? "Fake face" : "Unknown person");
+                const role   = s.role ? s.role[0].toUpperCase() + s.role.slice(1) : "No matching record";
+                const label  = s.granted ? "Access granted" : s.reviewed_at ? "Reviewed" : "Needs review";
+                const state  = s.granted ? "is-ok" : s.reviewed_at ? "is-done" : "is-bad";
+                const photo  = s.photo
+                    ? `<img src="${s.photo}" alt="Face photo from this scan" loading="lazy">`
+                    : `<span>Photo not recorded</span>`;
+                return `
+                    <button class="ag-activity-row" type="button" data-scan-id="${s.id}" title="See the story of this scan">
+                        <i class="ag-activity-dot ${state}" aria-hidden="true"></i>
+                        <span class="ag-activity-photo">${photo}</span>
+                        <span class="ag-activity-body">
+                            <span class="ag-activity-line"><strong>${escapeHtml(who)}</strong><span class="ag-activity-badge ${state}">${label}</span></span>
+                            <span class="ag-activity-meta">${escapeHtml(gateName(s.gate) || "Gate not recorded")} · ${escapeHtml(role)}</span>
+                        </span>
+                        <time>${escapeHtml(time)}</time>
+                    </button>`;
+            }).join("");
+        }
+
+        // ================================================
+        // SCAN HISTORY — "Every scan has a story" (from /scans)
+        // A timeline of scans on the left; the selected scan's story on the right:
+        // why it was granted or denied, step by step, with the face photo.
+        // ================================================
+        const historyTimeline = document.getElementById("historyTimeline");
+        const historySummary  = document.getElementById("historySummary");
+        const historyPager    = document.getElementById("historyPager");
+        const srDetail        = document.getElementById("srDetail");
+        const historyFilters = {
+            q:      document.getElementById("historySearch"),
+            gate:   document.getElementById("historyGate"),
+            period: document.getElementById("historyPeriod")
+        };
+        const STORY_FILTERS = {            // card / pill -> /scans parameters
+            all:      {},
+            pending:  { review: "pending" },
+            granted:  { result: "granted" },
+            reviewed: { review: "reviewed" }
+        };
+        const HISTORY_PAGE_SIZE    = 20;   // the timeline scrolls inside its card
+        const HISTORY_REFRESH_MS   = 10000;
+        let historyPage     = 1;
+        let storyFilter     = "all";
+        let storyScans      = [];
+        let storySelected   = null;        // id of the scan whose story is shown
+
+        async function loadHistory(page = historyPage, { keepScroll = false } = {}) {
+            const params = new URLSearchParams({ page, per_page: HISTORY_PAGE_SIZE, ...STORY_FILTERS[storyFilter] });
+            for (const [key, el] of Object.entries(historyFilters)) if (el.value.trim()) params.set(key, el.value.trim());
+            try {
+                const res = await fetch(`/scans?${params}`);
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status !== "success") throw new Error(data.message);
+                historyPage = data.page;
+                const scroll = historyTimeline.scrollTop;
+                renderHistory(data);
+                if (keepScroll) historyTimeline.scrollTop = scroll;
+            } catch (e) {
+                historyTimeline.innerHTML = `<p class="sr-empty">Could not load the scans.</p>`;
+            }
+        }
+
+        function storyAvatar(s, large = false) {
+            const cls = `sr-avatar${large ? " is-large" : ""}`;
+            if (s.photo) return `<span class="${cls}"><img src="${s.photo}" alt="Face photo from this scan" loading="lazy"></span>`;
+            const unknown = !s.user_id;
+            return `<span class="${cls} is-initials" title="Photo not recorded for this scan"
+                          style="background:${unknown ? "var(--ag-faint)" : avatarColor(s.name)}">${unknown ? "?" : escapeHtml(initials(s.name))}</span>`;
+        }
+
+        function storyBadge(s) {
+            if (s.granted)     return `<span class="sr-badge is-ok">${icon("check")}Granted</span>`;
+            if (s.reviewed_at) return `<span class="sr-badge is-done">${icon("check")}Reviewed</span>`;
+            return `<span class="sr-badge is-bad">${icon("alert")}Needs review</span>`;
+        }
+
+        function storyTime(s) {
+            const at = parseLocal(s.at);
+            return { time: at.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
+                     date: at.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) };
+        }
+
+        function renderHistory(data) {
+            const c = data.counts;
+            document.getElementById("srPending").textContent  = c.needs_review;
+            document.getElementById("srGranted").textContent  = c.granted;
+            document.getElementById("srReviewed").textContent = c.reviewed;
+            storyScans = data.scans;
+            if (!storyScans.some(s => s.id === storySelected)) {
+                storySelected = (storyScans.find(s => !s.granted && !s.reviewed_at) || storyScans[0])?.id ?? null;
+            }
+
+            historyTimeline.innerHTML = storyScans.length ? storyScans.map(s => {
+                const { time, date } = storyTime(s);
+                const who  = s.user_id ? escapeHtml(s.name) : (s.status === "DENIED_SPOOF" ? "Fake face" : "Unknown person");
+                const sub  = s.user_id ? `ID ${escapeHtml(s.user_id)}` : "Not identified";
+                const gate = gateName(s.gate) || "Gate not recorded";
+                return `
+                    <button class="sr-event ${s.granted ? "is-ok" : ""} ${s.id === storySelected ? "is-selected" : ""}" type="button"
+                            data-story="${s.id}" aria-pressed="${s.id === storySelected}">
+                        <span class="sr-stamp"><time>${escapeHtml(time)}</time><span>${escapeHtml(date)}</span></span>
+                        <i class="sr-dot" aria-hidden="true"></i>
+                        ${storyAvatar(s)}
+                        <span class="sr-person">
+                            <strong>${who}</strong>
+                            <span>${sub}${s.granted ? "" : ` · ${escapeHtml(scanResultLabel(s))}`}</span>
+                            <span class="sr-gate">${icon("gate")}${escapeHtml(gate)}</span>
+                        </span>
+                        ${storyBadge(s)}
+                    </button>`;
+            }).join("") : `<p class="sr-empty">No scans match this view.</p>`;
+
+            const first = data.total ? (data.page - 1) * data.per_page + 1 : 0;
+            historySummary.textContent = data.total ? `Showing ${first}–${first + storyScans.length - 1} of ${data.total} scans` : "";
+            const pages = [];
+            for (let n = 1; n <= data.pages; n++) {
+                if (n === 1 || n === data.pages || Math.abs(n - data.page) <= 1) pages.push(n);
+                else if (pages[pages.length - 1] !== "…") pages.push("…");
+            }
+            historyPager.innerHTML = data.pages <= 1 ? "" : `
+                <button type="button" data-hpage="${data.page - 1}" aria-label="Previous page" ${data.page === 1 ? "disabled" : ""}>${icon("chev-l")}</button>
+                ${pages.map(n => n === "…" ? `<span class="ag-pager-gap">…</span>`
+                    : `<button type="button" data-hpage="${n}" ${n === data.page ? 'aria-current="page"' : ""}>${n}</button>`).join("")}
+                <button type="button" data-hpage="${data.page + 1}" aria-label="Next page" ${data.page === data.pages ? "disabled" : ""}>${icon("chev-r")}</button>`;
+            renderStory();
+            fitDashboard();
+        }
+
+        // The selected scan's story: profile, where/when, the checks, and the review button
+        function renderStory() {
+            const s = storyScans.find(x => x.id === storySelected);
+            const title = document.getElementById("srDetailTitle");
+            if (!s) { title.textContent = "Why this result?"; srDetail.innerHTML = `<p class="sr-empty">Select a scan to see its story.</p>`; return; }
+            const story = s.story;
+            const { time, date } = storyTime(s);
+            title.textContent = story.title;
+            const stepIcon = { good: "check", bad: "x", skip: "minus" };
+            let review = "";
+            if (!s.granted) {
+                review = s.reviewed_at
+                    ? `<span class="sr-reviewed">${icon("check")}Reviewed by ${escapeHtml(s.reviewed_by || "admin")} · ${escapeHtml(timeAgo(s.reviewed_at.replace(" ", "T")))}</span>`
+                    : isMainAdmin()
+                        ? `<button class="sr-review-btn" type="button" data-review="${s.id}">${icon("check")}Mark reviewed</button>`
+                        : `<span class="sr-reviewed is-waiting">Waiting for the main admin to review</span>`;
+            }
+            srDetail.innerHTML = `
+                <div class="sr-profile">
+                    ${storyAvatar(s, true)}
+                    <div>
+                        <h3>${s.user_id ? escapeHtml(s.name) : "Unidentified"}</h3>
+                        <span>${s.user_id ? `ID ${escapeHtml(s.user_id)}${s.role ? ` · ${escapeHtml(s.role[0].toUpperCase() + s.role.slice(1))}` : ""}` : "Not a registered face"}</span>
+                    </div>
+                    <span class="sr-badge ${s.granted ? "is-ok" : "is-bad"}">${icon(s.granted ? "check" : "alert")}${escapeHtml(story.label)}</span>
+                </div>
+                <div class="sr-meta">
+                    <span>${icon("gate")}${escapeHtml(gateName(s.gate) || "Gate not recorded")}</span>
+                    <span>${icon("clock")}${escapeHtml(time)} · ${escapeHtml(date)}</span>
+                    ${s.status !== "DENIED_SPOOF" ? `<span>${icon("user")}${Math.round(s.confidence)}% match</span>` : ""}
+                </div>
+                <div class="sr-steps">
+                    ${story.steps.map(st => `
+                        <div class="sr-step is-${st.state}">
+                            <b>${icon(stepIcon[st.state])}</b>
+                            <strong>${escapeHtml(st.title)}</strong>
+                            <span>${escapeHtml(st.text)}</span>
+                        </div>`).join("")}
+                </div>
+                <h4>In short</h4>
+                <p class="sr-summary">${escapeHtml(story.summary)}</p>
+                ${review ? `<div class="sr-actions">${review}</div>` : ""}`;
+        }
+
+        historyTimeline.addEventListener("click", (e) => {
+            const ev = e.target.closest("[data-story]");
+            if (!ev) return;
+            storySelected = Number(ev.dataset.story);
+            historyTimeline.querySelectorAll(".sr-event").forEach(b => {
+                const on = Number(b.dataset.story) === storySelected;
+                b.classList.toggle("is-selected", on);
+                b.setAttribute("aria-pressed", String(on));
+            });
+            renderStory();
+        });
+
+        srDetail.addEventListener("click", async (e) => {
+            const btn = e.target.closest("[data-review]");
+            if (!btn) return;
+            btn.disabled = true;
+            try {
+                const res = await fetch(`/scans/${btn.dataset.review}/review`, { method: "POST" });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status !== "success") throw new Error(data.message);
+                loadHistory(historyPage, { keepScroll: true });
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = err.message || "Could not save - try again";
+            }
+        });
+
+        // Cards and pills: All activity / Needs review / Granted / Reviewed
+        function setStoryFilter(name) {
+            storyFilter = name;
+            document.querySelectorAll(".sr-pills [data-sr-filter]").forEach(b =>
+                b.setAttribute("aria-pressed", String(b.dataset.srFilter === name)));
+            document.querySelectorAll(".sr-metric").forEach(b => b.classList.toggle("is-active", b.dataset.srFilter === name));
+            loadHistory(1);
+        }
+        document.querySelectorAll("[data-sr-filter]").forEach(b => b.addEventListener("click", () =>
+            setStoryFilter(b.classList.contains("sr-metric") && storyFilter === b.dataset.srFilter ? "all" : b.dataset.srFilter)));
+
+        historyPager.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-hpage]");
+            if (btn && !btn.disabled) { loadHistory(Number(btn.dataset.hpage)); historyTimeline.scrollTop = 0; }
+        });
+        let historySearchTimer = 0;
+        historyFilters.q.addEventListener("input", () => {
+            clearTimeout(historySearchTimer);
+            historySearchTimer = setTimeout(() => loadHistory(1), 300);
+        });
+        ["gate", "period"].forEach(k => historyFilters[k].addEventListener("change", () => loadHistory(1)));
+        setInterval(() => {
+            if (activeTab === "history" && mainContent.style.display === "block" && !document.hidden) {
+                loadHistory(historyPage, { keepScroll: true });
+            }
+        }, HISTORY_REFRESH_MS);
+
+        // Reset the filters, optionally to one gate or one scan
+        function resetStoryFilters(gate = "", period = "7d") {
+            historyFilters.q.value = "";
+            historyFilters.gate.value = gate;
+            historyFilters.period.value = period;
+            storyFilter = "all";
+            document.querySelectorAll(".sr-pills [data-sr-filter]").forEach(b =>
+                b.setAttribute("aria-pressed", String(b.dataset.srFilter === "all")));
+            document.querySelectorAll(".sr-metric").forEach(b => b.classList.remove("is-active"));
+        }
+
+        // Open the history already filtered to one gate (from the Campus Map)
+        function openGateHistory(gateId) {
+            resetStoryFilters(gateId, "today");
+            switchTab("history");
+        }
+
+        // Dashboard -> Recent scans: press a row to open that scan's story
+        function openScanStory(id) {
+            resetStoryFilters();
+            storySelected = id;
+            switchTab("history");
+        }
+        document.getElementById("recentActivity").addEventListener("click", (e) => {
+            const row = e.target.closest("[data-scan-id]");
+            if (row) openScanStory(Number(row.dataset.scanId));
+        });
+
+        // Dashboard -> Needs review card: every denied scan nobody has reviewed yet (all time)
+        document.getElementById("statPendingCard").addEventListener("click", () => {
+            resetStoryFilters("", "");
+            storyFilter = "pending";
+            document.querySelectorAll(".sr-pills [data-sr-filter]").forEach(b =>
+                b.setAttribute("aria-pressed", String(b.dataset.srFilter === "pending")));
+            document.querySelectorAll(".sr-metric").forEach(b => b.classList.toggle("is-active", b.dataset.srFilter === "pending"));
+            storySelected = null;
+            switchTab("history");
+        });
+
+        // ================================================
+        // CAMPUS MAP — live entries per gate (from /campus-map)
+        // Entry-only: gates scan arrivals, not exits, so there is no "people inside" count.
+        // ================================================
+        const MAP_REFRESH_MS = 5000;
+        // Where each gate sits on the drawing (viewBox 1100 x 660; the fence is 110..990 x 40..560)
+        const MAP_POINTS = {
+            male:    { x: 110, y: 300 },
+            female:  { x: 990, y: 300 },
+            vehicle: { x: 320, y: 560 },
+            main:    { x: 550, y: 560 }
+        };
+        const campusMap     = document.getElementById("campusMap");
+        const mapCard       = document.getElementById("mapCard");
+        let mapData         = null;
+        let mapSelected     = "main";
+        let mapLastSeen     = {};      // gate -> time of the last scan already shown (for the pulse)
+
+        // The campus drawing itself never changes — draw it once
+        function drawCampusGround() {
+            const block = (x, y, w, h, label) => `
+                <rect class="ag-map-building" x="${x}" y="${y}" width="${w}" height="${h}" rx="10"/>
+                ${label ? `<text class="ag-map-building-label" x="${x + w / 2}" y="${y + h / 2 + 4}">${label}</text>` : ""}`;
+            const trees = [[175, 95], [395, 95], [705, 95], [925, 95], [470, 430], [630, 430], [175, 420], [925, 420]]
+                .map(([x, y]) => `<circle class="ag-map-tree" cx="${x}" cy="${y}" r="9"/>`).join("");
+            const parking = Array.from({ length: 9 }, (_, i) =>
+                `<line class="ag-map-parking-line" x1="${178 + i * 26}" y1="482" x2="${178 + i * 26}" y2="506"/>`).join("");
+            campusMap.innerHTML = `
+                <rect class="ag-map-ground" x="110" y="40" width="880" height="520" rx="36"/>
+                <rect class="ag-map-zone" x="140" y="70" width="280" height="370" rx="22"/>
+                <rect class="ag-map-zone is-central" x="445" y="70" width="210" height="400" rx="22"/>
+                <rect class="ag-map-zone" x="680" y="70" width="280" height="460" rx="22"/>
+                <text class="ag-map-zone-label" x="280" y="62">MALE CAMPUS</text>
+                <text class="ag-map-zone-label" x="550" y="62">SHARED</text>
+                <text class="ag-map-zone-label" x="820" y="62">FEMALE CAMPUS</text>
+
+                <path class="ag-map-road" d="M550 560 V300 M110 300 H160 M990 300 H940 M320 560 V525"/>
+                <rect class="ag-map-parking" x="160" y="465" width="260" height="60" rx="12"/>
+                ${parking}
+                <text class="ag-map-building-label" x="290" y="519">Parking</text>
+
+                ${block(170, 120, 220, 70, "Colleges")}
+                ${block(170, 215, 100, 70, "Labs")}
+                ${block(290, 215, 100, 70, "Library")}
+                ${block(200, 330, 190, 70, "Sports")}
+                ${block(470, 110, 160, 80, "Administration")}
+                <circle class="ag-map-plaza" cx="550" cy="300" r="48"/>
+                <text class="ag-map-building-label" x="550" y="304">Plaza</text>
+                ${block(470, 380, 160, 60, "Mosque")}
+                ${block(710, 120, 220, 70, "Colleges")}
+                ${block(710, 215, 100, 70, "Labs")}
+                ${block(830, 215, 100, 70, "Library")}
+                ${block(710, 330, 190, 70, "Clinic")}
+                ${block(710, 440, 220, 60, "Cafeteria")}
+                ${trees}
+                <g id="mapMarkers"></g>`;
+        }
+
+        function mapGateState(g, lockdown) {
+            if (lockdown) return { cls: "is-lockdown", label: "Lockdown", dot: "is-red" };
+            if (g.locked) return { cls: "is-closed", label: "Closed by admin", dot: "is-red" };
+            return { cls: "is-open", label: "Open", dot: "is-green" };
+        }
+
+        async function loadCampusMap() {
+            try {
+                const res = await fetch("/campus-map");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status !== "success") throw new Error(data.message);
+                // A new scan since the last refresh makes that gate pulse (not on first load)
+                const pulses = {};
+                data.gates.forEach(g => {
+                    const at = g.last?.at || null;
+                    if (mapData && at && at !== mapLastSeen[g.id]) pulses[g.id] = g.last.granted ? "is-green" : "is-red";
+                    mapLastSeen[g.id] = at;
+                });
+                mapData = data;
+                renderCampusMap(pulses);
+            } catch (e) {
+                document.getElementById("mapCampus").innerHTML = `<p class="ag-muted">Could not load the campus map.</p>`;
+            }
+        }
+
+        function renderCampusMap(pulses = {}) {
+            if (!campusMap.firstChild) drawCampusGround();
+            const data = mapData;
+            const focused = document.activeElement?.dataset?.mapGate;
+            mapCard.classList.toggle("is-lockdown", data.lockdown);
+            document.getElementById("mapLockdownBanner").hidden = !data.lockdown;
+
+            document.getElementById("mapMarkers").innerHTML = data.gates.map(g => {
+                const p     = MAP_POINTS[g.id];
+                const state = mapGateState(g, data.lockdown);
+                const meta  = GATES.find(x => x.id === g.id);
+                // Busier gate (more entries in the last hour) -> bigger soft glow
+                const halo  = 30 + Math.min(30, Math.sqrt(g.entries_hour) * 8);
+                const alert = g.denied_hour.length;
+                const label = `${g.name}: ${state.label}, ${g.entries_today} entries today, ${g.entries_hour} in the last hour` +
+                              (alert ? `, ${alert} denied in the last hour` : "");
+                return `
+                    <g class="ag-map-marker ${state.cls} ${g.id === mapSelected ? "is-selected" : ""}" data-map-gate="${g.id}"
+                       role="button" tabindex="0" aria-label="${escapeHtml(label)}" aria-pressed="${g.id === mapSelected}">
+                        <title>${escapeHtml(label)}</title>
+                        <circle class="ag-map-halo" cx="${p.x}" cy="${p.y}" r="${halo}"/>
+                        ${pulses[g.id] ? `<circle class="ag-map-pulse ${pulses[g.id]}" cx="${p.x}" cy="${p.y}" r="22"/>` : ""}
+                        <circle class="ag-map-ring" cx="${p.x}" cy="${p.y}" r="30"/>
+                        <circle class="ag-map-dot" cx="${p.x}" cy="${p.y}" r="22"/>
+                        <use class="ag-map-icon" href="#i-${meta.icon}" x="${p.x - 12}" y="${p.y - 12}" width="24" height="24"/>
+                        ${alert ? `
+                            <circle class="ag-map-alert" cx="${p.x + 18}" cy="${p.y - 18}" r="11"/>
+                            <text class="ag-map-alert-text" x="${p.x + 18}" y="${p.y - 14}">${alert > 9 ? "9+" : alert}</text>` : ""}
+                        <rect class="ag-map-label" x="${p.x - 78}" y="${p.y + 34}" width="156" height="46" rx="12"/>
+                        <text class="ag-map-label-name" x="${p.x}" y="${p.y + 54}">${escapeHtml(g.name)}</text>
+                        <text class="ag-map-label-count" x="${p.x}" y="${p.y + 71}">${g.entries_today} today · ${g.entries_hour} last hr</text>
+                    </g>`;
+            }).join("");
+            if (focused) campusMap.querySelector(`[data-map-gate="${focused}"]`)?.focus();
+
+            renderMapCampus();
+            renderMapGate();
+        }
+
+        function renderMapCampus() {
+            const c = mapData.campus;
+            const busiest = [...mapData.gates].sort((a, b) => b.entries_today - a.entries_today)[0];
+            document.getElementById("mapCampus").innerHTML = `
+                <p class="ag-map-big"><strong>${c.entries_today}</strong> ${c.entries_today === 1 ? "entry" : "entries"} today</p>
+                <div class="ag-map-figures">
+                    <span><strong>${c.entries_hour}</strong>last hour</span>
+                    <span class="${c.denied_today ? "is-red" : ""}"><strong>${c.denied_today}</strong>denied</span>
+                    <span><strong>${busiest && busiest.entries_today ? escapeHtml(busiest.name.replace(" Gate", "")) : "—"}</strong>busiest gate</span>
+                </div>
+                ${c.no_gate_today ? `<p class="ag-map-note">${c.no_gate_today} of today's scans were made before gates were recorded, so they count here but not on any gate.</p>` : ""}`;
+        }
+
+        function renderMapGate() {
+            const g = mapData.gates.find(x => x.id === mapSelected) || mapData.gates[0];
+            const state = mapGateState(g, mapData.lockdown);
+            const meta  = GATES.find(x => x.id === g.id);
+
+            document.getElementById("mapGateTabs").innerHTML = mapData.gates.map(x => `
+                <button type="button" role="tab" data-map-gate="${x.id}" aria-selected="${x.id === g.id}">
+                    ${escapeHtml(x.name.replace(" Gate", ""))}
+                </button>`).join("");
+
+            const deniedParts = [
+                g.spoof_today ? `${g.spoof_today} fake face${g.spoof_today === 1 ? "" : "s"}` : "",
+                g.wrong_gate_today ? `${g.wrong_gate_today} wrong gate` : "",
+                g.denied_today - g.spoof_today - g.wrong_gate_today > 0 ? `${g.denied_today - g.spoof_today - g.wrong_gate_today} unknown` : ""
+            ].filter(Boolean).join(" · ");
+
+            const recent = g.recent.length ? g.recent.slice(0, 3).map(s => `
+                <li>
+                    <span class="ag-map-recent-time">${escapeHtml(parseLocal(s.at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }))}</span>
+                    <span class="ag-map-recent-name" title="${escapeHtml(s.name)}">${escapeHtml(s.name)}</span>
+                    <span class="ag-dot-label ${s.granted ? "is-green" : "is-red"}"><i></i>${scanResultLabel(s)}</span>
+                </li>`).join("") : `<li class="ag-muted">No scans at this gate today</li>`;
+
+            document.getElementById("mapGateDetail").innerHTML = `
+                <div class="ag-map-detail-head">
+                    <span class="ag-row-icon">${icon(meta.icon)}</span>
+                    <div>
+                        <h3>${escapeHtml(g.name)}</h3>
+                        <span class="ag-dot-label ${state.dot}"><i></i>${state.label}</span>
+                        <span class="ag-map-type">${g.type === "vehicle" ? "Drivers in cars" : "People on foot"}</span>
+                    </div>
+                </div>
+                <div class="ag-map-figures">
+                    <span><strong>${g.entries_today}</strong>entries today</span>
+                    <span><strong>${g.entries_hour}</strong>last hour</span>
+                    <span class="${g.denied_today ? "is-red" : ""}"><strong>${g.denied_today}</strong>denied</span>
+                </div>
+                ${deniedParts ? `<p class="ag-map-note">Denied today: ${deniedParts}</p>` : ""}
+                <p class="ag-map-last">${g.last ? `Last scan ${escapeHtml(timeAgo(g.last.at))} — ${escapeHtml(g.last.name)}` : "No scans at this gate yet"}</p>
+                <h4 class="ag-map-sub">Today at this gate</h4>
+                <ul class="ag-map-recent">${recent}</ul>
+                <button class="ag-btn ag-btn-outline ag-map-history" type="button" data-map-history="${g.id}">See all scans at ${escapeHtml(g.name)}</button>`;
+        }
+
+        function selectMapGate(id) {
+            if (!mapData || !MAP_POINTS[id]) return;
+            mapSelected = id;
+            renderCampusMap();
+        }
+
+        document.querySelector('[data-view="map"]').addEventListener("click", (e) => {
+            const hist = e.target.closest("[data-map-history]");
+            if (hist) { openGateHistory(hist.dataset.mapHistory); return; }
+            const gate = e.target.closest("[data-map-gate]");
+            if (gate) selectMapGate(gate.dataset.mapGate);
+        });
+        campusMap.addEventListener("keydown", (e) => {
+            const gate = e.target.closest("[data-map-gate]");
+            if (gate && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); selectMapGate(gate.dataset.mapGate); }
+        });
+        setInterval(() => {
+            if (activeTab === "map" && mainContent.style.display === "block" && !document.hidden) loadCampusMap();
+        }, MAP_REFRESH_MS);
+
+        function renderTodayStats(data) {
+            const { granted, denied, total, entrants = 0, visitors = 0 } = data.today;
+            const share = (n, of) => of ? Math.round((n / of) * 100) : 0;
+
+            // Entries vs. yesterday
+            const before = data.yesterday.granted;
+            document.getElementById("statEntries").textContent = granted;
+            let foot = total ? `${share(granted, total)}% of scans · ` : "";
+            if (before === 0) {
+                foot += granted ? "No entries yesterday" : "No entries today or yesterday";
+            } else {
+                const change = Math.round(((granted - before) / before) * 100);
+                foot += change >= 0
+                    ? `<span class="ag-up-green">↑ ${change}%</span> vs. yesterday`
+                    : `<span class="ag-up-red">↓ ${Math.abs(change)}%</span> vs. yesterday`;
+            }
+            document.getElementById("statEntriesFoot").innerHTML = foot;
+
+            document.getElementById("statPending").textContent     = data.needs_review ?? "—";
+            document.getElementById("statPendingFoot").textContent = `${share(denied, total)}% denied today · Awaiting review`;
+            document.getElementById("statVisitors").textContent     = visitors;
+            document.getElementById("statVisitorsFoot").textContent = `${share(visitors, entrants)}% of unique entrants today`;
+            document.getElementById("dashLive").textContent =
+                `Live · Updated ${new Date().toLocaleTimeString("en-US")} · Live gate activity.`;
+        }
+
+        async function loadDashboardStats() {
+            loadGateState();   // per-gate lock, type and last scan
+            try {
+                const res = await fetch("/dashboard/stats");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status !== "success") throw new Error(data.message);
+                applyDashboardStats(data);
+                try { sessionStorage.setItem(DASH_CACHE_KEY, JSON.stringify(data)); } catch (e) { /* ignore */ }
+            } catch (e) {
+                document.getElementById("statEntriesFoot").textContent = "Could not load data";
+            }
+            if (activeTab === "dashboard") fitDashboard();
+        }
+
+        function applyDashboardStats(data) {
+            dashData = data;
+            renderTodayStats(data);
+            renderChart(data.today_hourly || Array(24).fill(0));
+            renderScans(data.recent);
+            renderGates();
+        }
+
+        function renderDashboard() {
+            renderGates();
+            try {
+                const cached = JSON.parse(sessionStorage.getItem(DASH_CACHE_KEY));
+                if (cached) applyDashboardStats(cached);
+            } catch (e) { /* no cached stats */ }
+            loadDashboardStats();
+        }
+
+        setInterval(() => {
+            if (activeTab === "dashboard" && mainContent.style.display === "block" && !document.hidden) {
+                loadDashboardStats();
+            }
+        }, DASHBOARD_REFRESH_MS);
+
+        // ================================================
+        // ADMIN PORTAL
+        // ================================================
+
+        const video            = document.getElementById("video");
+        const enrollBtn        = document.getElementById("enrollBtn");
+        const enrollBtnLabel   = enrollBtn.querySelector("span");
+        const statusMsg        = document.getElementById("status-msg");
+        const nameInput        = document.getElementById("userName");
+        const idInput          = document.getElementById("userId");
+        const lockdownStatus   = document.getElementById("lockdownStatus");
+        const lockAllBtn       = document.getElementById("lockAllBtn");
+        const unlockAllBtn     = document.getElementById("unlockAllBtn");
+        const livePill         = document.getElementById("livePill");
+        const cameraContainer  = document.querySelector(".camera-container");
+        const tableContainer   = document.getElementById("users-table-container");
+        const userSearch       = document.getElementById("userSearch");
+
+        let cameraStream   = null;
+        let isLocked       = false;
+        let capturedImage  = "";
+        let capturedFrames = [];
+        let capturedUid    = "";
+        let capturedName   = "";
+        let capturedRole   = "";
+        let allUsers       = [];
+
+        const previewPanel      = document.getElementById("previewPanel");
+        const capturePreview    = document.getElementById("capturePreview");
+        const retakeBtn         = document.getElementById("retakeBtn");
+        const confirmEnrollBtn  = document.getElementById("confirmEnrollBtn");
+        const captureCountdown  = document.getElementById("captureCountdown");
+        const captureStrip      = document.getElementById("captureStrip");
+        let   isCapturing       = false;
+
+        // Guided enrollment: three views of the face. Small turns only (about 15-30°),
+        // never a full profile. "Left/right" are the person's own left/right.
+        const CAPTURE_STEPS = [
+            // The preview is mirrored, so the person's left is on the screen's left (←)
+            { pose: "straight", arrow: "",  title: "Look straight at the camera", hint: "Hold still - photo 1 of 3" },
+            { pose: "left",     arrow: "←", title: "Turn your head a little to your LEFT",  hint: "Only a small turn - keep both eyes visible - photo 2 of 3" },
+            { pose: "right",    arrow: "→", title: "Turn your head a little to your RIGHT", hint: "Only a small turn - keep both eyes visible - photo 3 of 3" }
+        ];
+
+        function grabFrame() {
+            const canvas  = document.createElement("canvas");
+            canvas.width  = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext("2d").drawImage(video, 0, 0);
+            return canvas.toDataURL("image/jpeg", 0.9);
+        }
+
+        const ROLE_LABELS = {
+            student:  "Student",
+            faculty:  "Faculty",
+            security: "Security",
+            visitor:  "Visitor"
+        };
+
+        idInput.addEventListener("input", () => {
+            idInput.value = idInput.value.replace(/\D/g, "");
+        });
+
+        // Visitors get a 24-hour pass — show a note and relabel the ID field
+        const roleSelect  = document.getElementById("userRole");
+        const visitorNote = document.getElementById("visitorNote");
+        const userIdLabel = document.getElementById("userIdLabel");
+
+        function updateRoleHint() {
+            const visitor = roleSelect.value === "visitor";
+            visitorNote.hidden      = !visitor;
+            userIdLabel.textContent = visitor ? "Visitor ID (national ID / passport no.)" : "Student / Staff ID";
+            fitDashboard();
+        }
+        roleSelect.addEventListener("change", updateRoleHint);
+
+        // --- Gender + gate access (sent with enrollment; not stored by the server yet) ---
+        const genderGroup     = document.getElementById("genderGroup");
+        const gateAccessGroup = document.getElementById("gateAccessGroup");
+
+        genderGroup.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-value]");
+            if (!btn) return;
+            genderGroup.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        });
+
+        function selectedGender() {
+            return genderGroup.querySelector('[aria-pressed="true"]')?.dataset.value || "";
+        }
+
+        function selectedGates() {
+            return [...gateAccessGroup.querySelectorAll("input:checked")].map(c => c.value);
+        }
+
+        function resetExtraFields() {
+            genderGroup.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-pressed", String(i === 0)));
+            // Back to the form's defaults (walk-in gates ticked, Vehicle Gate not)
+            gateAccessGroup.querySelectorAll("input").forEach(c => { c.checked = c.defaultChecked; });
+        }
+
+        // --- Camera ---
+        const cameraMsg  = document.getElementById("cameraMessage");
+        const faceStatus = document.getElementById("faceStatus");
+        const faceHint   = document.getElementById("faceHint");
+
+        // state: "ok" | "warn" | "bad" | "idle"
+        function setFaceStatus(state, title, hint = "Position your face in the frame") {
+            cameraMsg.textContent = title;
+            faceHint.textContent  = hint;
+            faceStatus.className  = `ag-face-status is-${state}`;
+            faceStatus.querySelector("use").setAttribute("href", state === "ok" ? "#i-check" : state === "idle" ? "#i-camera" : "#i-alert");
+        }
+        setFaceStatus("idle", "Waiting for camera");
+
+        function clearPreview() {
+            capturedImage = capturedUid = capturedName = capturedRole = "";
+            capturedFrames = [];
+            if (capturePreview) { capturePreview.removeAttribute("src"); capturePreview.hidden = true; }
+            if (previewPanel)   previewPanel.hidden = true;
+            captureStrip.hidden = true;
+            enrollBtnLabel.textContent = "Capture Photos";
+        }
+        let centerCheckInterval = null;
+
+        async function openCamera() {
+            try {
+                // Same sharper picture as the gate terminal (1280x720 where the camera can)
+                cameraStream    = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } }
+                });
+                video.srcObject = cameraStream;
+                cameraContainer?.classList.add("is-scanning");
+                if (livePill) {
+                    livePill.innerText = "Live";
+                    livePill.parentElement.classList.remove("is-off");
+                }
+                setFaceStatus("idle", "Camera ready");
+                startCenterCheck();
+            } catch (err) {
+                if (livePill) livePill.innerText = "Off";
+                setFaceStatus("bad", "Camera access denied", "Allow camera access in your browser, then reload");
+            }
+        }
+
+        function startCenterCheck() {
+            if (centerCheckInterval) clearInterval(centerCheckInterval);
+            centerCheckInterval = setInterval(async () => {
+                // Only guide positioning while the enrollment view is open and no photo is frozen
+                if (activeTab !== "add-user" || capturedImage || isCapturing || !video.videoWidth) return;
+                const canvas = document.createElement("canvas");
+                canvas.width  = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext("2d").drawImage(video, 0, 0);
+                const image = canvas.toDataURL("image/jpeg", 0.75);
+                try {
+                    const res  = await fetch("/check-center", {
+                        method:  "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body:    JSON.stringify({ image })
+                    });
+                    const data = await res.json();
+                    if (capturedImage || isCapturing) return;
+                    if (data.centered) {
+                        setFaceStatus("ok", "Face detected");
+                    } else if (data.reason === "no_face") {
+                        setFaceStatus("idle", "No face detected");
+                    } else if (data.reason === "multiple_faces") {
+                        setFaceStatus("bad", "One person only", "Make sure only one face is in the frame");
+                    } else {
+                        setFaceStatus("warn", data.message || "Center the face");
+                    }
+                } catch (e) { /* silent fail */ }
+            }, 700);
+        }
+
+        // --- Lockdown ---
+        async function fetchLockdownStatus() {
+            loadGateState();
+            try {
+                const res  = await fetch("/lockdown/status");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                updateLockdownUI(data.lockdown);
+            } catch (e) {
+                lockdownStatus.innerText   = "Could not reach server";
+                lockdownStatus.style.color = "var(--danger)";
+            }
+        }
+
+        function updateLockdownUI(locked) {
+            isLocked = locked;
+            renderGates();
+
+            if (locked) {
+                lockdownStatus.innerHTML   = "<i></i>Lockdown <strong>ACTIVE</strong> — all access disabled";
+                lockdownStatus.className   = "ag-lock-status is-red";
+            } else {
+                lockdownStatus.innerHTML   = "<i></i>Lockdown off — scanning enabled";
+                lockdownStatus.className   = "ag-lock-status is-green";
+            }
+            lockdownStatus.style.color = "";
+            updateLockButtons();
+        }
+
+        function updateLockButtons() {
+            lockAllBtn.disabled   = isLocked || !isMainAdmin();
+            unlockAllBtn.disabled = (!isLocked && !gates.some(g => g.locked)) || !isMainAdmin();
+        }
+
+        // --- Lockdown Modal ---
+        const lockdownModal       = document.getElementById("lockdownModal");
+        const lockdownCancelBtn   = document.getElementById("lockdownCancelBtn");
+        const lockdownConfirmBtn  = document.getElementById("lockdownConfirmBtn");
+
+        function showLockdownModal() {
+            lockdownModal.style.display = "flex";
+        }
+
+        function hideLockdownModal() {
+            lockdownModal.style.display = "none";
+        }
+
+        lockdownModal.addEventListener("click", (e) => {
+            if (e.target === lockdownModal) hideLockdownModal();
+        });
+
+        lockdownCancelBtn.onclick = hideLockdownModal;
+
+        lockdownConfirmBtn.onclick = async () => {
+            hideLockdownModal();
+            await toggleLockdown();
+        };
+
+        lockAllBtn.onclick   = () => { if (!isLocked) showLockdownModal(); };
+        unlockAllBtn.onclick = async () => {
+            // Reopen every closed gate on the server, then lift the lockdown if it is on
+            await Promise.all(gates.filter(g => g.locked).map(g => updateGate(g.id, { locked: false })));
+            if (isLocked) await toggleLockdown();
+        };
+
+        async function toggleLockdown() {
+            try {
+                const url  = isLocked ? "/lockdown/off" : "/lockdown/on";
+                const res  = await fetch(url, { method: "POST" });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                updateLockdownUI(data.lockdown);
+                statusMsg.innerText   = data.message;
+                statusMsg.style.color = data.lockdown ? "var(--danger)" : "var(--success)";
+            } catch (err) {
+                lockdownStatus.innerText   = "Server Connection Failed";
+                lockdownStatus.className   = "ag-lock-status is-red";
+            }
+        }
+
+        // --- Logout ---
+        document.getElementById("logoutBtn").onclick = async () => {
+            setAuthFlag(false);
+            await fetch("/admin/logout", { method: "POST" });
+            location.reload();
+        };
+
+        // --- Enroll — Step 1: Capture and preview ---
+        enrollBtn.onclick = async () => {
+            const uid  = idInput.value.trim();
+            const name = nameInput.value.trim();
+            const role = document.getElementById("userRole").value;
+
+            if (!uid || !name) { alert("Please enter both ID and Name"); return; }
+            if (!/^\d+$/.test(uid)) { alert("ID must contain numbers only"); return; }
+
+            // Face validation before capture
+            statusMsg.innerText   = "Checking for face...";
+            statusMsg.style.color = "var(--amber)";
+
+            const canvas = document.createElement("canvas");
+            canvas.width  = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext("2d").drawImage(video, 0, 0);
+            const imageData = canvas.toDataURL("image/jpeg");
+
+            try {
+                const centerRes  = await fetch("/check-center", {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify({ image: imageData })
+                });
+                const centerData = await centerRes.json();
+
+                if (!centerData.centered) {
+                    statusMsg.innerText   = centerData.message;
+                    statusMsg.style.color = "var(--danger)";
+                    return;
+                }
+            } catch (e) {
+                statusMsg.innerText   = "Server Connection Failed";
+                statusMsg.style.color = "var(--danger)";
+                return;
+            }
+
+            // Re-enrollment warning
+            const existingUsers = await fetch("/users").then(r => r.json()).then(d => d.users || []);
+            const existing      = existingUsers.find(u => u.id === uid);
+
+            if (existing) {
+                const confirmed = confirm(
+                    `ID "${uid}" is already enrolled as ${existing.name} (${existing.role}).\n\nRe-enroll and overwrite their face data?`
+                );
+                if (!confirmed) {
+                    statusMsg.innerText   = "Enrollment cancelled.";
+                    statusMsg.style.color = "var(--muted)";
+                    return;
+                }
+            }
+
+            // Guided capture: straight, slightly left, slightly right — each view is
+            // stored separately so gate scans match the closest angle.
+            enrollBtn.disabled = true;
+            isCapturing        = true;
+            const views = [];
+            try {
+                for (const step of CAPTURE_STEPS) {
+                    setFaceStatus("warn", step.title, step.hint);
+                    await window.AmanEnrollmentAudio?.guide(step.title);   // spoken, when guidance is on
+                    statusMsg.innerText   = `Photo ${views.length + 1} of 3: ${step.title}`;
+                    statusMsg.style.color = "var(--amber)";
+                    for (let n = 3; n > 0; n--) {
+                        captureCountdown.textContent = step.arrow ? `${step.arrow} ${n}` : n;
+                        captureCountdown.hidden      = false;
+                        await new Promise(r => setTimeout(r, 700));
+                    }
+                    captureCountdown.hidden = true;
+                    views.push({ pose: step.pose, image: grabFrame() });
+                }
+            } finally {
+                captureCountdown.hidden = true;
+                isCapturing        = false;
+                enrollBtn.disabled = false;
+            }
+
+            capturedFrames = views;
+            capturedImage  = views[0].image;
+            capturedUid   = uid;
+            capturedName  = name;
+            capturedRole  = role;
+
+            capturePreview.src         = capturedImage;
+            capturePreview.hidden      = false;
+            captureStrip.querySelectorAll("img").forEach((img, i) => { img.src = views[i].image; });
+            captureStrip.hidden        = false;
+            previewPanel.hidden        = false;
+            enrollBtnLabel.textContent = "Capture Again";
+            setFaceStatus("ok", "3 photos captured", "Press Save User, or Retake");
+
+            statusMsg.innerText   = "Step 2: check the 3 photos, then press Save User.";
+            statusMsg.style.color = "var(--success)";
+        };
+
+        // --- Enroll — Step 2: Retake ---
+        retakeBtn.onclick = () => {
+            clearPreview();
+            setFaceStatus("idle", "Camera ready");
+            statusMsg.innerText   = "Ready — capture a new photo.";
+            statusMsg.style.color = "var(--muted)";
+        };
+
+        // --- Enroll — Step 3: Confirm and submit ---
+        confirmEnrollBtn.onclick = async () => {
+            if (!capturedImage) {
+                statusMsg.innerText   = "No photo captured yet.";
+                statusMsg.style.color = "var(--danger)";
+                return;
+            }
+
+            statusMsg.innerText   = "Checking and saving the 3 photos... this can take up to 20 seconds.";
+            confirmEnrollBtn.disabled = true;
+            statusMsg.style.color = "var(--amber)";
+
+            try {
+                const res  = await fetch("/enroll", {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify({
+                        id: capturedUid, name: capturedName, role: capturedRole, views: capturedFrames,
+                        gender: selectedGender(), gates: selectedGates()
+                    })
+                });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    statusMsg.innerText   = data.message;
+                    statusMsg.style.color = "var(--success)";
+                    idInput.value = nameInput.value = "";
+                    resetExtraFields();
+                    // Show the group the new user landed in
+                    setDbGroup(groupOfRole(capturedRole));
+                    clearPreview();
+                    setFaceStatus("idle", "Camera ready");
+                    loadUsers();
+                } else {
+                    statusMsg.innerText   = data.message;
+                    statusMsg.style.color = "var(--danger)";
+                }
+            } catch (e) {
+                statusMsg.innerText   = "Server Connection Failed";
+                statusMsg.style.color = "var(--danger)";
+            } finally {
+                confirmEnrollBtn.disabled = false;
+            }
+        };
+
+        // --- Users Table (real data from /users) ---
+        const PAGE_SIZE = 6;
+        const dbSummary = document.getElementById("dbSummary");
+        const dbMsg     = document.getElementById("dbMsg");
+        const dbPager   = document.getElementById("dbPager");
+        let   dbPage    = 1;
+
+        // Database tabs: students, employees (faculty + security) and 24-hour visitors
+        const DB_GROUPS = {
+            students:  { roles: ["student"],             noun: "students",  empty: "No students enrolled yet." },
+            employees: { roles: ["faculty", "security"], noun: "employees", empty: "No employees enrolled yet." },
+            visitors:  { roles: ["visitor"],             noun: "visitors",  empty: "No active visitors." }
+        };
+        const dbGroupTabs = document.getElementById("dbGroupTabs");
+        let   dbGroup     = "students";
+
+        function groupOfRole(role) {
+            return Object.keys(DB_GROUPS).find(g => DB_GROUPS[g].roles.includes(role)) || "students";
+        }
+
+        function setDbGroup(group) {
+            dbGroup = group;
+            dbPage  = 1;
+            dbGroupTabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.group === group)));
+            renderUsers();
+        }
+
+        dbGroupTabs.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-group]");
+            if (btn) setDbGroup(btn.dataset.group);
+        });
+
+        function setDbMessage(text, tone = "") {
+            dbMsg.textContent = text;
+            dbMsg.className   = `ag-db-msg${tone ? " is-" + tone : ""}`;
+        }
+
+        async function loadUsers() {
+            try {
+                const res   = await fetch("/users");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data  = await res.json();
+                allUsers    = data.users || [];
+                renderUsers();
+            } catch (e) {
+                tableContainer.innerHTML = '<div class="ag-empty">Could not load users.</div>';
+                dbSummary.textContent = "";
+                dbPager.innerHTML = "";
+            }
+        }
+
+        function formatGender(value) {
+            return value ? escapeHtml(value.charAt(0).toUpperCase() + value.slice(1)) : '<span class="ag-muted">—</span>';
+        }
+
+        function formatEnrolled(value) {
+            const date = value ? new Date(value) : null;
+            if (!date || isNaN(date)) return '<span class="ag-muted">—</span>';
+            return escapeHtml(date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }));
+        }
+
+        // "May 3, 14:30 · 5 hr left"
+        function formatExpiry(value) {
+            const date = value ? parseLocal(value) : null;
+            if (!date || isNaN(date)) return '<span class="ag-muted">—</span>';
+            const mins = Math.max(0, Math.round((date.getTime() - Date.now()) / 60000));
+            const left = mins >= 60 ? `${Math.floor(mins / 60)} hr left` : `${mins} min left`;
+            const when = date.toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+            return `${escapeHtml(when)} <span class="ag-muted">· ${left}</span>`;
+        }
+
+        function renderUsers() {
+            const groupUsers = {};
+            for (const g of Object.keys(DB_GROUPS)) {
+                groupUsers[g] = allUsers.filter(u => groupOfRole(u.role) === g);
+                dbGroupTabs.querySelector(`[data-count="${g}"]`).textContent = groupUsers[g].length;
+            }
+
+            const group     = DB_GROUPS[dbGroup];
+            const inGroup   = groupUsers[dbGroup];
+            const isVisitor = dbGroup === "visitors";
+            const query = userSearch.value.trim().toLowerCase();
+            const users = inGroup.filter(u =>
+                !query || [u.id, u.name, u.role, ROLE_LABELS[u.role], u.gender].some(v => String(v ?? "").toLowerCase().includes(query))
+            );
+
+            dbPager.innerHTML = "";
+            if (inGroup.length === 0 || users.length === 0) {
+                tableContainer.innerHTML = `<div class="ag-empty">${inGroup.length === 0 ? group.empty : "No users match your search."}</div>`;
+                dbSummary.textContent = inGroup.length ? `0 of ${inGroup.length} ${group.noun}` : "";
+                fitDashboard();
+                return;
+            }
+
+            const pages = Math.ceil(users.length / PAGE_SIZE);
+            dbPage = Math.min(Math.max(1, dbPage), pages);
+            const start = (dbPage - 1) * PAGE_SIZE;
+            const shown = users.slice(start, start + PAGE_SIZE);
+
+            const rows = shown.map(u => `
+                <tr>
+                    <td class="ag-td-id"><span class="ag-id-cell">${icon("id")}${escapeHtml(u.id)}</span></td>
+                    <td><span class="ag-person"><span class="ag-initials" style="background:${avatarColor(u.id)}">${escapeHtml(initials(u.name))}</span>${escapeHtml(u.name)}</span></td>
+                    <td>${escapeHtml(ROLE_LABELS[u.role] || u.role)}</td>
+                    <td>${formatGender(u.gender)}</td>
+                    <td>${isVisitor ? formatExpiry(u.expires_at) : formatEnrolled(u.enrolled_at)}</td>
+                    <td>${isMainAdmin()
+                        ? `<button class="ag-remove" type="button" data-id="${escapeHtml(u.id)}" data-name="${escapeHtml(u.name)}">${icon("trash")}Remove</button>`
+                        : '<span class="ag-muted">View only</span>'}</td>
+                </tr>`).join("");
+
+            tableContainer.innerHTML = `
+                <table class="ag-users">
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Role</th><th>Gender</th><th>${isVisitor ? "Access until" : "Enrolled"}</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>`;
+
+            dbSummary.textContent = `Showing ${start + 1}–${start + shown.length} of ${users.length} ${group.noun}`;
+
+            const pageButtons = Array.from({ length: pages }, (_, i) => i + 1).map(n =>
+                `<button type="button" data-page="${n}" ${n === dbPage ? 'aria-current="page"' : ""}>${n}</button>`
+            ).join("");
+            dbPager.innerHTML = `
+                <button type="button" data-page="${dbPage - 1}" aria-label="Previous page" ${dbPage === 1 ? "disabled" : ""}>${icon("chev-l")}</button>
+                ${pageButtons}
+                <button type="button" data-page="${dbPage + 1}" aria-label="Next page" ${dbPage === pages ? "disabled" : ""}>${icon("chev-r")}</button>`;
+            fitDashboard();
+        }
+
+        // Visitors are removed by the server when their 24 hours are up — keep the
+        // open list in step so they disappear (and countdowns update) without a reload
+        setInterval(() => {
+            if (activeTab === "database" && mainContent.style.display === "block" && !document.hidden) loadUsers();
+        }, 60000);
+
+        userSearch.addEventListener("input", () => { dbPage = 1; renderUsers(); });
+
+        dbPager.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-page]");
+            if (!btn || btn.disabled) return;
+            dbPage = Number(btn.dataset.page);
+            renderUsers();
+        });
+
+        tableContainer.addEventListener("click", (e) => {
+            const btn = e.target.closest(".ag-remove");
+            if (btn) askRemoveUser(btn.dataset.id, btn.dataset.name);
+        });
+
+        // --- Remove User modal ---
+        const removeModal      = document.getElementById("removeModal");
+        const removeText       = document.getElementById("removeText");
+        const removeConfirmBtn = document.getElementById("removeConfirmBtn");
+        let   pendingRemoval   = null;
+
+        function askRemoveUser(uid, name) {
+            pendingRemoval = { uid, name };
+            removeText.innerHTML = `Are you sure you want to remove <strong>${escapeHtml(name)}</strong> (${escapeHtml(uid)})? Their face data will be deleted.`;
+            removeModal.style.display = "flex";
+            document.getElementById("removeCancelBtn").focus();
+        }
+
+        function closeRemoveModal() {
+            pendingRemoval = null;
+            removeModal.style.display = "none";
+        }
+
+        document.getElementById("removeCancelBtn").onclick = closeRemoveModal;
+        document.getElementById("removeCloseBtn").onclick  = closeRemoveModal;
+        removeModal.addEventListener("click", (e) => { if (e.target === removeModal) closeRemoveModal(); });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && removeModal.style.display === "flex") closeRemoveModal();
+        });
+
+        removeConfirmBtn.onclick = async () => {
+            if (!pendingRemoval) return;
+            const { uid, name } = pendingRemoval;
+            removeConfirmBtn.disabled = true;
+            await deleteUser(uid, name);
+            removeConfirmBtn.disabled = false;
+            closeRemoveModal();
+        };
+
+        // --- Delete User ---
+        async function deleteUser(uid, name) {
+            try {
+                const res  = await fetch("/delete_user", {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify({ id: uid })
+                });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status === "success") {
+                    setDbMessage(`${name} (${uid}) removed.`, "success");
+                    loadUsers();
+                } else {
+                    setDbMessage(data.message || "Could not remove user.", "danger");
+                }
+            } catch (e) {
+                setDbMessage("Server connection failed.", "danger");
+            }
+        }
+
+        // ================================================
+        // ACCESS HOURS — when each role may enter (Lock Gates tab)
+        // Saved on the server as "HH:MM-HH:MM"; empty = any time.
+        // ================================================
+        const HOURS_ROLES   = { student: "Students", faculty: "Faculty", security: "Security", visitor: "Visitors" };
+        const hoursGrid     = document.getElementById("accessHoursGrid");
+        const hoursMsg      = document.getElementById("hoursMsg");
+        let accessHours     = null;
+
+        async function loadAccessHours() {
+            try {
+                const res = await fetch("/access-hours");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status === "success") { accessHours = data.hours; renderAccessHours(); }
+            } catch (e) { /* keep the last values */ }
+        }
+
+        function renderAccessHours() {
+            if (!accessHours) return;
+            const off = isMainAdmin() ? "" : "disabled";
+            hoursGrid.innerHTML = Object.entries(HOURS_ROLES).map(([role, label]) => {
+                const [from, to] = (accessHours[role] || "").split("-");
+                const anytime = !accessHours[role];
+                return `
+                    <div class="ag-hours-role ${anytime ? "is-anytime" : ""}" data-role="${role}">
+                        <strong>${label}</strong>
+                        <label class="ag-hours-any"><input type="checkbox" data-any ${anytime ? "checked" : ""} ${off}> Any time</label>
+                        <div class="ag-hours-times">
+                            <input class="ag-input" type="time" data-from value="${from || "06:00"}" aria-label="${label} from" ${off}>
+                            <span>to</span>
+                            <input class="ag-input" type="time" data-to value="${to || "22:00"}" aria-label="${label} until" ${off}>
+                        </div>
+                    </div>`;
+            }).join("");
+        }
+
+        hoursGrid.addEventListener("change", (e) => {
+            if (e.target.matches("[data-any]")) e.target.closest(".ag-hours-role").classList.toggle("is-anytime", e.target.checked);
+            hoursMsg.textContent = "";
+        });
+
+        // Clicking a faded time box means "set hours for this group": untick "Any time"
+        hoursGrid.addEventListener("focusin", (e) => {
+            const row = e.target.closest(".ag-hours-role");
+            if (!row || !e.target.matches("[data-from], [data-to]") || !row.classList.contains("is-anytime")) return;
+            row.querySelector("[data-any]").checked = false;
+            row.classList.remove("is-anytime");
+            hoursMsg.textContent = "";
+        });
+
+        document.getElementById("saveHoursBtn").onclick = async () => {
+            const hours = {};
+            hoursGrid.querySelectorAll(".ag-hours-role").forEach(row => {
+                const any = row.querySelector("[data-any]").checked;
+                hours[row.dataset.role] = any ? "" : `${row.querySelector("[data-from]").value}-${row.querySelector("[data-to]").value}`;
+            });
+            try {
+                const res = await fetch("/access-hours", {
+                    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ hours })
+                });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                if (data.status === "success") {
+                    accessHours = data.hours;
+                    renderAccessHours();
+                    hoursMsg.textContent = "Access hours saved";
+                    hoursMsg.className   = "ag-db-msg is-success";
+                } else {
+                    hoursMsg.textContent = data.message || "Could not save the hours.";
+                    hoursMsg.className   = "ag-db-msg is-danger";
+                }
+            } catch (e) {
+                hoursMsg.textContent = "Server connection failed.";
+                hoursMsg.className   = "ag-db-msg is-danger";
+            }
+        };
+
+        // ================================================
+        // ACCOUNTS + AUDIT LOG (main admin only)
+        // ================================================
+        const accountList  = document.getElementById("accountList");
+        const accountMsg   = document.getElementById("accountMsg");
+        const addAccountForm = document.getElementById("addAccountForm");
+        let accounts = [], maxViewers = 2, myAccountId = null;
+
+        function setAccountMsg(text, ok) {
+            accountMsg.textContent = text || "";
+            accountMsg.className   = `ag-db-msg ag-account-msg ${text ? (ok ? "is-success" : "is-danger") : ""}`;
+        }
+
+        async function accountRequest(url, body) {
+            const res = await fetch(url, body === undefined ? {} : {
+                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body)
+            });
+            if (res.status === 401) { handleUnauthorized(); return null; }
+            return res.json();
+        }
+
+        async function loadAccounts() {
+            try {
+                const data = await accountRequest("/admins");
+                if (data?.status === "success") {
+                    accounts = data.accounts; maxViewers = data.max_viewers; myAccountId = data.me;
+                    renderAccounts();
+                }
+            } catch (e) { setAccountMsg("Could not load the accounts.", false); }
+        }
+
+        function renderAccounts() {
+            accountList.innerHTML = accounts.map(a => {
+                const main = a.role === "main";
+                const last = a.last_login ? `Last login ${timeAgo(a.last_login)}` : "Never logged in";
+                return `
+                    <li class="ag-account-row">
+                        <span class="ag-initials" style="background:${main ? "var(--ag-navy)" : avatarColor(a.username)}">${escapeHtml(a.username[0].toUpperCase())}</span>
+                        <div class="ag-account-body">
+                            <strong>${escapeHtml(a.username)}${a.id === myAccountId ? ' <span class="ag-you">you</span>' : ""}</strong>
+                            <span>${main ? "Main admin · full control" : "View-only admin"} · ${escapeHtml(last)}</span>
+                        </div>
+                        <div class="ag-account-actions">
+                            <button class="ag-btn ag-btn-outline ag-btn-sm" type="button" data-pw="${a.id}">Change password</button>
+                            ${main ? "" : `<button class="ag-remove" type="button" data-remove-account="${a.id}">${icon("trash")}Remove</button>`}
+                        </div>
+                    </li>`;
+            }).join("");
+            const viewers = accounts.filter(a => a.role === "viewer").length;
+            addAccountForm.hidden = viewers >= maxViewers;
+        }
+
+        addAccountForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = document.getElementById("newAccountUser").value.trim();
+            const password = document.getElementById("newAccountPass").value;
+            const data = await accountRequest("/admins", { username, password });
+            if (!data) return;
+            setAccountMsg(data.message, data.status === "success");
+            if (data.status === "success") {
+                accounts = data.accounts;
+                addAccountForm.reset();
+                renderAccounts();
+                loadAudit(1);
+            }
+        });
+
+        // Remove: press once, then press "Confirm remove" within 4 seconds
+        accountList.addEventListener("click", async (e) => {
+            const pw = e.target.closest("[data-pw]");
+            if (pw) { openPasswordModal(Number(pw.dataset.pw)); return; }
+            const rm = e.target.closest("[data-remove-account]");
+            if (!rm) return;
+            if (!rm.classList.contains("is-confirm")) {
+                rm.classList.add("is-confirm");
+                rm.innerHTML = `${icon("trash")}Confirm remove`;
+                setTimeout(() => { if (rm.isConnected) { rm.classList.remove("is-confirm"); rm.innerHTML = `${icon("trash")}Remove`; } }, 4000);
+                return;
+            }
+            const data = await accountRequest(`/admins/${rm.dataset.removeAccount}/delete`, {});
+            if (!data) return;
+            setAccountMsg(data.message, data.status === "success");
+            if (data.status === "success") { accounts = data.accounts; renderAccounts(); loadAudit(1); }
+        });
+
+        // --- Change password modal ---
+        const passwordModal = document.getElementById("passwordModal");
+        const pwCurrent     = document.getElementById("pwCurrent");
+        const pwNew         = document.getElementById("pwNew");
+        const pwError       = document.getElementById("pwError");
+        let pwAccountId     = null;
+
+        function openPasswordModal(id) {
+            const a = accounts.find(x => x.id === id);
+            if (!a) return;
+            pwAccountId = id;
+            const own = id === myAccountId;
+            document.getElementById("passwordModalText").textContent = own
+                ? "Your own password: enter the current one first."
+                : `New password for "${a.username}". They will be logged out and use the new password next time.`;
+            pwCurrent.hidden = !own;
+            pwCurrent.value = pwNew.value = pwError.textContent = "";
+            passwordModal.style.display = "flex";
+            (own ? pwCurrent : pwNew).focus();
+        }
+
+        function closePasswordModal() { passwordModal.style.display = "none"; }
+        document.getElementById("passwordModalClose").onclick  = closePasswordModal;
+        document.getElementById("passwordModalCancel").onclick = closePasswordModal;
+        passwordModal.addEventListener("click", (e) => { if (e.target === passwordModal) closePasswordModal(); });
+
+        document.getElementById("passwordForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const data = await accountRequest(`/admins/${pwAccountId}/password`, { current: pwCurrent.value, password: pwNew.value });
+            if (!data) return;
+            if (data.status === "success") {
+                closePasswordModal();
+                setAccountMsg(data.message, true);
+                loadAudit(1);
+            } else {
+                pwError.textContent = data.message || "Could not change the password.";
+            }
+        });
+
+        // --- Audit log ---
+        const auditBody  = document.getElementById("auditBody");
+        const auditPager = document.getElementById("auditPager");
+
+        async function loadAudit(page = 1) {
+            try {
+                const data = await accountRequest(`/audit?page=${page}`);
+                if (data?.status !== "success") return;
+                auditBody.innerHTML = data.entries.length ? data.entries.map(x => {
+                    const at = parseLocal(x.at.replace(" ", "T"));
+                    const bad = /failed|lockdown on|removed/i.test(x.action);
+                    return `
+                        <tr>
+                            <td class="ag-td-id">${escapeHtml(at.toLocaleDateString("en-US", { month: "short", day: "numeric" }))} ${escapeHtml(at.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }))}</td>
+                            <td>${escapeHtml(x.username || "-")}</td>
+                            <td><span class="ag-dot-label ${bad ? "is-red" : "is-green"}"><i></i>${escapeHtml(x.action)}</span></td>
+                            <td class="ag-audit-detail" title="${escapeHtml(x.detail || "")}">${escapeHtml(x.detail || "")}</td>
+                        </tr>`;
+                }).join("") : `<tr><td colspan="4" class="ag-td-empty">Nothing recorded yet</td></tr>`;
+                const first = data.total ? (data.page - 1) * data.per_page + 1 : 0;
+                document.getElementById("auditSummary").textContent =
+                    data.total ? `Showing ${first}–${first + data.entries.length - 1} of ${data.total} entries` : "";
+                const pages = [];
+                for (let n = 1; n <= data.pages; n++) {
+                    if (n === 1 || n === data.pages || Math.abs(n - data.page) <= 1) pages.push(n);
+                    else if (pages[pages.length - 1] !== "…") pages.push("…");
+                }
+                auditPager.innerHTML = data.pages <= 1 ? "" : `
+                    <button type="button" data-apage="${data.page - 1}" aria-label="Previous page" ${data.page === 1 ? "disabled" : ""}>${icon("chev-l")}</button>
+                    ${pages.map(n => n === "…" ? `<span class="ag-pager-gap">…</span>`
+                        : `<button type="button" data-apage="${n}" ${n === data.page ? 'aria-current="page"' : ""}>${n}</button>`).join("")}
+                    <button type="button" data-apage="${data.page + 1}" aria-label="Next page" ${data.page === data.pages ? "disabled" : ""}>${icon("chev-r")}</button>`;
+                fitDashboard();
+            } catch (e) {
+                auditBody.innerHTML = `<tr><td colspan="4" class="ag-td-empty">Could not load the audit log.</td></tr>`;
+            }
+        }
+
+        auditPager.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-apage]");
+            if (btn && !btn.disabled) loadAudit(Number(btn.dataset.apage));
+        });
+
+        // ================================================
+        // ASSISTANT (chatbot)
+        // Live numbers come from the database; how-to answers come from a
+        // small model running locally. Nothing leaves this machine.
+        // ================================================
+        const chatLauncher = document.getElementById("chatLauncher");
+        const chatPanel    = document.getElementById("chatPanel");
+        const chatLog      = document.getElementById("chatLog");
+        const chatForm     = document.getElementById("chatForm");
+        const chatInput    = document.getElementById("chatInput");
+        const chatSend     = document.getElementById("chatSend");
+        const chatState    = document.getElementById("chatState");
+        let   chatBusy     = false;
+
+        function setChatOpen(open) {
+            chatPanel.hidden = !open;
+            chatLauncher.setAttribute("aria-expanded", String(open));
+            if (open) { chatInput.focus(); refreshChatState(); }
+        }
+
+        async function refreshChatState() {
+            try {
+                const res  = await fetch("/chat/status");
+                if (res.status === 401) { handleUnauthorized(); return; }
+                const data = await res.json();
+                chatState.textContent = {
+                    ready:       "Runs on this machine",
+                    loading:     "Help model loading… live questions work now",
+                    unavailable: "Help model offline · live questions only"
+                }[data.state] || "Runs on this machine";
+            } catch (e) { /* keep last state */ }
+        }
+
+        function addChatMessage(text, who) {
+            const p = document.createElement("p");
+            p.className   = `ag-msg is-${who}`;
+            p.textContent = text;          // textContent, never innerHTML: answers may contain names
+            chatLog.appendChild(p);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            return p;
+        }
+
+        async function askChat(question) {
+            question = question.trim();
+            if (!question || chatBusy) return;
+            chatBusy = true;
+            chatSend.disabled = true;
+            document.getElementById("chatChips")?.remove();
+            addChatMessage(question, "user");
+            const pending = addChatMessage("Thinking…", "bot");
+            pending.classList.add("is-pending");
+            try {
+                const res  = await fetch("/chat", {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify({ message: question }),
+                    signal:  AbortSignal.timeout(90000)
+                });
+                if (res.status === 401) { handleUnauthorized(); return; }
+                if (res.status === 429) { pending.textContent = "Too many questions at once. Wait a moment and try again."; return; }
+                const data = await res.json();
+                pending.textContent = data.answer || data.message || "Sorry, no answer.";
+                if (data.source === "data") pending.classList.add("is-data");
+            } catch (e) {
+                pending.textContent = e.name === "TimeoutError"
+                    ? "This is taking too long. Please try again in a moment."
+                    : "Server connection failed.";
+            } finally {
+                pending.classList.remove("is-pending");
+                chatLog.scrollTop = chatLog.scrollHeight;
+                chatBusy = false;
+                chatSend.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        chatLauncher.onclick = () => setChatOpen(chatPanel.hidden);
+        document.getElementById("chatClose").onclick = () => setChatOpen(false);
+        chatForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const q = chatInput.value;
+            chatInput.value = "";
+            askChat(q);
+        });
+        chatLog.addEventListener("click", (e) => {
+            const chip = e.target.closest(".ag-chat-chips button");
+            if (chip) askChat(chip.textContent);
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !chatPanel.hidden) setChatOpen(false);
+        });
+
+        // ================================================
+        // START — show the portal at once if already logged in on this tab,
+        // then confirm with the server
+        // ================================================
+        if (hasAuthFlag()) showAdminContent();
+        checkExistingSession();
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+    <title>AmanGate - Gate Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <!-- Spoken scanning instructions (optional, browser voice — no internet needed) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='audio-only.css') }}">
+    <script src="{{ url_for('static', filename='audio-only.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <!-- Header polish (gate icon, theme button) and page slide transitions -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='ui-polish.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='page-transitions.css') }}">
+    <script src="{{ url_for('static', filename='page-transitions.js') }}" defer></script>
+</head>
+<!-- Portrait iPad kiosk: header · welcome + clock · square camera · status · button · person info -->
+<body class="admin-page terminal-page">
+
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <!-- AmanGate logo mark: corner brackets + face (colours from --logo-ink / --logo-red, so dark mode can swap them) -->
+        <symbol id="i-logo" viewBox="14 14 72 72">
+            <path d="M20.3 39.7 39.7 20.3M60.3 79.7 79.7 60.3" style="fill:none;stroke:var(--logo-red,#DC3A3A);stroke-width:8"/>
+            <path d="M60.3 20.3 79.7 39.7M20.3 60.3 39.7 79.7" style="fill:none;stroke:var(--logo-ink,#13171F);stroke-width:8"/>
+            <circle cx="44.2" cy="45" r="3.6" style="fill:var(--logo-ink,#13171F);stroke:none"/>
+            <circle cx="55.8" cy="45" r="3.6" style="fill:var(--logo-ink,#13171F);stroke:none"/>
+            <path d="M50 46.6V54.6H46.9" style="fill:none;stroke:var(--logo-ink,#13171F);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round"/>
+            <path d="M43.6 61.2Q50 66.6 56.4 61.2" style="fill:none;stroke:var(--logo-red,#DC3A3A);stroke-width:2.8;stroke-linecap:round"/>
+        </symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    </svg>
+
+    <main class="gt-app">
+
+        <header class="gt-header">
+            <div class="gt-brand">
+                <div class="gt-logo ag-logo" aria-hidden="true"><svg class="ag-mark"><use href="#i-logo"/></svg></div>
+                <div>
+                    <strong>Aman<em>Gate</em></strong>
+                    <span>University Access Control</span>
+                </div>
+            </div>
+            <!-- Which gate this terminal is. Set once per iPad (remembered), or with ?gate=female in the link -->
+            <label class="gt-gate-chip" title="Choose which gate this terminal is">
+                <svg class="ui-icon gate-picker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-3 8 3v16M4 9h16M8 8v13M12 7v14M16 8v13M2 21h20"/></svg>
+                <i id="statusDot" aria-hidden="true"></i>
+                <select id="gateSelect" class="gt-gate-select" aria-label="This terminal's gate">
+                    <option value="main">Main Gate</option>
+                    <option value="male">Male Gate</option>
+                    <option value="female">Female Gate</option>
+                    <option value="vehicle">Vehicle Gate</option>
+                </select>
+                <span>· <b id="terminalClock">Online</b></span>
+            </label>
+            <button class="gt-theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="ui-icon theme-moon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14a8 8 0 0 1-10-10A8.5 8.5 0 1 0 20 14Z"/></svg><svg class="ui-icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button>
+        </header>
+
+        <section class="gt-hero">
+            <div>
+                <h1 class="gt-title">Welcome to campus</h1>
+                <p class="gt-sub">Look at the camera to enter. Safe. Smart. Secure.</p>
+            </div>
+            <div class="gt-time" aria-hidden="true">
+                <span id="gtTime">--:--</span>
+                <span id="gtDate"></span>
+            </div>
+        </section>
+
+        <section class="gt-camera-wrap" aria-label="Face scan camera">
+            <div class="camera-container gt-camera">
+                <em id="livePill">Standby</em>
+                <video id="video" autoplay playsinline muted></video>
+                <div class="face-frame" aria-hidden="true"></div>
+                <div class="scan-line" aria-hidden="true"></div>
+                <p id="cameraMessage" class="camera-message">Center your face</p>
+            </div>
+        </section>
+
+        <!-- .access-card gets status-success / -danger / -warning from script.js -->
+        <section class="gt-card gt-status access-card" aria-label="Access status">
+            <span class="gt-status-icon" aria-hidden="true">
+                <svg class="ag-i is-idle"><use href="#i-camera"/></svg>
+                <svg class="ag-i is-success"><use href="#i-check"/></svg>
+                <svg class="ag-i is-danger"><use href="#i-x"/></svg>
+                <svg class="ag-i is-warning"><use href="#i-alert"/></svg>
+            </span>
+            <div class="result" role="status" aria-live="polite">
+                <span class="gt-label">Access status</span>
+                <p id="result-text">System ready</p>
+                <p id="status">Click "Open Camera" to start</p>
+            </div>
+        </section>
+
+        <button id="cameraBtn" class="gt-camera-btn" type="button">Open Camera</button>
+        <section class="ag-audio-only" aria-label="Audio guidance"><button id="audioOnlyToggle" type="button" aria-pressed="false">Enable audio guidance</button><p id="audioOnlyCaption">Optional spoken scanning instructions.</p></section>
+
+        <section class="gt-card gt-info" aria-label="Person info">
+            <dl>
+                <div>
+                    <dt>Access type</dt>
+                    <dd id="detailAccessType">Students, Staff &amp; Faculty</dd>
+                </div>
+                <div>
+                    <dt>Person name</dt>
+                    <dd id="detailPersonName">Not verified yet</dd>
+                </div>
+                <div>
+                    <dt>Gate action</dt>
+                    <dd id="detailGateAction">Waiting</dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd id="detailStatus">Standby</dd>
+                </div>
+            </dl>
+        </section>
+    </main>
+
+    <script>
+        // Live clock in the welcome row
+        (function () {
+            const time = document.getElementById("gtTime");
+            const date = document.getElementById("gtDate");
+            function tick() {
+                const now = new Date();
+                time.textContent = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+                date.textContent = now.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+            }
+            tick();
+            setInterval(tick, 10000);
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- AmanGate logo mark (browser tab icon): white rounded tile, corner brackets + face -->
+  <rect x="2" y="2" width="96" height="96" rx="22" fill="#FFFFFF" stroke="#D9DCE3" stroke-width="2"/>
+  <g transform="translate(50 50) scale(1.22) translate(-50 -50)">
+    <path d="M20.3 39.7 39.7 20.3M60.3 79.7 79.7 60.3" fill="none" stroke="#DC3A3A" stroke-width="8"/>
+    <path d="M60.3 20.3 79.7 39.7M20.3 60.3 39.7 79.7" fill="none" stroke="#13171F" stroke-width="8"/>
+    <circle cx="44.2" cy="45" r="3.8" fill="#13171F"/>
+    <circle cx="55.8" cy="45" r="3.8" fill="#13171F"/>
+    <path d="M50 46.6V54.6H46.9" fill="none" stroke="#13171F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M43.6 61.2Q50 66.6 56.4 61.2" fill="none" stroke="#DC3A3A" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+/* Consistent navigation motion; no page/surface background changes. */
+@view-transition { navigation: auto; }
+::view-transition-old(root){animation:portal-page-out 240ms cubic-bezier(.2,.7,.2,1) both}
+::view-transition-new(root){animation:portal-page-in 280ms cubic-bezier(.2,.7,.2,1) both}
+::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation-duration:280ms;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+.gt-header{view-transition-name:ag-header}
+@keyframes portal-page-out{to{opacity:0;transform:translateX(-16px)}}
+@keyframes portal-page-in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+/* Match the existing Dashboard selected pill, only for Analytics in light mode. */
+html:not([data-theme="dark"]) .system-page .literal-header .ag-nav-link.is-active[href="/system"]{background:#fbebc8;color:#10182c}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
