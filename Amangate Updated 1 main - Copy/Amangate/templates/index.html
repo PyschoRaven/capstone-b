@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AmanGate - Gate Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='audio-only.css') }}">
+    <script src="{{ url_for('static', filename='audio-only.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='ui-polish.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='page-transitions.css') }}">
+<script src="{{ url_for('static', filename='page-transitions.js') }}" defer></script>
+<style id="photo-dashboard-details">
+.theme-moon{fill:currentColor!important}.campus-avatar,.review-avatar{overflow:hidden}.campus-avatar img,.review-avatar img{width:100%;height:100%;object-fit:cover;display:block}.scan-photo-missing{display:grid;place-items:center;width:100%;height:100%;font-size:9px;line-height:1.15;text-align:center;padding:3px;box-sizing:border-box}.literal-screen .campus-metrics{grid-template-columns:repeat(5,minmax(0,1fr))}.literal-screen .campus-metrics article{display:grid;grid-template-columns:56px minmax(0,1fr) 24px;gap:12px;align-items:center;padding:20px 16px;min-height:145px}.literal-screen .campus-metrics .metric-art{order:0;width:56px;height:56px;margin:0}.literal-screen .campus-metrics article>div{order:0;min-width:0}.literal-screen .campus-metrics article>div>span{font-size:15px;line-height:20px}.literal-screen .campus-metrics strong{font-size:38px;line-height:44px}.literal-screen .literal-metric-tail{position:static;display:grid;place-items:center;order:0;width:24px;height:28px;margin:0}.literal-screen .literal-metric-tail svg{width:26px;height:26px}.literal-screen .metric-foot{grid-column:1/-1;margin:4px 0 0;font-size:12px;line-height:18px}.literal-screen .campus-hero h1{font-size:44px;line-height:1.15}.literal-screen .campus-card h2{font-size:24px}.literal-screen .campus-recent-row strong{font-size:16px}.literal-screen .campus-avatar{width:52px;height:56px;border-radius:14px}.literal-screen .campus-gate-tile{height:auto!important;align-self:start}.literal-screen .campus-gate-tiles{align-items:start}.literal-screen .campus-active-alerts{margin-top:24px}.campus-active-alerts ul{list-style:none;margin:0;padding:0}.campus-active-alerts li{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid #8883}.campus-active-alerts li:last-child{border:0}.campus-active-alerts li>i{width:12px;height:12px;border-radius:50%;background:#e84c4c;margin-top:5px;flex-shrink:0}.campus-active-alerts li>i.yellow{background:#f8c74d}.campus-active-alerts li strong,.campus-active-alerts li small{display:block}.campus-active-alerts li small{margin-top:5px}.literal-screen #security-review .review-metric-arrow{display:grid!important;place-items:center;border:0;cursor:pointer;flex-shrink:0}.literal-screen #security-review .metric>div>span{font-size:16px}.literal-screen #security-review .event-person strong{font-size:16px}.literal-screen #security-review .review-toolbar button{font-size:14px}.gt-logo.gt-admin-logo{background:transparent;padding:0}.gt-admin-logo svg{width:100%;height:100%;display:block}
+@media(max-width:1150px){.literal-screen .campus-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.literal-screen .campus-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.literal-screen .campus-hero h1{font-size:32px}.literal-screen .campus-metrics article{grid-template-columns:42px minmax(0,1fr);padding:14px}.literal-screen .campus-metrics .metric-art{width:42px;height:42px}.literal-screen .literal-metric-tail{display:none}}@media(max-width:390px){.literal-screen .campus-metrics{grid-template-columns:1fr}}
+</style>
+<style id="final-stat-logo-fix">
+.literal-screen .campus-metrics article .metric-art{display:block!important;width:56px!important;height:56px!important;padding:0!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:50%!important;overflow:visible!important;mix-blend-mode:normal!important}
+.literal-screen .campus-metrics article .metric-foot.ag-stat-foot{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-end!important;gap:8px!important;grid-column:1/-1!important;width:100%!important;min-width:0!important;padding:0!important;margin:8px 0 0!important;min-height:48px!important}
+.literal-screen .campus-metrics article .metric-foot .stat-share{display:block!important;white-space:nowrap!important;font-size:12px!important;line-height:16px!important;color:var(--ag-muted)!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;min-height:22px!important;font-size:13px!important;line-height:18px!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row .ag-up-green{color:#1FA35B!important;display:inline-flex!important;align-items:center!important;gap:4px!important;font-size:13px!important;white-space:nowrap!important;flex:0 0 auto!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row .ag-up-red{color:#E04848!important;display:inline-flex!important;align-items:center!important;gap:4px!important;font-size:13px!important;white-space:nowrap!important;flex:0 0 auto!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-note{color:var(--ag-muted)!important;font-size:13px!important;line-height:18px!important;max-width:none!important;white-space:normal!important}
+.literal-screen .campus-metrics article .metric-foot .ag-i{display:block!important;width:15px!important;height:15px!important;stroke:currentColor!important;fill:none!important;color:inherit!important;flex-shrink:0!important}
+.literal-logo,.gt-logo.gt-admin-logo{clip-path:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;display:grid!important;place-items:center!important;width:44px!important;height:44px!important;flex-shrink:0!important}.amangate-brand-logo{display:block;width:100%;height:100%;object-fit:contain}.amangate-brand-logo.logo-dark{display:none}html[data-theme="dark"] .amangate-brand-logo.logo-light{display:none}html[data-theme="dark"] .amangate-brand-logo.logo-dark{display:block}
+@media(max-width:700px){.literal-screen .campus-metrics article .metric-art{width:42px!important;height:42px!important}.literal-screen .campus-metrics article .metric-foot .stat-detail-row{gap:5px!important}}
+</style><style id="admin-matched-terminal-bg">body.terminal-page{background:radial-gradient(ellipse at 50% 0%,#fffaf355,transparent 65%),#f5efe4!important}html[data-theme="dark"] body.terminal-page{background:#101216!important}</style><link rel="stylesheet" href="/static/account-menu.css?v=20261029">
+<script src="/static/account-menu.js?v=position-fix-20261029" defer></script>
+<link rel="stylesheet" href="/static/enrollment-audio-dropdowns.css?v=20261029">
+<script src="/static/gate-dropdown.js?v=20261029" defer></script>
+</head>
+<!-- Portrait iPad kiosk: header · welcome + clock · square camera · status · button · person info -->
+<body class="admin-page terminal-page">
+
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    </svg>
+
+    <main class="gt-app">
+
+        <header class="gt-header">
+            <div class="gt-brand">
+                <div class="gt-logo gt-admin-logo" aria-hidden="true"><img class="amangate-brand-logo logo-light" src="/static/art/amangate-logo.svg?v=20261029" alt=""><img class="amangate-brand-logo logo-dark" src="/static/art/amangate-logo-dark.svg?v=20261029" alt=""></div>
+                <div>
+                    <strong>AmanGate</strong>
+                    <span>University Access Control</span>
+                </div>
+            </div>
+            <!-- Which gate this terminal is. Set once per iPad (remembered), or with ?gate=female in the link -->
+            <label class="gt-gate-chip" title="Choose which gate this terminal is">
+                <svg class="ui-icon gate-picker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-3 8 3v16M4 9h16M8 8v13M12 7v14M16 8v13M2 21h20"/></svg>
+                <i id="statusDot" aria-hidden="true"></i>
+                <select id="gateSelect" class="gt-gate-select" aria-label="This terminal's gate">
+                    <option value="main">Main Gate</option>
+                    <option value="male">Male Gate</option>
+                    <option value="female">Female Gate</option>
+                    <option value="vehicle">Vehicle Gate</option>
+                </select>
+                <span>· <b id="terminalClock">Online</b></span>
+            </label>
+            <button class="gt-theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="ui-icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14a8 8 0 0 1-10-10A8.5 8.5 0 1 0 20 14Z"/></svg><svg class="ui-icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button>
+        </header>
+
+        <section class="gt-hero">
+            <div>
+                <h1 class="gt-title">Welcome to campus</h1>
+                <p class="gt-sub">Look at the camera to enter. Safe. Smart. Secure.</p>
+            </div>
+            <div class="gt-time" aria-hidden="true">
+                <span id="gtTime">--:--</span>
+                <span id="gtDate"></span>
+            </div>
+        </section>
+
+        <section class="gt-camera-wrap" aria-label="Face scan camera">
+            <div class="camera-container gt-camera">
+                <em id="livePill">Standby</em>
+                <video id="video" autoplay playsinline muted></video>
+                <div class="face-frame" aria-hidden="true"></div>
+                <div class="scan-line" aria-hidden="true"></div>
+                <p id="cameraMessage" class="camera-message">Center your face</p>
+            </div>
+        </section>
+
+        <!-- .access-card gets status-success / -danger / -warning from script.js -->
+        <section class="gt-card gt-status access-card" aria-label="Access status">
+            <span class="gt-status-icon" aria-hidden="true">
+                <svg class="ag-i is-idle"><use href="#i-camera"/></svg>
+                <svg class="ag-i is-success"><use href="#i-check"/></svg>
+                <svg class="ag-i is-danger"><use href="#i-x"/></svg>
+                <svg class="ag-i is-warning"><use href="#i-alert"/></svg>
+            </span>
+            <div class="result" role="status" aria-live="polite">
+                <span class="gt-label">Access status</span>
+                <p id="result-text">System ready</p>
+                <p id="status">Click "Open Camera" to start</p>
+            </div>
+        </section>
+
+        <button id="cameraBtn" class="gt-camera-btn" type="button">Open Camera</button>
+        <section class="ag-audio-only" aria-label="Audio guidance"><button id="audioOnlyToggle" type="button" aria-pressed="false">Enable audio guidance</button><p id="audioOnlyCaption">Optional spoken scanning instructions.</p></section>
+
+        <section class="gt-card gt-info" aria-label="Person info">
+            <dl>
+                <div>
+                    <dt>Access type</dt>
+                    <dd id="detailAccessType">Students, Staff &amp; Faculty</dd>
+                </div>
+                <div>
+                    <dt>Person name</dt>
+                    <dd id="detailPersonName">Not verified yet</dd>
+                </div>
+                <div>
+                    <dt>Gate action</dt>
+                    <dd id="detailGateAction">Waiting</dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd id="detailStatus">Standby</dd>
+                </div>
+            </dl>
+        </section>
+    </main>
+
+    <script>
+        // Live clock in the welcome row
+        (function () {
+            const time = document.getElementById("gtTime");
+            const date = document.getElementById("gtDate");
+            function tick() {
+                const now = new Date();
+                time.textContent = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+                date.textContent = now.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+            }
+            tick();
+            setInterval(tick, 10000);
+        })();
+    </script>
+</body>
+</html>

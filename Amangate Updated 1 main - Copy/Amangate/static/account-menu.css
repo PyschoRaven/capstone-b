@@ -1,0 +1,12 @@
+/* Popovers are in the browser top layer, above cards and charts. */
+.account-popover{position:fixed!important;inset:auto!important;margin:0!important;max-height:calc(100vh - 24px);overflow:auto!important;box-sizing:border-box;background:var(--ag-card,#fcf8ef)!important;color:var(--ag-text,#10182c)!important;border:1px solid var(--ag-border,#e8dfd0)!important;border-radius:16px;padding:8px!important;box-shadow:0 14px 40px #0003!important;z-index:2147483647!important}.account-popover:not(:popover-open){display:none!important}.account-popover:popover-open{display:grid!important;gap:4px}.account-popover>a,.account-popover>button{display:block!important;width:100%;text-align:left;color:inherit!important;text-decoration:none!important;background:transparent;border:0;border-radius:10px;padding:11px 14px;font:inherit;font-size:14px;cursor:pointer}.account-popover>a:hover,.account-popover>button:hover{background:var(--ag-soft,#f3eadb)!important}
+.literal-screen .campus-metrics article>.literal-metric-tail{position:absolute!important;inset:auto 18px auto auto!important;top:50%!important;transform:translateY(-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;width:28px!important;height:32px!important;grid-row:auto!important;grid-column:auto!important}
+html[data-theme="light"] body.terminal-page .gt-gate-select{color:#10182c!important;background-color:#fcf8ef!important;color-scheme:light}html[data-theme="light"] body.terminal-page .gt-gate-select option{color:#10182c!important;background:#fcf8ef!important}html[data-theme="dark"] body.terminal-page .gt-gate-select{color:#f1ede5!important;background-color:#1a1d24!important;color-scheme:dark}html[data-theme="dark"] body.terminal-page .gt-gate-select option{color:#f1ede5!important;background:#1a1d24!important}
+@media(max-width:700px){.literal-screen .campus-metrics article>.literal-metric-tail{display:none!important}}
+
+/* Right-side icons follow the center of the number line. */
+.literal-screen .campus-metrics article>.literal-metric-tail{top:var(--metric-number-center,60px)!important;transform:translateY(-50%)!important}
+
+/* Shared hover feedback for Analytics links and the other navigation tabs. */
+.literal-header .ag-nav :is(.literal-nav-link,.ag-nav-link):not(.is-active):hover{background:var(--ag-soft)!important;color:var(--ag-text)!important}
+.literal-header .ag-nav :is(.literal-nav-link,.ag-nav-link):focus-visible{outline:2px solid var(--ag-tan,#c9a06a);outline-offset:2px}

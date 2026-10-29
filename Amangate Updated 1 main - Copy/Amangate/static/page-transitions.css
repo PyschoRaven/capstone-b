@@ -1,0 +1,30 @@
+/* Consistent navigation motion; no page/surface background changes. */
+@view-transition { navigation: auto; }
+::view-transition-old(root){animation:portal-page-out 240ms cubic-bezier(.2,.7,.2,1) both}
+::view-transition-new(root){animation:portal-page-in 280ms cubic-bezier(.2,.7,.2,1) both}
+::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation-duration:280ms;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+.gt-header{view-transition-name:ag-header}
+@keyframes portal-page-out{to{opacity:0;transform:translateX(-16px)}}
+@keyframes portal-page-in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+/* Match the existing Dashboard selected pill, only for Analytics in light mode. */
+html:not([data-theme="dark"]) .system-page .literal-header .ag-nav-link.is-active[href="/system"]{background:#fbebc8;color:#10182c}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* Shared button feedback across the terminal, admin and analytics pages. */
+body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]){transition:background-color .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease,filter .18s ease,translate .18s ease!important}
+@media(hover:hover){
+ body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]):not(:disabled):not([aria-disabled="true"]):hover{translate:0 -2px;filter:brightness(1.06)!important;box-shadow:0 6px 14px #0002!important}
+ html[data-theme="dark"] body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]):not(:disabled):not([aria-disabled="true"]):hover{box-shadow:0 6px 16px #0005!important}
+ /* This button already has the same lift in its local style. */
+ body .account-form-actions .admin-return-link:hover{translate:0 0}
+}
+body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]):not(:disabled):not([aria-disabled="true"]):active{translate:0 0;box-shadow:0 1px 3px #0002!important}
+body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]):focus-visible{outline:2px solid var(--ag-tan,#c9a06a);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){body :is(button,a.ag-btn,a.literal-nav-link,a.ag-nav-link,a.review-back,summary.ag-avatar,[role="button"]){transition:none!important;translate:none!important}}
+
+/* Keep the floating chat launcher's hit area stable while hovering. */
+body :is(.ag-chat-launcher,.ag-chat-fab,.reference-chat-toggle),body :is(.ag-chat-launcher,.ag-chat-fab,.reference-chat-toggle):hover,body :is(.ag-chat-launcher,.ag-chat-fab,.reference-chat-toggle):active{translate:none!important;transform:none!important}
+/* Gate Terminal is a clear text button without a background. */
+.literal-header .ag-header-actions>a.ag-link-muted[href="/"],.literal-header .ag-header-actions>a.ag-link-muted[href="/"]:visited{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:38px;padding:8px 12px!important;border:1px solid var(--ag-border)!important;border-radius:12px!important;background:transparent!important;color:var(--ag-text)!important;text-decoration:none!important;font-size:13px!important;font-weight:700!important;line-height:20px;cursor:pointer;transition:color .18s ease,border-color .18s ease!important}
+.literal-header .ag-header-actions>a.ag-link-muted[href="/"]:hover{background:transparent!important;color:var(--ag-tan,#c9a06a)!important;border-color:var(--ag-tan,#c9a06a)!important;text-decoration:none!important}
+.literal-header .ag-header-actions>a.ag-link-muted[href="/"]:focus-visible{outline:2px solid var(--ag-tan,#c9a06a);outline-offset:3px}

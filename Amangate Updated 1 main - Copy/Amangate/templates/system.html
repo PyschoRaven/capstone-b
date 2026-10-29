@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmanGate - System Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='system.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='view-switch.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='security-review.css') }}">
+    <script src="{{ url_for('static', filename='security-review.js') }}?v=filled-details-20261029" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='reference-ui.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='screenshot-layout.css') }}">
+<script src="{{ url_for('static', filename='screenshot-layout.js') }}" defer></script>
+<style id="pasted-component-style">
+/* Component dimensions translated from the supplied React/Tailwind reference.
+   Deliberately no background declarations or theme-token overrides. */
+.literal-screen .ag-app{max-width:none;width:100%;padding:24px 24px 80px}.literal-screen .literal-header{padding:12px 24px;border-radius:16px;min-height:66px;box-shadow:0 1px 3px #0000000d;gap:16px}.literal-screen .literal-brand{gap:12px}.literal-screen .literal-brand strong{font-size:20px;line-height:28px;letter-spacing:-.5px}.literal-screen .literal-brand>span{font-size:12px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;padding-left:14px;margin-left:0}.literal-screen .literal-logo{width:36px;height:36px}.literal-screen .literal-header .ag-nav{padding:4px;border-radius:999px;border:1px solid var(--ag-border);gap:0}.literal-screen .literal-header .ag-nav-link,.literal-screen .literal-header .literal-nav-link{font-size:14px;font-weight:500;line-height:20px;padding:8px 20px;gap:8px}.literal-screen .literal-header .ag-nav-link .ag-i,.literal-screen .literal-header .literal-nav-link .ag-i{width:16px;height:16px}.literal-screen .literal-header .ag-icon-btn{width:36px;height:36px;padding:8px;border-radius:999px}.literal-screen .literal-header .ag-icon-btn svg{width:20px;height:20px}.literal-screen .literal-menu summary{height:36px;width:36px;font-size:14px}.literal-screen .literal-header .ag-header-actions{gap:12px}
+.literal-screen .reference-dashboard{max-width:1280px;margin:24px auto 0}.literal-screen .campus-hero{min-height:120px;gap:16px}.literal-screen .campus-hero>div{padding:0;transform:none;max-width:72%}.literal-screen .campus-hero h1{font-size:36px;line-height:40px;font-weight:800;letter-spacing:-.9px}.literal-screen .campus-hero p{font-size:16px;line-height:24px;font-weight:500;margin-top:4px}.literal-screen .campus-hero-art{width:36%;height:130px}.literal-screen .campus-metrics{gap:16px}.literal-screen .campus-metrics article{border-radius:16px;padding:20px;gap:12px;min-height:100px;box-shadow:0 1px 3px #0000000d}.literal-screen .campus-metrics article>div{order:0}.literal-screen .campus-metrics article>div>span{font-size:12px;font-weight:600;line-height:16px}.literal-screen .campus-metrics strong{font-size:30px;font-weight:800;line-height:36px;letter-spacing:0;margin-top:4px}.literal-screen .campus-metrics .metric-art{order:2;width:48px;height:48px;margin-left:auto}.literal-screen .literal-metric-tail{display:none}.literal-screen .campus-main{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;margin-top:24px}.literal-screen .campus-card{border-radius:16px;padding:20px;box-shadow:0 1px 3px #0000000d}.literal-screen .campus-card>header{margin-bottom:16px}.literal-screen .campus-card h2{font-size:20px;font-weight:700;line-height:28px;letter-spacing:0}.literal-screen .campus-card header a,.literal-screen .campus-card header button{font-size:12px;font-weight:600}.literal-screen .campus-gate-tiles{gap:16px}.literal-screen .campus-gate-tile{border-radius:16px;padding:12px;text-align:left;box-shadow:0 1px 3px #0000000d}.literal-screen .campus-gate-tile svg{height:112px;border-radius:12px;margin:0 0 12px}.literal-screen .campus-gate-tile strong{font-size:14px;font-weight:700;line-height:20px;margin:0 0 8px}.literal-screen .gate-pill{font-size:12px;font-weight:500;line-height:16px;padding:2px 10px;margin-left:0}.literal-screen .campus-avatar{height:40px;width:40px;border-radius:50%;font-size:18px}.literal-screen .campus-recent-row{gap:12px;padding:12px 0;min-height:73px}.literal-screen .campus-recent-row strong{font-size:14px;line-height:20px;font-weight:700}.literal-screen .campus-recent-row .recent-person-line{gap:8px}.literal-screen .ref-status{font-size:10px;font-weight:600;line-height:14px;padding:2px 8px}.literal-screen .campus-recent-row .meta{font-size:12px;line-height:16px;margin-top:2px}.literal-screen .campus-recent-row>time{font-size:12px;font-weight:500}.literal-screen .campus-chart{margin-top:24px;padding:20px}.literal-screen #refEntryChart{height:176px;gap:4px}.literal-screen .ref-bar-column{height:166px;gap:8px}.literal-screen .ref-bar-column span,.literal-screen .literal-chart-y{font-size:10px;font-weight:500}.literal-screen .campus-chart header span{border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500}.literal-screen .ag-chat-launcher,.literal-screen .reference-chat-toggle{border-radius:999px!important;padding:12px 20px!important;font-size:14px;font-weight:600;gap:8px}.literal-screen .ag-chat-launcher{height:48px}.literal-screen .ag-chat-launcher:after{font-size:14px}.literal-screen .reference-chat-toggle{bottom:24px;right:24px}.literal-screen .ag-chat-launcher svg,.literal-screen .reference-chat-toggle svg{height:20px;width:20px}
+/* Security components retain the same live-data IDs and actions. */
+.literal-screen #security-review{max-width:1280px;margin:24px auto 0}.literal-screen #security-review .review-hero{margin:0 0 24px}.literal-screen #security-review .review-hero h1{font-size:36px;font-weight:800;line-height:40px;letter-spacing:-.9px}.literal-screen #security-review .review-hero p{font-size:16px;font-weight:500;line-height:24px;margin-top:4px}.literal-screen #security-review .review-metrics{gap:16px}.literal-screen #security-review .metric{padding:20px;border-radius:16px;min-height:100px;gap:12px;box-shadow:0 1px 3px #0000000d}.literal-screen #security-review .metric>div{order:0}.literal-screen #security-review .metric>div>span{font-size:12px;font-weight:600;line-height:16px}.literal-screen #security-review .metric strong{font-size:30px;font-weight:800;line-height:36px;letter-spacing:0;margin-top:4px}.literal-screen #security-review .review-metric-icon{order:2;width:40px;height:40px;margin-left:auto}.literal-screen #security-review .review-metric-icon svg{height:20px;width:20px}.literal-screen #security-review .review-metric-arrow{display:none}.literal-screen #security-review .review-grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px;margin-top:24px}.literal-screen #security-review .timeline-panel,.literal-screen #security-review .detail-panel{padding:20px;border-radius:16px;box-shadow:0 1px 3px #0000000d}.literal-screen #security-review h2{font-size:20px;font-weight:700;line-height:28px;letter-spacing:0;margin-bottom:16px}.literal-screen #security-review .review-toolbar{gap:8px;margin-bottom:16px;flex-wrap:wrap}.literal-screen #security-review .review-toolbar button{font-size:12px;font-weight:600;line-height:16px;padding:6px 16px;border-radius:999px}.literal-screen #security-review .review-search{min-width:180px;border-radius:12px;padding:6px 12px;height:34px}.literal-screen #security-review .review-search input{font-size:12px;line-height:16px}.literal-screen #security-review .event{grid-template-columns:80px 12px 40px minmax(0,1fr) auto;gap:16px;padding:16px;border-radius:16px;min-height:116px;margin-bottom:0;box-shadow:0 1px 3px #0000000d}.literal-screen #security-review .event+.event{margin-top:16px}.literal-screen #security-review .event.selected{border-width:2px}.literal-screen #security-review .event-stamp time{font-size:12px;font-weight:700}.literal-screen #security-review .event-stamp>span{font-size:12px;font-weight:500}.literal-screen #security-review .review-avatar{width:40px;height:40px}.literal-screen #security-review .review-avatar svg{width:20px;height:20px}.literal-screen #security-review .event-person strong{font-size:14px;font-weight:700;line-height:20px}.literal-screen #security-review .event-person>.meta{font-size:12px;line-height:16px}.literal-screen #security-review .event-person>.meta:last-child{margin-top:4px}.literal-screen #security-review .badge{font-size:12px;font-weight:600;line-height:16px;padding:4px 12px;border-radius:999px}.literal-screen #security-review .event-dot:after{height:124px}.literal-screen #security-review .detail-profile .review-avatar{width:48px;height:48px}.literal-screen #security-review .detail-profile .review-avatar svg{height:24px;width:24px}.literal-screen #security-review .detail-profile h3{font-size:16px;line-height:24px;font-weight:800}.literal-screen #security-review .detail-profile .meta{font-size:12px;line-height:16px}.literal-screen #security-review .detail-profile .badge{font-size:12px}.literal-screen #security-review .detail-metadata{font-size:12px;line-height:16px;padding:16px 0;gap:16px}.literal-screen #security-review .detail-checks{border-radius:12px;padding:0 12px}.literal-screen #security-review .check-row{padding:12px 0;gap:8px;grid-template-columns:20px minmax(90px,1fr) minmax(0,1.4fr)}.literal-screen #security-review .check-row>b{height:18px;width:18px;font-size:12px}.literal-screen #security-review .check-row strong{font-size:12px;font-weight:600;line-height:16px}.literal-screen #security-review .check-row>span{font-size:12px;line-height:16px}.literal-screen #security-review #detail h4{font-size:12px;font-weight:700;line-height:16px;margin-top:16px}.literal-screen #security-review #detail p{font-size:12px;line-height:18px;margin-top:4px}.literal-screen #security-review .review-action,.literal-screen #security-review .review-back{border-radius:12px;font-size:12px;font-weight:600;line-height:16px;padding:10px 16px}.literal-screen #security-review .review-note{padding:12px;border-radius:12px;gap:8px}.literal-screen #security-review .review-note strong,.literal-screen #security-review .review-note small{font-size:11px;line-height:15px}.literal-screen #security-review .review-note>span:first-child{font-size:20px}
+@media(max-width:1150px){.literal-screen .literal-brand>span{display:none}.literal-screen .literal-header .ag-nav-link,.literal-screen .literal-header .literal-nav-link{padding:8px 12px}.literal-screen .campus-main{grid-template-columns:1fr}.literal-screen #security-review .review-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.literal-screen .ag-app{padding:16px 16px 64px}.literal-screen .literal-header{padding:12px}.literal-screen .literal-header .ag-nav{width:100%;flex-wrap:wrap}.literal-screen .literal-header .ag-nav-link,.literal-screen .literal-header .literal-nav-link{font-size:12px;padding:8px 10px}.literal-screen .campus-hero{min-height:120px}.literal-screen .campus-hero h1,.literal-screen #security-review .review-hero h1{font-size:30px;line-height:36px}.literal-screen .campus-hero p,.literal-screen #security-review .review-hero p{font-size:14px;line-height:20px}.literal-screen .campus-hero>div{max-width:95%}.literal-screen .campus-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.literal-screen .campus-metrics article{padding:12px;gap:8px}.literal-screen .campus-metrics .metric-art{width:36px;height:36px}.literal-screen .campus-metrics article>div>span{font-size:11px}.literal-screen .campus-metrics strong{font-size:26px}.literal-screen .campus-gate-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.literal-screen .campus-recent-row strong{font-size:12px}.literal-screen .campus-recent-row>time{font-size:10px}.literal-screen #security-review .review-metrics{gap:8px}.literal-screen #security-review .metric{padding:12px 8px}.literal-screen #security-review .review-metric-icon{margin-left:0}.literal-screen #security-review .metric>div>span{font-size:11px}.literal-screen #security-review .metric strong{font-size:26px}.literal-screen #security-review .timeline-panel,.literal-screen #security-review .detail-panel{padding:14px}.literal-screen #security-review .event{grid-template-columns:60px 8px 32px minmax(0,1fr);gap:8px;padding:12px}.literal-screen #security-review .review-avatar{width:32px;height:32px}.literal-screen #security-review .event-person strong{font-size:12px}.literal-screen #security-review .event-person>.meta,.literal-screen #security-review .event-stamp>span{font-size:10px}.literal-screen #security-review .event-stamp time{font-size:10px}.literal-screen #security-review .badge{font-size:10px;padding:3px 8px}.literal-screen #security-review .check-row{grid-template-columns:18px minmax(70px,1fr) minmax(0,1.3fr)}.literal-screen #security-review .check-row strong,.literal-screen #security-review .check-row>span{font-size:10px}}
+
+</style>
+<style id="analytics-navigation-only">
+.literal-screen .literal-analytics-tabs{display:flex;gap:8px;width:max-content;max-width:100%;margin:20px 4px 0;padding:4px;border:1px solid var(--ag-border);border-radius:99px}.literal-screen .literal-analytics-tabs button{font-size:13px;padding:9px 18px}.literal-screen .literal-analytics-tabs button[aria-pressed="true"]{font-weight:700;text-decoration:underline;text-underline-offset:5px}
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='page-transitions.css') }}">
+<script src="{{ url_for('static', filename='page-transitions.js') }}" defer></script>
+<style id="vector-icon-alignment">
+/* Final SVG icon and connector alignment. Existing surface colors stay unchanged. */
+.literal-screen .literal-analytics-tabs button,.literal-screen .literal-analytics-tabs button[aria-pressed="true"]{text-decoration:none;text-underline-offset:initial}.security-ui-icon{display:block;width:20px;height:20px;flex-shrink:0}.literal-screen .native-metric-art{display:block;overflow:visible;align-self:center;justify-self:center}.literal-screen .literal-metric-tail{display:grid;place-items:center;line-height:0}.literal-screen .literal-metric-tail .security-ui-icon{width:28px;height:28px;margin:0}.literal-screen .campus-main{align-items:start}.literal-screen .campus-main>.campus-card:first-child{display:block}.literal-screen .campus-gate-tiles{flex:initial;align-items:start;grid-auto-rows:auto}.literal-screen .campus-gate-tile{display:block;height:auto;min-height:0}.literal-screen .campus-gate-tile>svg{height:130px;min-height:0;max-height:130px;flex:none}.literal-screen .campus-gate-tile>strong{margin-top:12px;margin-bottom:8px}.literal-screen .campus-gate-tile>.gate-bottom-row{margin-top:9px}
+.literal-screen #security-review .metric{align-items:center;gap:18px}.literal-screen #security-review .review-metric-icon{order:0;margin-left:0;width:64px;height:64px;display:grid;place-items:center;line-height:0;flex-shrink:0}.literal-screen #security-review .review-metric-icon>.security-ui-icon{width:27px;height:27px;margin:0}.literal-screen #security-review .metric>div{order:1;min-width:0}.literal-screen #security-review .review-metric-arrow{order:2;display:grid;place-items:center;margin-left:auto;width:35px;height:35px;line-height:0}.literal-screen #security-review .review-metric-arrow>.security-ui-icon{width:18px;height:18px}.literal-screen #security-review .review-avatar{display:grid;place-items:center;line-height:0}.literal-screen #security-review .review-avatar>.security-ui-icon{width:26px;height:26px}.literal-screen #security-review .badge{display:inline-flex;align-items:center;justify-content:center;gap:6px}.literal-screen #security-review .badge>.security-ui-icon{width:16px;height:16px}.literal-screen #security-review .detail-metadata>span,.literal-screen #security-review .gate-label{display:inline-flex;align-items:center;gap:6px}.literal-screen #security-review .detail-metadata .security-ui-icon,.literal-screen #security-review .gate-label .security-ui-icon{width:16px;height:16px}.literal-screen #security-review .detail-metadata{gap:14px;flex-wrap:wrap}.literal-screen #security-review .check-row>b{display:grid;place-items:center;line-height:0}.literal-screen #security-review .check-row>b>.security-ui-icon{width:13px;height:13px}.literal-screen #security-review .review-action,.literal-screen #security-review .review-back{display:inline-flex;align-items:center;justify-content:center;gap:8px}.literal-screen #security-review .review-action>.security-ui-icon,.literal-screen #security-review .review-back>.security-ui-icon{width:16px;height:16px}.literal-screen #security-review .review-note>span:first-child{display:grid;place-items:center;flex-shrink:0}.literal-screen #security-review .review-note>span:first-child>.security-ui-icon{width:25px;height:25px}
+.literal-screen #security-review #timeline{position:relative}.literal-screen #security-review #timeline:before{content:'';position:absolute;top:var(--timeline-line-top,0px);left:var(--timeline-line-left,0px);height:var(--timeline-line-height,0px);border-left:1px solid var(--ag-control);pointer-events:none;z-index:1}.literal-screen #security-review #timeline .event,.literal-screen #security-review #timeline .event.selected{z-index:auto}.literal-screen #security-review #timeline .event>*{position:relative;z-index:2}.literal-screen #security-review #timeline .event-dot{z-index:3;box-shadow:0 0 0 2px var(--ag-card);flex-shrink:0}.literal-screen #security-review #timeline .event-dot:after{content:none}
+@media(max-width:700px){.literal-screen #security-review .review-metric-icon{width:42px;height:42px}.literal-screen #security-review .metric{gap:8px}.literal-screen #security-review .review-metric-icon>.security-ui-icon{width:20px;height:20px}.literal-screen #security-review .review-metric-arrow{display:none}.literal-screen #security-review .detail-profile>.badge{font-size:10px;padding:4px 8px}.literal-screen #security-review .review-note>span:first-child>.security-ui-icon{width:20px;height:20px}}
+@media(max-width:600px){.literal-screen .campus-gate-tile>svg{height:112px;max-height:112px}.literal-screen .literal-metric-tail{display:none}}
+
+</style>
+<style id="photo-dashboard-details">
+.theme-moon{fill:currentColor!important}.campus-avatar,.review-avatar{overflow:hidden}.campus-avatar img,.review-avatar img{width:100%;height:100%;object-fit:cover;display:block}.scan-photo-missing{display:grid;place-items:center;width:100%;height:100%;font-size:9px;line-height:1.15;text-align:center;padding:3px;box-sizing:border-box}.literal-screen .campus-metrics{grid-template-columns:repeat(5,minmax(0,1fr))}.literal-screen .campus-metrics article{display:grid;grid-template-columns:56px minmax(0,1fr) 24px;gap:12px;align-items:center;padding:20px 16px;min-height:145px}.literal-screen .campus-metrics .metric-art{order:0;width:56px;height:56px;margin:0}.literal-screen .campus-metrics article>div{order:0;min-width:0}.literal-screen .campus-metrics article>div>span{font-size:15px;line-height:20px}.literal-screen .campus-metrics strong{font-size:38px;line-height:44px}.literal-screen .literal-metric-tail{position:static;display:grid;place-items:center;order:0;width:24px;height:28px;margin:0}.literal-screen .literal-metric-tail svg{width:26px;height:26px}.literal-screen .metric-foot{grid-column:1/-1;margin:4px 0 0;font-size:12px;line-height:18px}.literal-screen .campus-hero h1{font-size:44px;line-height:1.15}.literal-screen .campus-card h2{font-size:24px}.literal-screen .campus-recent-row strong{font-size:16px}.literal-screen .campus-avatar{width:52px;height:56px;border-radius:14px}.literal-screen .campus-gate-tile{height:auto!important;align-self:start}.literal-screen .campus-gate-tiles{align-items:start}.literal-screen .campus-active-alerts{margin-top:24px}.campus-active-alerts ul{list-style:none;margin:0;padding:0}.campus-active-alerts li{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid #8883}.campus-active-alerts li:last-child{border:0}.campus-active-alerts li>i{width:12px;height:12px;border-radius:50%;background:#e84c4c;margin-top:5px;flex-shrink:0}.campus-active-alerts li>i.yellow{background:#f8c74d}.campus-active-alerts li strong,.campus-active-alerts li small{display:block}.campus-active-alerts li small{margin-top:5px}.literal-screen #security-review .review-metric-arrow{display:grid!important;place-items:center;border:0;cursor:pointer;flex-shrink:0}.literal-screen #security-review .metric>div>span{font-size:16px}.literal-screen #security-review .event-person strong{font-size:16px}.literal-screen #security-review .review-toolbar button{font-size:14px}.gt-logo.gt-admin-logo{background:transparent;padding:0}.gt-admin-logo svg{width:100%;height:100%;display:block}
+@media(max-width:1150px){.literal-screen .campus-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.literal-screen .campus-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.literal-screen .campus-hero h1{font-size:32px}.literal-screen .campus-metrics article{grid-template-columns:42px minmax(0,1fr);padding:14px}.literal-screen .campus-metrics .metric-art{width:42px;height:42px}.literal-screen .literal-metric-tail{display:none}}@media(max-width:390px){.literal-screen .campus-metrics{grid-template-columns:1fr}}
+</style>
+<style id="final-stat-logo-fix">
+.literal-screen .campus-metrics article .metric-art{display:block!important;width:56px!important;height:56px!important;padding:0!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:50%!important;overflow:visible!important;mix-blend-mode:normal!important}
+.literal-screen .campus-metrics article .metric-foot.ag-stat-foot{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-end!important;gap:8px!important;grid-column:1/-1!important;width:100%!important;min-width:0!important;padding:0!important;margin:8px 0 0!important;min-height:48px!important}
+.literal-screen .campus-metrics article .metric-foot .stat-share{display:block!important;white-space:nowrap!important;font-size:12px!important;line-height:16px!important;color:var(--ag-muted)!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;min-height:22px!important;font-size:13px!important;line-height:18px!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row .ag-up-green{color:#1FA35B!important;display:inline-flex!important;align-items:center!important;gap:4px!important;font-size:13px!important;white-space:nowrap!important;flex:0 0 auto!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-row .ag-up-red{color:#E04848!important;display:inline-flex!important;align-items:center!important;gap:4px!important;font-size:13px!important;white-space:nowrap!important;flex:0 0 auto!important}
+.literal-screen .campus-metrics article .metric-foot .stat-detail-note{color:var(--ag-muted)!important;font-size:13px!important;line-height:18px!important;max-width:none!important;white-space:normal!important}
+.literal-screen .campus-metrics article .metric-foot .ag-i{display:block!important;width:15px!important;height:15px!important;stroke:currentColor!important;fill:none!important;color:inherit!important;flex-shrink:0!important}
+.literal-logo,.gt-logo.gt-admin-logo{clip-path:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;display:grid!important;place-items:center!important;width:44px!important;height:44px!important;flex-shrink:0!important}.amangate-brand-logo{display:block;width:100%;height:100%;object-fit:contain}.amangate-brand-logo.logo-dark{display:none}html[data-theme="dark"] .amangate-brand-logo.logo-light{display:none}html[data-theme="dark"] .amangate-brand-logo.logo-dark{display:block}
+@media(max-width:700px){.literal-screen .campus-metrics article .metric-art{width:42px!important;height:42px!important}.literal-screen .campus-metrics article .metric-foot .stat-detail-row{gap:5px!important}}
+</style><link rel="stylesheet" href="/static/account-menu.css?v=20261029">
+<script src="/static/account-menu.js?v=position-fix-20261029" defer></script>
+<style id="filled-review-summary-icons">
+.literal-screen #security-review .metric .new-filled-review-icon{display:grid!important;place-items:center!important;width:72px!important;height:72px!important;min-width:72px!important;background:transparent!important;border:0!important;border-radius:50%!important;overflow:hidden!important;padding:0!important;box-shadow:none!important}.literal-screen #security-review .new-filled-review-icon .review-summary-art{display:block!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:0!important}.literal-screen #security-review .metric .review-metric-arrow{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;min-width:40px!important;flex:0 0 40px!important;aspect-ratio:1!important;border:0!important;border-radius:50%!important;padding:0!important;margin-left:auto!important;background:#f3ede2!important;color:#596375!important;box-shadow:none!important;cursor:pointer}.literal-screen #security-review .metric.pending .review-metric-arrow{background:#fbefd0!important}.literal-screen #security-review .metric.granted .review-metric-arrow{background:#e7f4eb!important}.literal-screen #security-review .review-metric-arrow .security-ui-icon{width:19px!important;height:19px!important;margin:0!important}.literal-screen #security-review .review-metric-arrow:hover{filter:brightness(.96)}.literal-screen #security-review .review-metric-arrow:focus-visible{outline:2px solid #d3a840;outline-offset:3px}
+@media(max-width:700px){.literal-screen #security-review .metric .new-filled-review-icon{width:48px!important;height:48px!important;min-width:48px!important}.literal-screen #security-review .metric .review-metric-arrow{width:32px!important;height:32px!important;min-width:32px!important;flex-basis:32px!important}}
+</style><style id="reference-detail-status-icons">
+.literal-screen #security-review .badge{display:inline-flex!important;align-items:center!important;gap:9px!important;padding:7px 13px!important;line-height:20px!important}.literal-screen #security-review .badge>.solid-status-icon{display:block!important;width:24px!important;height:24px!important;flex:0 0 24px!important;stroke:none!important;color:#cc3038!important;filter:drop-shadow(0 1px 1px #0001)}.literal-screen #security-review .badge.ok>.solid-status-icon{color:#0c9e68!important}.literal-screen #security-review .check-row{grid-template-columns:28px minmax(120px,1fr) minmax(0,1.3fr)!important;gap:14px!important;align-items:center!important;min-height:48px!important}.literal-screen #security-review .check-row>b{width:28px!important;height:28px!important;border-radius:50%!important;display:grid!important;place-items:center!important;line-height:0!important;color:white!important;box-shadow:inset 0 1px 2px #ffffff38,0 1px 2px #0001}.literal-screen #security-review .check-row.good>b{background:linear-gradient(145deg,#27b67c,#07955f)!important}.literal-screen #security-review .check-row.bad>b{background:linear-gradient(145deg,#e54d55,#c62832)!important}.literal-screen #security-review .check-row.neutral>b{background:linear-gradient(145deg,#9298a3,#737984)!important}.literal-screen #security-review .check-row>b>.security-ui-icon{width:17px!important;height:17px!important;stroke:white!important;stroke-width:2.2!important}.literal-screen #security-review .gate-label>.security-ui-icon,.literal-screen #security-review .detail-metadata .security-ui-icon{width:20px!important;height:20px!important;flex:0 0 20px!important}.literal-screen #security-review .review-action>.solid-status-icon{width:24px!important;height:24px!important;stroke:none!important;color:#626a76!important}.literal-screen #security-review .review-back>.security-ui-icon{width:22px!important;height:22px!important}.literal-screen #security-review .review-note>span:first-child>.security-ui-icon{width:32px!important;height:36px!important;color:#e3a624!important;stroke:none!important}.literal-screen #security-review .review-note{gap:16px!important;align-items:center!important}.literal-screen #security-review .detail-metadata>span+span{border-left:1px solid var(--ag-border);padding-left:14px}
+@media(max-width:700px){.literal-screen #security-review .check-row{grid-template-columns:25px minmax(90px,1fr) minmax(0,1.2fr)!important;gap:8px!important}.literal-screen #security-review .check-row>b{width:25px!important;height:25px!important}.literal-screen #security-review .badge>.solid-status-icon{width:20px!important;height:20px!important;flex-basis:20px!important}}
+</style><style id="review-live-status-style">.literal-screen #security-review .review-hero #sync{display:inline-flex!important;align-items:center!important;gap:8px!important;color:var(--c-up)!important;font-size:12.5px!important;font-weight:600!important}.literal-screen #security-review #sync.is-error{color:var(--c-down)!important}.literal-screen #security-review #sync>i{display:block;width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.7;flex:0 0 8px}.literal-screen #security-review #syncText{color:inherit!important;font:inherit!important}</style></head>
+<body class="admin-page system-page literal-screen">
+
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    </svg>
+
+    <div class="ag-app sys-app">
+
+        <header class="ag-card ag-header literal-header"><div class="ag-brand literal-brand"><div class="literal-logo" aria-hidden="true"><img class="amangate-brand-logo logo-light" src="/static/art/amangate-logo.svg?v=20261029" alt=""><img class="amangate-brand-logo logo-dark" src="/static/art/amangate-logo-dark.svg?v=20261029" alt=""></div><strong>AmanGate</strong><span>Admin Portal</span></div><nav class="ag-nav" aria-label="Admin sections"><a class="ag-nav-link" href="/admin"><svg class="ag-i " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v11H3zM9 21v-8h6v8"/></svg>Dashboard</a><a class="ag-nav-link" href="/admin#database"><svg class="ag-i " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21v-3c0-7 14-7 14 0v3M16 4c6 0 6 8 0 8m2 3q5 0 5 6"/></svg>Users</a><a class="ag-nav-link is-active" href="/system"><svg class="ag-i " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6m-6 4h6m-6 4h4"/></svg>Analytics</a><a class="ag-nav-link" href="/admin#lock-gates"><svg class="ag-i " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V6l9-3 9 3v15M3 10h18M7 8v13m5-14v14m5-13v13"/></svg>Gates</a></nav><div class="ag-header-actions"><a class="ag-link-muted" href="/">Gate Terminal</a><button class="ag-icon-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="ag-i theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14a8 8 0 0 1-10-10A8.5 8.5 0 1 0 20 14Z"/></svg><svg class="ag-i theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1 1m12 12 1 1M5 19l1-1M18 6l1-1"/></svg></button><details class="literal-menu"><summary class="ag-avatar" aria-label="Account and other pages">A</summary><div><a href="/">Gate Terminal</a><a href="/system">Analytics overview</a><a href="/admin/accounts/new">Add user</a><button id="logoutBtn" type="button">Sign out</button></div></details></div></header>
+
+        <nav class="literal-analytics-tabs ag-nav" aria-label="Analytics views"><button class="ag-nav-link" type="button" data-literal-view="overview">Overview</button><button class="ag-nav-link" type="button" data-literal-view="security">Security Review</button></nav>
+        <div class="sys-head">
+            <div>
+                <h1>AmanGate — System Analytics</h1>
+                <p>Live operational view across all gates</p>
+            </div>
+            <p class="sys-live" id="liveStatus"><i></i><span>Loading…</span></p>
+        </div>
+
+        <!-- KPI row -->
+        <div class="sys-kpis">
+            <div class="sys-card sys-kpi"><b id="kEntries">—</b><span>Entries this week</span><em id="dEntries"></em></div>
+            <div class="sys-card sys-kpi"><b id="kMatch">—</b><span>Avg match confidence</span><em id="dMatch"></em></div>
+            <div class="sys-card sys-kpi"><b id="kDenied">—</b><span>Denied attempts</span><em id="dDenied"></em></div>
+            <div class="sys-card sys-kpi"><b id="kLockdowns">—</b><span>Lockdowns this week</span><em id="dLockdowns"></em></div>
+            <div class="sys-card sys-kpi"><b id="kScanTime">—</b><span>Avg scan time</span><em id="dScanTime"></em></div>
+        </div>
+
+        <!-- Entries line + granted/denied donut -->
+        <div class="sys-row sys-row-2">
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Entries over the last 7 days</h2><span id="weekRange">Last 7 days</span></div>
+                <div class="sys-chart" id="entriesChart" role="img" aria-label="Granted entries per day over the last 7 days"></div>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Granted vs denied</h2><span>This week</span></div>
+                <div class="sys-donut-wrap">
+                    <div class="sys-donut" id="donut"></div>
+                    <ul class="sys-donut-legend" id="donutLegend"></ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- Three small charts -->
+        <div class="sys-row sys-row-3">
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Match confidence spread</h2><span>Granted, last 30 days</span></div>
+                <div class="sys-chart is-short" id="spreadChart" role="img" aria-label="How many granted scans fell in each match-confidence range"></div>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Enrolled users growth</h2><span>Last 8 weeks</span></div>
+                <div class="sys-chart is-short" id="growthChart" role="img" aria-label="Enrolled users at the end of each of the last 8 weeks"></div>
+                <p class="sys-foot" id="growthFoot"></p>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Enrolled by group</h2><span id="groupsTotal"></span></div>
+                <div class="sys-chart is-short" id="groupsChart" role="img" aria-label="Enrolled users by group"></div>
+            </section>
+        </div>
+
+        <!-- Traffic heatmap -->
+        <section class="sys-card sys-panel sys-section">
+            <div class="sys-panel-head">
+                <h2>Traffic heatmap</h2>
+                <span class="sys-heat-key">Hour of day, last 7 days combined <i aria-hidden="true"></i> darker = busier</span>
+            </div>
+            <div class="sys-heat" id="heatmap" role="img" aria-label="Scans per hour of day over the last 7 days"></div>
+        </section>
+<section id="security-review" class="review-app sys-section" aria-label="Security review"><section class="review-hero"><h1>Every scan has a story.</h1><p>Understand access decisions and review what needs your attention.</p><span id="sync" class="sys-live" role="status" aria-live="polite"><i aria-hidden="true"></i><span id="syncText">Connecting…</span></span></section><section class="review-metrics" aria-label="Latest 200 scans"><article class="review-card metric pending"><span class="review-metric-icon new-filled-review-icon"><svg class="review-summary-art" viewBox="0 0 72 72" aria-hidden="true"><defs><radialGradient id="pending-outer"><stop stop-color="#FFF2CC"/><stop offset="1" stop-color="#FFE5A7"/></radialGradient><linearGradient id="pending-inner" x2="0.5" y2="1"><stop stop-color="#E5A519"/><stop offset="1" stop-color="#D8980E"/></linearGradient></defs><circle cx="36" cy="36" r="36" fill="url(#pending-outer)"/><circle cx="36" cy="36" r="19" fill="url(#pending-inner)"/><path d="M36 25v15" stroke="white" stroke-width="3.5" stroke-linecap="round"/><circle cx="36" cy="47" r="2" fill="white"/></svg></span><div><span>Needs review</span><strong id="pending">—</strong></div><button type="button" class="review-metric-arrow" data-review-filter="pending" aria-label="Show pending activity"><svg class="security-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></article><article class="review-card metric granted"><span class="review-metric-icon new-filled-review-icon"><svg class="review-summary-art" viewBox="0 0 72 72" aria-hidden="true"><defs><radialGradient id="granted-outer"><stop stop-color="#EDF8F0"/><stop offset="1" stop-color="#C8E9D7"/></radialGradient><linearGradient id="granted-inner" x2="0.5" y2="1"><stop stop-color="#17AC70"/><stop offset="1" stop-color="#07965B"/></linearGradient></defs><circle cx="36" cy="36" r="36" fill="url(#granted-outer)"/><circle cx="36" cy="36" r="19" fill="url(#granted-inner)"/><path d="m25 36 8 8 15-17" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><span>Access granted</span><strong id="granted">—</strong></div><button type="button" class="review-metric-arrow" data-review-filter="granted" aria-label="Show granted activity"><svg class="security-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></article><article class="review-card metric reviewed"><span class="review-metric-icon new-filled-review-icon"><svg class="review-summary-art" viewBox="0 0 72 72" aria-hidden="true"><defs><radialGradient id="reviewed-outer"><stop stop-color="#F6F1E8"/><stop offset="1" stop-color="#E7D9C5"/></radialGradient><linearGradient id="reviewed-inner" x2="0.5" y2="1"><stop stop-color="#C9A46E"/><stop offset="1" stop-color="#AA824D"/></linearGradient></defs><circle cx="36" cy="36" r="36" fill="url(#reviewed-outer)"/><path d="M27 20h14l9 9v22a3 3 0 0 1-3 3H27a3 3 0 0 1-3-3V23a3 3 0 0 1 3-3Z" fill="url(#reviewed-inner)"/><path d="M31 30h8m-8 7h13m-13 7h13" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"/></svg></span><div><span>Reviewed</span><strong id="reviewed">—</strong></div><button type="button" class="review-metric-arrow" data-review-filter="reviewed" aria-label="Show reviewed activity"><svg class="security-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></article></section><p id="message" role="status"></p><div class="review-grid"><section class="review-card timeline-panel"><h2>Activity timeline</h2><div class="review-toolbar"><button data-filter="all" aria-pressed="true">All activity</button><button data-filter="pending" aria-pressed="false">Needs review</button><button data-filter="granted" aria-pressed="false">Granted</button><button data-filter="reviewed" aria-pressed="false">Reviewed</button><label class="review-search"><svg class="security-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg> <input id="search" type="search" aria-label="Search by ID, name or gate" placeholder="Search by ID, name or gate…"></label></div><div id="timeline"></div></section><aside class="review-card detail-panel"><h2 id="detailTitle">Why was access denied?</h2><div id="detail"></div><p class="review-note"><span>⬟</span><span><strong>Reviewing an event does not change gate access.</strong><small>It helps keep your security records organized.</small></span></p></aside></div><footer>Latest 200 scans · Updates every 10 seconds · Older records may have unknown gate or check details.</footer></section>
+    </div>
+
+    <div class="sys-tip" id="sysTip" role="tooltip" hidden></div>
+
+    <script>
+        const REFRESH_MS = 30000;
+        const GROUPS = [
+            { key: "students",  label: "Students",  color: "var(--viz-1)" },
+            { key: "employees", label: "Employees", color: "var(--viz-2)" },
+            { key: "visitors",  label: "Visitors",  color: "var(--viz-3)" }
+        ];
+
+        const $ = id => document.getElementById(id);
+        let data = null, loadedAt = 0;
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, c => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[c]);
+        }
+
+        function parseDay(iso) { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); }
+        function hourName(h) { return `${h % 12 || 12}${h < 12 ? "am" : "pm"}`; }
+        const fmt = n => n.toLocaleString("en-US");
+
+        // ---------- KPI deltas ----------
+        // `betterWhen` decides the colour: "up" (more is good) or "down" (less is good)
+        function delta(el, now, before, { betterWhen = "up", unit = "%", word = "vs last week", relative = true, goodWord, badWord } = {}) {
+            if (now == null || before == null) { el.className = ""; el.textContent = before == null && now != null ? "no data last week" : ""; return; }
+            if (relative && before === 0) { el.className = ""; el.textContent = now ? "none last week" : "— same"; return; }
+            const diff = relative ? (before ? (now - before) / before * 100 : (now ? 100 : 0)) : now - before;
+            const rounded = Math.round(Math.abs(diff) * 10) / 10;
+            if (rounded === 0) { el.className = ""; el.textContent = "— same"; return; }
+            const up   = diff > 0;
+            const good = (betterWhen === "up") === up;
+            el.className   = good ? "is-good" : "is-bad";
+            const label = good && goodWord ? goodWord : !good && badWord ? badWord : `${rounded}${unit} ${word}`;
+            el.textContent = `${up ? "▲" : "▼"} ${label}`;
+        }
+
+        function renderKpis() {
+            const t = data.this_week, p = data.last_week;
+
+            $("kEntries").textContent = fmt(t.granted);
+            delta($("dEntries"), t.granted, p.granted);
+
+            $("kMatch").textContent = t.avg_confidence == null ? "—" : `${t.avg_confidence}%`;
+            delta($("dMatch"), t.avg_confidence, p.avg_confidence, { relative: false, unit: " pts" });
+            if (t.avg_confidence == null) $("dMatch").textContent = "no granted scans yet";
+
+            $("kDenied").textContent = fmt(t.denied);
+            delta($("dDenied"), t.denied, p.denied, { betterWhen: "down" });
+
+            $("kLockdowns").textContent = t.lockdowns;
+            if (t.lockdowns === p.lockdowns) { $("dLockdowns").className = ""; $("dLockdowns").textContent = "— same as last week"; }
+            else delta($("dLockdowns"), t.lockdowns, p.lockdowns, { betterWhen: "down", relative: false, unit: "" });
+
+            $("kScanTime").textContent = t.avg_scan_ms == null ? "—" : `${(t.avg_scan_ms / 1000).toFixed(1)}s`;
+            if (t.avg_scan_ms == null) { $("dScanTime").className = ""; $("dScanTime").textContent = "no timed scans yet"; }
+            else delta($("dScanTime"), t.avg_scan_ms, p.avg_scan_ms, { betterWhen: "down", goodWord: "faster", badWord: "slower" });
+        }
+
+        // ---------- Small SVG helpers ----------
+        function niceMax(v) {
+            if (v <= 3) return 3;
+            const pow = 10 ** Math.floor(Math.log10(v));
+            return [1, 2, 2.5, 5, 10].map(m => m * pow).find(s => s >= v);
+        }
+
+        // Line + area chart drawn at the container's real pixel size (no stretching)
+        function areaChart(el, points, { color, xLabels, tips, dots = true, labelEvery = 1 }) {
+            const W = el.clientWidth, H = el.clientHeight;
+            const pad = { l: 28, r: 10, t: 12, b: 26 };
+            const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+            const top = niceMax(Math.max(...points, 0));
+            const x = i => pad.l + (points.length === 1 ? iw / 2 : i * iw / (points.length - 1));
+            const y = v => pad.t + ih - v / top * ih;
+            const id = el.id + "Grad";
+
+            const line = points.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+            const area = `${line} L${x(points.length - 1).toFixed(1)} ${pad.t + ih} L${x(0).toFixed(1)} ${pad.t + ih}Z`;
+            const ticks = top % 2 === 0 ? [0, top / 2, top] : [0, top];  // only whole-number ticks
+            const grid = ticks.map(v => {
+                const yy = y(v).toFixed(1);
+                return `<line class="grid" x1="${pad.l}" x2="${W - pad.r}" y1="${yy}" y2="${yy}"/><text class="ytick" x="${pad.l - 8}" y="${yy}">${v}</text>`;
+            }).join("");
+            const labels = xLabels.map((t, i) => (i % labelEvery === 0 || i === xLabels.length - 1)
+                ? `<text class="xtick${i === xLabels.length - 1 ? " is-last" : ""}" x="${x(i).toFixed(1)}" y="${H - 6}">${t}</text>` : "").join("");
+            const marks = dots ? points.map((v, i) => `<circle class="dot" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4.5" style="fill:${color}"/>`).join("") : "";
+            // Full-height hit columns, wider than the dots
+            const step = points.length > 1 ? iw / (points.length - 1) : iw;
+            const hits = points.map((v, i) => `<rect class="hit" x="${(x(i) - step / 2).toFixed(1)}" y="${pad.t}" width="${step.toFixed(1)}" height="${ih}" data-tip="${escapeHtml(tips[i])}"/>`).join("");
+
+            el.innerHTML = `
+                <svg width="${W}" height="${H}">
+                    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" style="stop-color:${color};stop-opacity:0.28"/><stop offset="1" style="stop-color:${color};stop-opacity:0.02"/>
+                    </linearGradient></defs>
+                    ${grid}
+                    <path d="${area}" fill="url(#${id})"/>
+                    <path class="line" d="${line}" style="stroke:${color}"/>
+                    ${marks}${labels}${hits}
+                </svg>`;
+        }
+
+        // Vertical bars at the container's real pixel size
+        function barChart(el, bars, { valueLabels = false, xLabelFor }) {
+            const W = el.clientWidth, H = el.clientHeight;
+            const pad = { l: 4, r: 4, t: valueLabels ? 20 : 8, b: 24 };
+            const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+            const top = Math.max(1, ...bars.map(b => b.value));
+            const gap = Math.max(2, Math.min(18, iw / bars.length * 0.18));
+            const bw  = (iw - gap * (bars.length - 1)) / bars.length;
+
+            const body = bars.map((b, i) => {
+                const h  = b.value ? Math.max(3, b.value / top * ih) : 0;
+                const bx = pad.l + i * (bw + gap), by = pad.t + ih - h;
+                const r  = Math.min(4, bw / 2, h);
+                const shape = h ? `<path d="M${bx} ${by + h} V${by + r} Q${bx} ${by} ${bx + r} ${by} H${bx + bw - r} Q${bx + bw} ${by} ${bx + bw} ${by + r} V${by + h}Z" style="fill:${b.color}"/>` : "";
+                const val   = valueLabels ? `<text class="val" x="${bx + bw / 2}" y="${by - 6}">${fmt(b.value)}</text>` : "";
+                const lab   = xLabelFor(i) ? `<text class="xtick" x="${bx + bw / 2}" y="${H - 6}">${xLabelFor(i)}</text>` : "";
+                return `${shape}${val}${lab}<rect class="hit" x="${bx}" y="${pad.t}" width="${bw}" height="${ih}" data-tip="${escapeHtml(b.tip)}"/>`;
+            }).join("");
+
+            el.innerHTML = `<svg width="${W}" height="${H}"><line class="base" x1="${pad.l}" x2="${W - pad.r}" y1="${pad.t + ih}" y2="${pad.t + ih}"/>${body}</svg>`;
+        }
+
+        // ---------- Charts ----------
+        function renderEntries() {
+            const days   = data.days;
+            const labels = days.map((d, i) => i === days.length - 1 ? "Today" : parseDay(d.date).toLocaleDateString("en-US", { weekday: "short" }));
+            const tips   = days.map((d, i) => `<strong>${i === days.length - 1 ? "Today" : parseDay(d.date).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}</strong>${d.granted} ${d.granted === 1 ? "entry" : "entries"}`);
+            areaChart($("entriesChart"), days.map(d => d.granted), { color: "var(--c-line)", xLabels: labels, tips });
+            const first = parseDay(days[0].date), last = parseDay(days[days.length - 1].date);
+            const opt = { month: "short", day: "numeric" };
+            $("weekRange").textContent = `${first.toLocaleDateString("en-US", opt)} – ${last.toLocaleDateString("en-US", opt)}`;
+        }
+
+        function renderDonut() {
+            const { granted, denied } = data.this_week;
+            const total = granted + denied;
+            const r = 52, c = 2 * Math.PI * r;
+            const share = total ? granted / total : 0;
+            const gap = granted && denied ? 4 : 0;
+            const gLen = share * c, dLen = c - gLen;
+            $("donut").innerHTML = `
+                <svg viewBox="-70 -70 140 140" width="150" height="150">
+                    <circle r="${r}" class="track"/>
+                    <g transform="rotate(-90)">
+                        ${granted ? `<circle r="${r}" style="stroke:var(--c-good)" stroke-dasharray="${Math.max(0, gLen - gap)} ${c}"/>` : ""}
+                        ${denied  ? `<circle r="${r}" style="stroke:var(--c-bad)"  stroke-dasharray="${Math.max(0, dLen - gap)} ${c}" stroke-dashoffset="${-gLen}"/>` : ""}
+                    </g>
+                    <text class="pct" y="7">${total ? (Math.round(share * 1000) / 10) + "%" : "—"}</text>
+                </svg>`;
+            $("donutLegend").innerHTML = `
+                <li><i style="background:var(--c-good)"></i>Granted — <strong>${fmt(granted)}</strong></li>
+                <li><i style="background:var(--c-bad)"></i>Denied — <strong>${fmt(denied)}</strong></li>
+                ${total ? "" : `<li class="is-note">No scans in the last 7 days</li>`}`;
+        }
+
+        function renderSpread() {
+            const bins = data.confidence;
+            const labelAt = new Set([0, 2, 4, bins.length - 1]);
+            barChart($("spreadChart"), bins.map(b => ({
+                value: b.count, color: "var(--c-amber)",
+                tip: `<strong>${b.from}–${b.to}% match</strong>${b.count} granted ${b.count === 1 ? "scan" : "scans"}`
+            })), { xLabelFor: i => labelAt.has(i) ? `${bins[i].from}%` : "" });
+        }
+
+        function renderGrowth() {
+            const g = data.growth;
+            const labels = g.map((w, i) => i === g.length - 1 ? "Now" : `Wk${i + 1}`);
+            const tips   = g.map((w, i) => `<strong>${i === g.length - 1 ? "Now" : "Week ending " + parseDay(w.week_end).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</strong>${w.count} enrolled`);
+            areaChart($("growthChart"), g.map(w => w.count), { color: "var(--c-green)", xLabels: labels, tips, dots: false, labelEvery: 2 });
+            const n = data.new_this_month;
+            $("growthFoot").innerHTML = `<strong>${fmt(data.users_total)} enrolled</strong> ${n ? `<span class="is-good">▲ +${n} this month</span>` : `<span>— none new this month</span>`}`;
+        }
+
+        function renderGroups() {
+            $("groupsTotal").textContent = `${fmt(data.users_total)} users`;
+            barChart($("groupsChart"), GROUPS.map(g => ({
+                value: data.groups[g.key], color: g.color,
+                tip: `<strong>${g.label}</strong>${data.groups[g.key]} enrolled`
+            })), { valueLabels: true, xLabelFor: i => GROUPS[i].label });
+        }
+
+        function renderHeatmap() {
+            const hours = data.hours, max = Math.max(...hours, 0);
+            // One hue (orange), light → dark with the number of scans.
+            // Two rows (AM / PM) of 12 hours, with hour numbers along the bottom.
+            const cell = h => {
+                const n   = hours[h];
+                const mix = n ? Math.round(28 + 72 * n / max) : 8;
+                return `<i style="background:color-mix(in srgb, var(--c-heat) ${mix}%, var(--sys-card))"
+                           data-tip="${escapeHtml(`<strong>${hourName(h)} – ${hourName((h + 1) % 24)}</strong>${n} ${n === 1 ? "scan" : "scans"}`)}"></i>`;
+            };
+            const row = (label, from) => `<b>${label}</b>` + Array.from({ length: 12 }, (_, i) => cell(from + i)).join("");
+            const axis = `<b></b>` + Array.from({ length: 12 }, (_, i) => `<span>${i || 12}</span>`).join("");
+            $("heatmap").innerHTML = row("AM", 0) + row("PM", 12) + axis;
+        }
+
+        function renderAll() {
+            renderKpis(); renderEntries(); renderDonut(); renderSpread(); renderGrowth(); renderGroups(); renderHeatmap();
+        }
+
+        // ---------- Same zoom as the admin dashboard ----------
+        // The dashboard saves the zoom it uses to fit the window. Reuse it here so both
+        // pages look the same size; this page then simply scrolls (no fitting, no stretching).
+        const app = document.querySelector(".sys-app");
+
+        function matchDashboardZoom() {
+            let zoom = 1;
+            if (window.innerWidth > 1100) {
+                try {
+                    const saved = JSON.parse(localStorage.getItem("amangate.dashZoom"));
+                    if (saved && saved.w === window.innerWidth && saved.h === window.innerHeight) {
+                        zoom = saved.zoom;                       // same window size → exact value
+                    } else if (saved && saved.naturalHeight) {   // different size → same rule as the dashboard
+                        zoom = Math.min(1, Math.floor(window.innerHeight / saved.naturalHeight * 1000) / 1000);
+                    }
+                } catch (e) { /* no saved zoom — stay at 100% */ }
+            }
+            app.style.zoom = zoom === 1 ? "" : zoom;
+        }
+        matchDashboardZoom();
+
+        // Charts are drawn at real pixel size, so redraw them when the size changes
+        let resizeFrame = 0;
+        window.addEventListener("resize", () => {
+            cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(() => {
+                matchDashboardZoom();
+                if (data) { renderEntries(); renderSpread(); renderGrowth(); renderGroups(); }
+            });
+        });
+
+        // ---------- "Live · updated …" ----------
+        function renderLive(failed) {
+            const el = $("liveStatus");
+            if (failed) { el.className = "sys-live is-error"; el.querySelector("span").textContent = "Could not load live data"; return; }
+            const mins = Math.floor((Date.now() - loadedAt) / 60000);
+            el.className = "sys-live";
+            el.querySelector("span").textContent = `Live · updated ${mins < 1 ? "just now" : mins === 1 ? "1 min ago" : mins + " min ago"}`;
+        }
+        setInterval(() => { if (loadedAt) renderLive(); }, 15000);
+
+        // ---------- Tooltip ----------
+        const tip = $("sysTip");
+        document.addEventListener("pointermove", (e) => {
+            const target = e.target.closest("[data-tip]");
+            if (!target) { tip.hidden = true; return; }
+            tip.innerHTML = target.dataset.tip;
+            tip.hidden    = false;
+            const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+            let x = e.clientX + pad, y = e.clientY + pad;
+            if (x + w > window.innerWidth - 8)  x = e.clientX - w - pad;
+            if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+            tip.style.left = `${x}px`;
+            tip.style.top  = `${y}px`;
+        });
+        document.addEventListener("pointerleave", () => { tip.hidden = true; });
+
+        // ---------- Log out (same as the admin portal) ----------
+        $("logoutBtn").onclick = async () => {
+            try { sessionStorage.removeItem("amangate.authed"); } catch (e) { /* ignore */ }
+            await fetch("/admin/logout", { method: "POST" });
+            location.replace("/admin");
+        };
+
+        // ---------- Load ----------
+        const CACHE_KEY = "amangate.sysStats";  // last stats, shown instantly on the next visit
+
+        async function load() {
+            try {
+                const res = await fetch("/system/stats");
+                if (res.status === 401) {
+                    try { sessionStorage.removeItem("amangate.authed"); } catch (e) { /* ignore */ }
+                    location.replace("/admin");
+                    return;
+                }
+                const json = await res.json();
+                if (json.status !== "success") throw new Error(json.message);
+                data = json;
+                loadedAt = Date.now();
+                renderAll();
+                renderLive();
+                try {
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify(json));
+                    sessionStorage.setItem("amangate.authed", "1");  // lets /admin open without the password flash
+                } catch (e) { /* ignore */ }
+            } catch (e) {
+                renderLive(true);
+            }
+        }
+
+        try {
+            const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY));
+            if (cached) { data = cached; renderAll(); }
+        } catch (e) { /* no cached stats */ }
+        load();
+        setInterval(() => { if (!document.hidden) load(); }, REFRESH_MS);
+    </script>
+<button class="reference-chat-toggle" id="referenceChatToggle" type="button" aria-expanded="false"><svg class="ag-i " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3h16v13H9l-5 5V3Z"/></svg>Ask AmanGate</button><section class="reference-chat" id="referenceChat" aria-label="AmanGate assistant" hidden><header><strong>Ask AmanGate</strong><button id="referenceChatClose" type="button" aria-label="Close assistant">×</button></header><div id="referenceChatLog" role="log"><p>Ask about gate activity or how to use AmanGate.</p></div><form id="referenceChatForm"><input id="referenceChatInput" maxlength="300" aria-label="Question" placeholder="Ask a question…" required><button type="submit">Send</button></form></section><script src="{{ url_for('static', filename='reference-chat.js') }}" defer></script></body>
+</html>
