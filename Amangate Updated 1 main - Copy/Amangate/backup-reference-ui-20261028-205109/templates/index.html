@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AmanGate - Gate Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<!-- Portrait iPad kiosk: header · welcome + clock · square camera · status · button · person info -->
+<body class="admin-page terminal-page">
+
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    </svg>
+
+    <main class="gt-app">
+
+        <header class="gt-header">
+            <div class="gt-brand">
+                <div class="gt-logo" aria-hidden="true">AG</div>
+                <div>
+                    <strong>AmanGate</strong>
+                    <span>University Access Control</span>
+                </div>
+            </div>
+            <!-- Which gate this terminal is. Set once per iPad (remembered), or with ?gate=female in the link -->
+            <label class="gt-gate-chip" title="Choose which gate this terminal is">
+                <i id="statusDot" aria-hidden="true"></i>
+                <select id="gateSelect" class="gt-gate-select" aria-label="This terminal's gate">
+                    <option value="main">Main Gate</option>
+                    <option value="male">Male Gate</option>
+                    <option value="female">Female Gate</option>
+                    <option value="vehicle">Vehicle Gate</option>
+                </select>
+                <span>· <b id="terminalClock">Online</b></span>
+            </label>
+        </header>
+
+        <section class="gt-hero">
+            <div>
+                <h1 class="gt-title">Welcome to campus</h1>
+                <p class="gt-sub">Look at the camera to enter. Safe. Smart. Secure.</p>
+            </div>
+            <div class="gt-time" aria-hidden="true">
+                <span id="gtTime">--:--</span>
+                <span id="gtDate"></span>
+            </div>
+        </section>
+
+        <section class="gt-camera-wrap" aria-label="Face scan camera">
+            <div class="camera-container gt-camera">
+                <em id="livePill">Standby</em>
+                <video id="video" autoplay playsinline muted></video>
+                <div class="face-frame" aria-hidden="true"></div>
+                <div class="scan-line" aria-hidden="true"></div>
+                <p id="cameraMessage" class="camera-message">Center your face</p>
+            </div>
+        </section>
+
+        <!-- .access-card gets status-success / -danger / -warning from script.js -->
+        <section class="gt-card gt-status access-card" aria-label="Access status">
+            <span class="gt-status-icon" aria-hidden="true">
+                <svg class="ag-i is-idle"><use href="#i-camera"/></svg>
+                <svg class="ag-i is-success"><use href="#i-check"/></svg>
+                <svg class="ag-i is-danger"><use href="#i-x"/></svg>
+                <svg class="ag-i is-warning"><use href="#i-alert"/></svg>
+            </span>
+            <div class="result" role="status" aria-live="polite">
+                <span class="gt-label">Access status</span>
+                <p id="result-text">System ready</p>
+                <p id="status">Click "Open Camera" to start</p>
+            </div>
+        </section>
+
+        <button id="cameraBtn" class="gt-camera-btn" type="button">Open Camera</button>
+
+        <section class="gt-card gt-info" aria-label="Person info">
+            <dl>
+                <div>
+                    <dt>Access type</dt>
+                    <dd id="detailAccessType">Students, Staff &amp; Faculty</dd>
+                </div>
+                <div>
+                    <dt>Person name</dt>
+                    <dd id="detailPersonName">Not verified yet</dd>
+                </div>
+                <div>
+                    <dt>Gate action</dt>
+                    <dd id="detailGateAction">Waiting</dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd id="detailStatus">Standby</dd>
+                </div>
+            </dl>
+        </section>
+    </main>
+
+    <script>
+        // Live clock in the welcome row
+        (function () {
+            const time = document.getElementById("gtTime");
+            const date = document.getElementById("gtDate");
+            function tick() {
+                const now = new Date();
+                time.textContent = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+                date.textContent = now.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+            }
+            tick();
+            setInterval(tick, 10000);
+        })();
+    </script>
+</body>
+</html>

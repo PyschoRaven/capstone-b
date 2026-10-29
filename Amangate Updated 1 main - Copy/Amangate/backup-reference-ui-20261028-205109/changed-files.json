@@ -1,0 +1,15 @@
+[
+  "static/analytics-experience.js",
+  "static/art/campus-reference.png",
+  "static/dashboard-experience.js",
+  "static/reference-chat.js",
+  "static/reference-ui.css",
+  "static/script.js",
+  "static/security-review.css",
+  "static/security-review.js",
+  "static/student-experience.js",
+  "static/voice-guidance.js",
+  "templates/admin.html",
+  "templates/index.html",
+  "templates/system.html"
+]

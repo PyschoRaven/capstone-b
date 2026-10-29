@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmanGate - System Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='system.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='view-switch.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='security-review.css') }}">
+    <script src="{{ url_for('static', filename='security-review.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='ui-polish.css') }}">
+</head>
+<body class="admin-page system-page">
+
+    <svg class="ag-sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    </svg>
+
+    <div class="ag-app sys-app">
+
+        <header class="ag-card ag-header">
+            <div class="ag-brand">
+                <div class="ag-logo" aria-hidden="true"><svg class="ag-i"><use href="#i-shield"/></svg></div>
+                <div>
+                    <strong>AmanGate</strong>
+                    <span>University Access Control</span>
+                </div>
+            </div>
+            <!-- Same box as the admin tab bar, so both headers are exactly the same height -->
+            <div class="ag-nav"><span class="ag-nav-link sys-header-title">System Analytics</span></div>
+            <div class="ag-header-actions">
+                <!-- Operations ⇄ Analytics: the page slides sideways (see system.css) -->
+                <nav class="ag-view-switch is-right" aria-label="Switch page">
+                    <span class="ag-view-switch-thumb" aria-hidden="true"></span>
+                    <a href="/admin">Operations</a>
+                    <a href="/system" aria-current="page">Analytics</a>
+                </nav>
+                <a href="/" class="ag-link-muted">Gate Terminal</a>
+                <button class="ag-icon-btn" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="ag-i theme-moon"><use href="#i-moon"/></svg>
+                    <svg class="ag-i theme-sun"><use href="#i-sun"/></svg>
+                </button>
+                <span class="ag-avatar" aria-label="Admin">A</span>
+                <button id="logoutBtn" class="ag-icon-btn" type="button" aria-label="Log out" title="Log out">
+                    <svg class="ag-i"><use href="#i-logout"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="sys-head">
+            <div>
+                <h1>AmanGate — System Analytics</h1>
+                <p>Live operational view across all gates</p>
+            </div>
+            <p class="sys-live" id="liveStatus"><i></i><span>Loading…</span></p>
+        </div>
+
+        <!-- KPI row -->
+        <div class="sys-kpis">
+            <div class="sys-card sys-kpi"><b id="kEntries">—</b><span>Entries this week</span><em id="dEntries"></em></div>
+            <div class="sys-card sys-kpi"><b id="kMatch">—</b><span>Avg match confidence</span><em id="dMatch"></em></div>
+            <div class="sys-card sys-kpi"><b id="kDenied">—</b><span>Denied attempts</span><em id="dDenied"></em></div>
+            <div class="sys-card sys-kpi"><b id="kLockdowns">—</b><span>Lockdowns this week</span><em id="dLockdowns"></em></div>
+            <div class="sys-card sys-kpi"><b id="kScanTime">—</b><span>Avg scan time</span><em id="dScanTime"></em></div>
+        </div>
+
+        <!-- Entries line + granted/denied donut -->
+        <div class="sys-row sys-row-2">
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Entries over the last 7 days</h2><span id="weekRange">Last 7 days</span></div>
+                <div class="sys-chart" id="entriesChart" role="img" aria-label="Granted entries per day over the last 7 days"></div>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Granted vs denied</h2><span>This week</span></div>
+                <div class="sys-donut-wrap">
+                    <div class="sys-donut" id="donut"></div>
+                    <ul class="sys-donut-legend" id="donutLegend"></ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- Three small charts -->
+        <div class="sys-row sys-row-3">
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Match confidence spread</h2><span>Granted, last 30 days</span></div>
+                <div class="sys-chart is-short" id="spreadChart" role="img" aria-label="How many granted scans fell in each match-confidence range"></div>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Enrolled users growth</h2><span>Last 8 weeks</span></div>
+                <div class="sys-chart is-short" id="growthChart" role="img" aria-label="Enrolled users at the end of each of the last 8 weeks"></div>
+                <p class="sys-foot" id="growthFoot"></p>
+            </section>
+            <section class="sys-card sys-panel">
+                <div class="sys-panel-head"><h2>Enrolled by group</h2><span id="groupsTotal"></span></div>
+                <div class="sys-chart is-short" id="groupsChart" role="img" aria-label="Enrolled users by group"></div>
+            </section>
+        </div>
+
+        <!-- Traffic heatmap -->
+        <section class="sys-card sys-panel sys-section">
+            <div class="sys-panel-head">
+                <h2>Traffic heatmap</h2>
+                <span class="sys-heat-key">Hour of day, last 7 days combined <i aria-hidden="true"></i> darker = busier</span>
+            </div>
+            <div class="sys-heat" id="heatmap" role="img" aria-label="Scans per hour of day over the last 7 days"></div>
+        </section>
+        <section id="security-review" class="review-app sys-section" aria-label="Security review"><section class="review-hero"><h1>Every scan has a story.</h1><p>Understand access decisions and review what needs your attention.</p><span id="sync">Connecting…</span></section><section class="review-metrics" aria-label="Latest 200 scans"><article class="review-card metric pending"><span class="review-metric-icon"><svg class="ui-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v6m0 4h.01"/><circle cx="12" cy="12" r="9"/></svg></span><div><span>Needs review</span><strong id="pending">—</strong></div><span class="review-metric-arrow">→</span></article><article class="review-card metric granted"><span class="review-metric-icon"><svg class="ui-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><span>Access granted</span><strong id="granted">—</strong></div><span class="review-metric-arrow">→</span></article><article class="review-card metric reviewed"><span class="review-metric-icon"><svg class="ui-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6m-6 4h6m-6 4h4"/></svg></span><div><span>Reviewed</span><strong id="reviewed">—</strong></div><span class="review-metric-arrow">→</span></article></section><p id="message" role="status"></p><div class="review-grid"><section class="review-card timeline-panel"><h2>Activity timeline</h2><div class="review-toolbar"><button data-filter="all" aria-pressed="true">All activity</button><button data-filter="pending" aria-pressed="false">Needs review</button><button data-filter="reviewed" aria-pressed="false">Reviewed</button><label class="review-search">⌕ <input id="search" type="search" aria-label="Search by ID, name or gate" placeholder="Search by ID, name or gate…"></label></div><div id="timeline"></div></section><aside class="review-card detail-panel"><h2 id="detailTitle">Why was access denied?</h2><div id="detail"></div><p class="review-note"><span>⬟</span><span><strong>Reviewing an event does not change gate access.</strong><small>It helps keep your security records organized.</small></span></p></aside></div><footer>Latest 200 scans · Updates every 10 seconds · Older records may have unknown gate or check details.</footer></section>
+    </div>
+
+    <div class="sys-tip" id="sysTip" role="tooltip" hidden></div>
+
+    <script>
+        const REFRESH_MS = 30000;
+        const GROUPS = [
+            { key: "students",  label: "Students",  color: "var(--viz-1)" },
+            { key: "employees", label: "Employees", color: "var(--viz-2)" },
+            { key: "visitors",  label: "Visitors",  color: "var(--viz-3)" }
+        ];
+
+        const $ = id => document.getElementById(id);
+        let data = null, loadedAt = 0;
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, c => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[c]);
+        }
+
+        function parseDay(iso) { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); }
+        function hourName(h) { return `${h % 12 || 12}${h < 12 ? "am" : "pm"}`; }
+        const fmt = n => n.toLocaleString("en-US");
+
+        // ---------- KPI deltas ----------
+        // `betterWhen` decides the colour: "up" (more is good) or "down" (less is good)
+        function delta(el, now, before, { betterWhen = "up", unit = "%", word = "vs last week", relative = true, goodWord, badWord } = {}) {
+            if (now == null || before == null) { el.className = ""; el.textContent = before == null && now != null ? "no data last week" : ""; return; }
+            if (relative && before === 0) { el.className = ""; el.textContent = now ? "none last week" : "— same"; return; }
+            const diff = relative ? (before ? (now - before) / before * 100 : (now ? 100 : 0)) : now - before;
+            const rounded = Math.round(Math.abs(diff) * 10) / 10;
+            if (rounded === 0) { el.className = ""; el.textContent = "— same"; return; }
+            const up   = diff > 0;
+            const good = (betterWhen === "up") === up;
+            el.className   = good ? "is-good" : "is-bad";
+            const label = good && goodWord ? goodWord : !good && badWord ? badWord : `${rounded}${unit} ${word}`;
+            el.textContent = `${up ? "▲" : "▼"} ${label}`;
+        }
+
+        function renderKpis() {
+            const t = data.this_week, p = data.last_week;
+
+            $("kEntries").textContent = fmt(t.granted);
+            delta($("dEntries"), t.granted, p.granted);
+
+            $("kMatch").textContent = t.avg_confidence == null ? "—" : `${t.avg_confidence}%`;
+            delta($("dMatch"), t.avg_confidence, p.avg_confidence, { relative: false, unit: " pts" });
+            if (t.avg_confidence == null) $("dMatch").textContent = "no granted scans yet";
+
+            $("kDenied").textContent = fmt(t.denied);
+            delta($("dDenied"), t.denied, p.denied, { betterWhen: "down" });
+
+            $("kLockdowns").textContent = t.lockdowns;
+            if (t.lockdowns === p.lockdowns) { $("dLockdowns").className = ""; $("dLockdowns").textContent = "— same as last week"; }
+            else delta($("dLockdowns"), t.lockdowns, p.lockdowns, { betterWhen: "down", relative: false, unit: "" });
+
+            $("kScanTime").textContent = t.avg_scan_ms == null ? "—" : `${(t.avg_scan_ms / 1000).toFixed(1)}s`;
+            if (t.avg_scan_ms == null) { $("dScanTime").className = ""; $("dScanTime").textContent = "no timed scans yet"; }
+            else delta($("dScanTime"), t.avg_scan_ms, p.avg_scan_ms, { betterWhen: "down", goodWord: "faster", badWord: "slower" });
+        }
+
+        // ---------- Small SVG helpers ----------
+        function niceMax(v) {
+            if (v <= 3) return 3;
+            const pow = 10 ** Math.floor(Math.log10(v));
+            return [1, 2, 2.5, 5, 10].map(m => m * pow).find(s => s >= v);
+        }
+
+        // Line + area chart drawn at the container's real pixel size (no stretching)
+        function areaChart(el, points, { color, xLabels, tips, dots = true, labelEvery = 1 }) {
+            const W = el.clientWidth, H = el.clientHeight;
+            const pad = { l: 28, r: 10, t: 12, b: 26 };
+            const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+            const top = niceMax(Math.max(...points, 0));
+            const x = i => pad.l + (points.length === 1 ? iw / 2 : i * iw / (points.length - 1));
+            const y = v => pad.t + ih - v / top * ih;
+            const id = el.id + "Grad";
+
+            const line = points.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+            const area = `${line} L${x(points.length - 1).toFixed(1)} ${pad.t + ih} L${x(0).toFixed(1)} ${pad.t + ih}Z`;
+            const ticks = top % 2 === 0 ? [0, top / 2, top] : [0, top];  // only whole-number ticks
+            const grid = ticks.map(v => {
+                const yy = y(v).toFixed(1);
+                return `<line class="grid" x1="${pad.l}" x2="${W - pad.r}" y1="${yy}" y2="${yy}"/><text class="ytick" x="${pad.l - 8}" y="${yy}">${v}</text>`;
+            }).join("");
+            const labels = xLabels.map((t, i) => (i % labelEvery === 0 || i === xLabels.length - 1)
+                ? `<text class="xtick${i === xLabels.length - 1 ? " is-last" : ""}" x="${x(i).toFixed(1)}" y="${H - 6}">${t}</text>` : "").join("");
+            const marks = dots ? points.map((v, i) => `<circle class="dot" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4.5" style="fill:${color}"/>`).join("") : "";
+            // Full-height hit columns, wider than the dots
+            const step = points.length > 1 ? iw / (points.length - 1) : iw;
+            const hits = points.map((v, i) => `<rect class="hit" x="${(x(i) - step / 2).toFixed(1)}" y="${pad.t}" width="${step.toFixed(1)}" height="${ih}" data-tip="${escapeHtml(tips[i])}"/>`).join("");
+
+            el.innerHTML = `
+                <svg width="${W}" height="${H}">
+                    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" style="stop-color:${color};stop-opacity:0.28"/><stop offset="1" style="stop-color:${color};stop-opacity:0.02"/>
+                    </linearGradient></defs>
+                    ${grid}
+                    <path d="${area}" fill="url(#${id})"/>
+                    <path class="line" d="${line}" style="stroke:${color}"/>
+                    ${marks}${labels}${hits}
+                </svg>`;
+        }
+
+        // Vertical bars at the container's real pixel size
+        function barChart(el, bars, { valueLabels = false, xLabelFor }) {
+            const W = el.clientWidth, H = el.clientHeight;
+            const pad = { l: 4, r: 4, t: valueLabels ? 20 : 8, b: 24 };
+            const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+            const top = Math.max(1, ...bars.map(b => b.value));
+            const gap = Math.max(2, Math.min(18, iw / bars.length * 0.18));
+            const bw  = (iw - gap * (bars.length - 1)) / bars.length;
+
+            const body = bars.map((b, i) => {
+                const h  = b.value ? Math.max(3, b.value / top * ih) : 0;
+                const bx = pad.l + i * (bw + gap), by = pad.t + ih - h;
+                const r  = Math.min(4, bw / 2, h);
+                const shape = h ? `<path d="M${bx} ${by + h} V${by + r} Q${bx} ${by} ${bx + r} ${by} H${bx + bw - r} Q${bx + bw} ${by} ${bx + bw} ${by + r} V${by + h}Z" style="fill:${b.color}"/>` : "";
+                const val   = valueLabels ? `<text class="val" x="${bx + bw / 2}" y="${by - 6}">${fmt(b.value)}</text>` : "";
+                const lab   = xLabelFor(i) ? `<text class="xtick" x="${bx + bw / 2}" y="${H - 6}">${xLabelFor(i)}</text>` : "";
+                return `${shape}${val}${lab}<rect class="hit" x="${bx}" y="${pad.t}" width="${bw}" height="${ih}" data-tip="${escapeHtml(b.tip)}"/>`;
+            }).join("");
+
+            el.innerHTML = `<svg width="${W}" height="${H}"><line class="base" x1="${pad.l}" x2="${W - pad.r}" y1="${pad.t + ih}" y2="${pad.t + ih}"/>${body}</svg>`;
+        }
+
+        // ---------- Charts ----------
+        function renderEntries() {
+            const days   = data.days;
+            const labels = days.map((d, i) => i === days.length - 1 ? "Today" : parseDay(d.date).toLocaleDateString("en-US", { weekday: "short" }));
+            const tips   = days.map((d, i) => `<strong>${i === days.length - 1 ? "Today" : parseDay(d.date).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}</strong>${d.granted} ${d.granted === 1 ? "entry" : "entries"}`);
+            areaChart($("entriesChart"), days.map(d => d.granted), { color: "var(--c-line)", xLabels: labels, tips });
+            const first = parseDay(days[0].date), last = parseDay(days[days.length - 1].date);
+            const opt = { month: "short", day: "numeric" };
+            $("weekRange").textContent = `${first.toLocaleDateString("en-US", opt)} – ${last.toLocaleDateString("en-US", opt)}`;
+        }
+
+        function renderDonut() {
+            const { granted, denied } = data.this_week;
+            const total = granted + denied;
+            const r = 52, c = 2 * Math.PI * r;
+            const share = total ? granted / total : 0;
+            const gap = granted && denied ? 4 : 0;
+            const gLen = share * c, dLen = c - gLen;
+            $("donut").innerHTML = `
+                <svg viewBox="-70 -70 140 140" width="150" height="150">
+                    <circle r="${r}" class="track"/>
+                    <g transform="rotate(-90)">
+                        ${granted ? `<circle r="${r}" style="stroke:var(--c-good)" stroke-dasharray="${Math.max(0, gLen - gap)} ${c}"/>` : ""}
+                        ${denied  ? `<circle r="${r}" style="stroke:var(--c-bad)"  stroke-dasharray="${Math.max(0, dLen - gap)} ${c}" stroke-dashoffset="${-gLen}"/>` : ""}
+                    </g>
+                    <text class="pct" y="7">${total ? (Math.round(share * 1000) / 10) + "%" : "—"}</text>
+                </svg>`;
+            $("donutLegend").innerHTML = `
+                <li><i style="background:var(--c-good)"></i>Granted — <strong>${fmt(granted)}</strong></li>
+                <li><i style="background:var(--c-bad)"></i>Denied — <strong>${fmt(denied)}</strong></li>
+                ${total ? "" : `<li class="is-note">No scans in the last 7 days</li>`}`;
+        }
+
+        function renderSpread() {
+            const bins = data.confidence;
+            const labelAt = new Set([0, 2, 4, bins.length - 1]);
+            barChart($("spreadChart"), bins.map(b => ({
+                value: b.count, color: "var(--c-amber)",
+                tip: `<strong>${b.from}–${b.to}% match</strong>${b.count} granted ${b.count === 1 ? "scan" : "scans"}`
+            })), { xLabelFor: i => labelAt.has(i) ? `${bins[i].from}%` : "" });
+        }
+
+        function renderGrowth() {
+            const g = data.growth;
+            const labels = g.map((w, i) => i === g.length - 1 ? "Now" : `Wk${i + 1}`);
+            const tips   = g.map((w, i) => `<strong>${i === g.length - 1 ? "Now" : "Week ending " + parseDay(w.week_end).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</strong>${w.count} enrolled`);
+            areaChart($("growthChart"), g.map(w => w.count), { color: "var(--c-green)", xLabels: labels, tips, dots: false, labelEvery: 2 });
+            const n = data.new_this_month;
+            $("growthFoot").innerHTML = `<strong>${fmt(data.users_total)} enrolled</strong> ${n ? `<span class="is-good">▲ +${n} this month</span>` : `<span>— none new this month</span>`}`;
+        }
+
+        function renderGroups() {
+            $("groupsTotal").textContent = `${fmt(data.users_total)} users`;
+            barChart($("groupsChart"), GROUPS.map(g => ({
+                value: data.groups[g.key], color: g.color,
+                tip: `<strong>${g.label}</strong>${data.groups[g.key]} enrolled`
+            })), { valueLabels: true, xLabelFor: i => GROUPS[i].label });
+        }
+
+        function renderHeatmap() {
+            const hours = data.hours, max = Math.max(...hours, 0);
+            // One hue (orange), light → dark with the number of scans.
+            // Two rows (AM / PM) of 12 hours, with hour numbers along the bottom.
+            const cell = h => {
+                const n   = hours[h];
+                const mix = n ? Math.round(28 + 72 * n / max) : 8;
+                return `<i style="background:color-mix(in srgb, var(--c-heat) ${mix}%, var(--sys-card))"
+                           data-tip="${escapeHtml(`<strong>${hourName(h)} – ${hourName((h + 1) % 24)}</strong>${n} ${n === 1 ? "scan" : "scans"}`)}"></i>`;
+            };
+            const row = (label, from) => `<b>${label}</b>` + Array.from({ length: 12 }, (_, i) => cell(from + i)).join("");
+            const axis = `<b></b>` + Array.from({ length: 12 }, (_, i) => `<span>${i || 12}</span>`).join("");
+            $("heatmap").innerHTML = row("AM", 0) + row("PM", 12) + axis;
+        }
+
+        function renderAll() {
+            renderKpis(); renderEntries(); renderDonut(); renderSpread(); renderGrowth(); renderGroups(); renderHeatmap();
+        }
+
+        // ---------- Same zoom as the admin dashboard ----------
+        // The dashboard saves the zoom it uses to fit the window. Reuse it here so both
+        // pages look the same size; this page then simply scrolls (no fitting, no stretching).
+        const app = document.querySelector(".sys-app");
+
+        function matchDashboardZoom() {
+            let zoom = 1;
+            if (window.innerWidth > 1100) {
+                try {
+                    const saved = JSON.parse(localStorage.getItem("amangate.dashZoom"));
+                    if (saved && saved.w === window.innerWidth && saved.h === window.innerHeight) {
+                        zoom = saved.zoom;                       // same window size → exact value
+                    } else if (saved && saved.naturalHeight) {   // different size → same rule as the dashboard
+                        zoom = Math.min(1, Math.floor(window.innerHeight / saved.naturalHeight * 1000) / 1000);
+                    }
+                } catch (e) { /* no saved zoom — stay at 100% */ }
+            }
+            app.style.zoom = zoom === 1 ? "" : zoom;
+        }
+        matchDashboardZoom();
+
+        // Charts are drawn at real pixel size, so redraw them when the size changes
+        let resizeFrame = 0;
+        window.addEventListener("resize", () => {
+            cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(() => {
+                matchDashboardZoom();
+                if (data) { renderEntries(); renderSpread(); renderGrowth(); renderGroups(); }
+            });
+        });
+
+        // ---------- "Live · updated …" ----------
+        function renderLive(failed) {
+            const el = $("liveStatus");
+            if (failed) { el.className = "sys-live is-error"; el.querySelector("span").textContent = "Could not load live data"; return; }
+            const mins = Math.floor((Date.now() - loadedAt) / 60000);
+            el.className = "sys-live";
+            el.querySelector("span").textContent = `Live · updated ${mins < 1 ? "just now" : mins === 1 ? "1 min ago" : mins + " min ago"}`;
+        }
+        setInterval(() => { if (loadedAt) renderLive(); }, 15000);
+
+        // ---------- Tooltip ----------
+        const tip = $("sysTip");
+        document.addEventListener("pointermove", (e) => {
+            const target = e.target.closest("[data-tip]");
+            if (!target) { tip.hidden = true; return; }
+            tip.innerHTML = target.dataset.tip;
+            tip.hidden    = false;
+            const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+            let x = e.clientX + pad, y = e.clientY + pad;
+            if (x + w > window.innerWidth - 8)  x = e.clientX - w - pad;
+            if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+            tip.style.left = `${x}px`;
+            tip.style.top  = `${y}px`;
+        });
+        document.addEventListener("pointerleave", () => { tip.hidden = true; });
+
+        // ---------- Log out (same as the admin portal) ----------
+        $("logoutBtn").onclick = async () => {
+            try { sessionStorage.removeItem("amangate.authed"); } catch (e) { /* ignore */ }
+            await fetch("/admin/logout", { method: "POST" });
+            location.replace("/admin");
+        };
+
+        // ---------- Load ----------
+        const CACHE_KEY = "amangate.sysStats";  // last stats, shown instantly on the next visit
+
+        async function load() {
+            try {
+                const res = await fetch("/system/stats");
+                if (res.status === 401) {
+                    try { sessionStorage.removeItem("amangate.authed"); } catch (e) { /* ignore */ }
+                    location.replace("/admin");
+                    return;
+                }
+                const json = await res.json();
+                if (json.status !== "success") throw new Error(json.message);
+                data = json;
+                loadedAt = Date.now();
+                renderAll();
+                renderLive();
+                try {
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify(json));
+                    sessionStorage.setItem("amangate.authed", "1");  // lets /admin open without the password flash
+                } catch (e) { /* ignore */ }
+            } catch (e) {
+                renderLive(true);
+            }
+        }
+
+        try {
+            const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY));
+            if (cached) { data = cached; renderAll(); }
+        } catch (e) { /* no cached stats */ }
+        load();
+        setInterval(() => { if (!document.hidden) load(); }, REFRESH_MS);
+    </script>
+</body>
+</html>
