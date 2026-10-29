@@ -1,0 +1,1 @@
+﻿Download Qwen3.5-2B-Q4_K_M.gguf into this folder (link in README.md).

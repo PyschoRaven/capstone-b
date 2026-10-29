@@ -1,0 +1,273 @@
+/* ================================
+   SYSTEM ANALYTICS — loaded after admin.css, reuses its tokens.
+   Normal page width and normal scrolling: nothing is zoomed or stretched.
+   ================================ */
+
+.system-page {
+    --sys-card:  #FDFAF4;
+    --c-line:    #4A6CF7;   /* entries line */
+    --c-good:    #1F7A5C;   /* granted */
+    --c-bad:     #D03B3B;   /* denied */
+    --c-amber:   #DC9B2A;   /* confidence spread */
+    --c-green:   #1F7A5C;   /* growth */
+    --c-heat:    #D2542C;   /* heatmap hue */
+    --viz-1:     #2a78d6;
+    --viz-2:     #eb6834;
+    --viz-3:     #1baf7a;
+    --c-grid:    #ECE4D5;
+    --c-up:      #1F8A4C;
+    --c-down:    #D03B3B;
+
+    background:
+        radial-gradient(circle at 6% 0%, rgba(74, 108, 247, 0.10), transparent 32%),
+        radial-gradient(circle at 96% 8%, rgba(220, 155, 42, 0.10), transparent 30%),
+        var(--ag-bg);
+}
+
+html[data-theme="dark"] .system-page {
+    --sys-card:  #1A1D24;
+    --c-line:    #6F8BFA;
+    --c-good:    #2FA77B;
+    --c-bad:     #E66767;
+    --c-amber:   #E0A63C;
+    --c-green:   #2FA77B;
+    --c-heat:    #E2683F;
+    --viz-1:     #3987e5;
+    --viz-2:     #d95926;
+    --viz-3:     #199e70;
+    --c-grid:    #2A2E38;
+    --c-up:      #34C274;
+    --c-down:    #F05D5D;
+
+    background:
+        radial-gradient(circle at 6% 0%, rgba(111, 139, 250, 0.10), transparent 32%),
+        var(--ag-bg);
+}
+
+/* Same page width as the admin dashboard (.ag-app); the zoom comes from the dashboard too */
+.sys-app { padding-bottom: 48px; }
+
+.admin-page .sys-header-title { display: inline-block; color: var(--ag-muted); font-weight: 600; }
+.admin-page .sys-header-title:hover { background: none; }
+
+/* --- Page heading --- */
+.sys-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin: 32px 4px 22px;
+}
+
+.sys-head h1 {
+    margin: 0;
+    color: var(--ag-text);
+    font-size: clamp(24px, 2.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+html:not([data-theme="dark"]) .sys-head h1 { color: #1E2A55; }
+
+.sys-head p { margin-top: 4px; color: var(--ag-muted); font-size: 13px; }
+
+.sys-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px !important;
+    color: var(--c-up) !important;
+    font-size: 12.5px !important;
+    font-weight: 600;
+}
+
+.sys-live i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+.sys-live.is-error { color: var(--c-down) !important; }
+
+/* --- Cards --- */
+.sys-card {
+    background: var(--sys-card);
+    border: 1px solid var(--ag-border);
+    border-radius: 20px;
+    box-shadow: 0 1px 2px rgba(60, 45, 20, 0.04), 0 12px 32px rgba(60, 45, 20, 0.06);
+}
+
+.sys-panel { min-width: 0; padding: 20px 22px; }
+
+.sys-panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 14px;
+}
+
+.sys-panel-head h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.sys-panel-head > span { color: var(--ag-muted); font-size: 12px; font-weight: 500; }
+
+.sys-section { margin-top: 18px; }
+
+/* --- KPI row --- */
+.sys-kpis {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.sys-kpi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 18px 14px 16px;
+    text-align: center;
+}
+
+.sys-kpi b {
+    color: var(--ag-text);
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+html:not([data-theme="dark"]) .sys-kpi b { color: #1E2A55; }
+
+.sys-kpi span { color: var(--ag-muted); font-size: 12.5px; font-weight: 500; }
+
+.sys-kpi em {
+    min-height: 16px;
+    color: var(--ag-muted);
+    font-size: 11.5px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.sys-kpi em.is-good { color: var(--c-up); }
+.sys-kpi em.is-bad  { color: var(--c-down); }
+
+/* --- Rows --- */
+.sys-row { display: grid; gap: 18px; margin-top: 18px; }
+.sys-row-2 { grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr); }
+.sys-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* --- Charts (drawn at real pixel size by the page script) --- */
+.sys-chart { position: relative; width: 100%; height: 220px; }
+.sys-chart.is-short { height: 150px; }
+.sys-chart svg { display: block; overflow: visible; }
+
+.sys-chart .grid  { stroke: var(--c-grid); stroke-width: 1; }
+.sys-chart .base  { stroke: var(--ag-control); stroke-width: 1; }
+.sys-chart .line  { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.sys-chart .dot   { stroke: var(--sys-card); stroke-width: 2; }
+.sys-chart .hit   { fill: transparent; cursor: default; }
+.sys-chart .hit:hover { fill: color-mix(in srgb, var(--ag-text) 5%, transparent); }
+
+.sys-chart text { font-size: 11px; fill: var(--ag-muted); font-variant-numeric: tabular-nums; }
+.sys-chart .ytick { text-anchor: end; dominant-baseline: middle; }
+.sys-chart .xtick { text-anchor: middle; }
+.sys-chart .xtick.is-last { fill: var(--ag-text); font-weight: 700; }
+.sys-chart .val { text-anchor: middle; fill: var(--ag-text); font-weight: 700; }
+
+.sys-foot { margin-top: 8px; color: var(--ag-muted); font-size: 12px; }
+.sys-foot strong { color: var(--ag-text); }
+.sys-foot .is-good { color: var(--c-up); font-weight: 700; }
+
+/* --- Donut --- */
+.sys-donut-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    min-height: 220px;
+    flex-wrap: wrap;
+}
+
+.sys-donut svg { display: block; }
+.sys-donut circle { fill: none; stroke-width: 16; }
+.sys-donut .track { stroke: var(--c-grid); }
+.sys-donut .pct {
+    fill: var(--ag-text);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-anchor: middle;
+}
+
+html:not([data-theme="dark"]) .sys-donut .pct { fill: #1E2A55; }
+
+.sys-donut-legend { list-style: none; display: grid; gap: 10px; font-size: 13px; color: var(--ag-muted); }
+.sys-donut-legend li { display: flex; align-items: center; gap: 8px; }
+.sys-donut-legend i { width: 10px; height: 10px; border-radius: 50%; }
+.sys-donut-legend strong { color: var(--ag-text); font-variant-numeric: tabular-nums; }
+.sys-donut-legend .is-note { font-size: 12px; }
+
+/* --- Heatmap: 24 hours in two rows of 12 --- */
+.sys-heat {
+    display: grid;
+    grid-template-columns: 30px repeat(12, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+}
+
+.sys-heat i {
+    display: block;
+    height: 52px;
+    border-radius: 4px;
+    cursor: default;
+}
+
+.sys-heat i:hover { outline: 2px solid var(--ag-text); outline-offset: -2px; }
+
+/* Row labels (AM / PM) and hour numbers under the grid */
+.sys-heat b    { color: var(--ag-muted); font-size: 11px; font-weight: 700; }
+.sys-heat span { padding-top: 4px; color: var(--ag-muted); font-size: 11px; text-align: center; font-variant-numeric: tabular-nums; }
+
+.sys-heat-key { display: inline-flex; align-items: center; gap: 8px; }
+
+.sys-heat-key i {
+    width: 70px;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--c-heat) 15%, var(--sys-card)), var(--c-heat));
+}
+
+/* --- Tooltip --- */
+.sys-tip {
+    position: fixed;
+    z-index: 60;
+    max-width: 240px;
+    padding: 8px 11px;
+    border-radius: 10px;
+    color: #fff;
+    background: #1C2130;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    font-size: 12px;
+    line-height: 1.45;
+    pointer-events: none;
+}
+
+.sys-tip strong { display: block; font-size: 12.5px; }
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 1100px) {
+    .sys-kpis  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sys-row-2 { grid-template-columns: minmax(0, 1fr); }
+    .sys-row-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 700px) {
+    .sys-kpis  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sys-row-3 { grid-template-columns: minmax(0, 1fr); }
+    .sys-heat  { grid-template-columns: 26px repeat(12, minmax(0, 1fr)); gap: 2px; }
+    .sys-heat i { height: 32px; }
+}
+
+/* Going to Analytics: the page slides in from the right (admin.css has the reverse) */
+::view-transition-old(root) { animation-name: ag-slide-out-left; }
+::view-transition-new(root) { animation-name: ag-slide-in-right; }

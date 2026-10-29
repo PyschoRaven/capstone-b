@@ -1,0 +1,13 @@
+// Optional browser speech for the existing enrollment workflow, for every role.
+(() => {
+ const panel=document.querySelector('[data-view="add-user"]'),toggle=document.getElementById('enrollmentAudioToggle'),caption=document.getElementById('enrollmentAudioCaption');if(!panel||!toggle)return;
+ const supported='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window;let enabled=false,lastText='',lastAt=0,guiding=false,resolveGuide=null;
+ function cancel(){speechSynthesis.cancel();if(resolveGuide){resolveGuide();resolveGuide=null}guiding=false}
+ function paint(){toggle.setAttribute('aria-pressed',String(enabled));toggle.querySelector('span').textContent=enabled?'Mute enrollment guidance':'Enable enrollment guidance'}
+ function speak(text,force=false){if(!enabled||panel.hidden||document.hidden||!text)return;if(!force&&(guiding||text===lastText||Date.now()-lastAt<3500))return;lastText=text;lastAt=Date.now();caption.textContent=text;speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='en-US';utterance.rate=1;const voices=speechSynthesis.getVoices();utterance.voice=voices.find(v=>v.localService&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang))||null;speechSynthesis.speak(utterance);return utterance}
+ window.AmanEnrollmentAudio={guide(text){if(!enabled||!supported||panel.hidden||document.hidden)return Promise.resolve();cancel();guiding=true;return new Promise(resolve=>{let timer;const done=()=>{clearTimeout(timer);if(resolveGuide===done){resolveGuide=null;guiding=false}resolve()};resolveGuide=done;const utterance=speak(text,true);if(!utterance){done();return}utterance.onend=done;utterance.onerror=done;timer=setTimeout(done,8000)})}};
+ toggle.onclick=()=>{enabled=!enabled;paint();if(enabled)speak('Enrollment guidance enabled. Fill in the user details, face the camera, then press Capture Photos.',true);else{cancel();caption.textContent='Follow the written enrollment instructions.'}};
+ const status=document.getElementById('status-msg'),camera=document.getElementById('cameraMessage');
+ for(const host of [status,camera])if(host)new MutationObserver(()=>speak(host.textContent.trim())).observe(host,{childList:true,subtree:true,characterData:true});
+ new MutationObserver(()=>{if(panel.hidden&&supported)cancel()}).observe(panel,{attributes:true,attributeFilter:['hidden']});document.addEventListener('visibilitychange',()=>{if(document.hidden&&supported)cancel()});addEventListener('pagehide',()=>{if(supported)cancel()});if(!supported){toggle.disabled=true;toggle.querySelector('span').textContent='Audio unavailable';caption.textContent='Follow the written enrollment instructions.'}else paint();
+})();
